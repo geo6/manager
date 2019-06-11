@@ -8,9 +8,10 @@ export default function (event) {
     window.app.highlightLayer.getSource().clear();
 
     if (
-        window.app.map.hasFeatureAtPixel(event.pixel, l => {
-            return l === window.app.layer;
-        }) === true
+        window.app.map.hasFeatureAtPixel(
+            event.pixel,
+            l => l === window.app.layer
+        ) === true
     ) {
         $('.sidebar-tabs > ul > li:has(a[href="#info"])')
             .get(0)
@@ -31,9 +32,7 @@ export default function (event) {
                     features.push(feature);
                 }
             },
-            l => {
-                return l === window.app.layer;
-            }
+            l => l === window.app.layer
         );
 
         displayRecord(features, 0);
