@@ -1,0 +1,82 @@
+'use strict';
+
+import Form from '../Form';
+
+export default class Input {
+    static getElement (key) {
+        return Form.getElement().querySelector(`[name="${key}"]`);
+    }
+
+    static fill (key, value) {
+        Input.getElement(key).value = '';
+
+        if (value !== null) {
+            if (Input.getElement(key).dataset.datatype === 'boolean') {
+                Input.getElement(key).value = value === true ? 1 : 0;
+            } else {
+                Input.getElement(key).value = value;
+            }
+        }
+    }
+
+    static save (key) {
+        const element = Form.getElement().querySelector(`[name="${key}"]`);
+        const id = Form.getElement().dataset.id;
+
+        const properties = {};
+        properties[key] = element.value;
+
+        fetch(`/app/manager/test/api/db/records/${id}`, {
+            body: JSON.stringify({ properties }),
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            method: 'PUT'
+        })
+            .then(response => response.json())
+            .then(json => {
+                window.app.highlightLayer
+                    .getSource()
+                    .getFeatureById(id)
+                    .setProperties(json.properties);
+            });
+    }
+
+    static enableOnChange (element) {
+        element.addEventListener('change', event => {
+            const key = event.target.name;
+            const value = event.target.value;
+            const valid = event.target.checkValidity();
+
+            const statusElement = {
+                danger: event.target
+                    .closest('.form-group')
+                    .querySelector('i.fas.text-danger'),
+                success: event.target
+                    .closest('.form-group')
+                    .querySelector('i.fas.text-success'),
+                warning: event.target
+                    .closest('.form-group')
+                    .querySelector('i.fas.text-warning')
+            };
+
+            statusElement.danger.hidden = true;
+            statusElement.danger.removeAttribute('title');
+            statusElement.success.hidden = true;
+            statusElement.success.removeAttribute('title');
+            statusElement.warning.hidden = true;
+            statusElement.warning.removeAttribute('title');
+
+            if (valid !== true) {
+                statusElement.danger.removeAttribute('hidden');
+                statusElement.danger.title = event.target.validationMessage;
+            } else {
+                statusElement.success.removeAttribute('hidden');
+
+                Input.save(key);
+            }
+
+            console.log(event.type, valid, key, value);
+        });
+    }
+}

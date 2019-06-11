@@ -1,0 +1,13 @@
+#table-wrapper {
+    max-height: 80vh;
+    overflow: auto;
+
+    .table > thead > tr > th > a {
+        color: inherit;
+        text-decoration: none;
+
+        & > .fas {
+            margin-left: 10px;
+        }
+    }
+}
