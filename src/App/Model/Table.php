@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare (strict_types = 1);
 
 namespace App\Model;
 
@@ -43,7 +43,8 @@ class Table
         foreach ($this->columns as &$column) {
             $name = $column->getName();
 
-            $column->readonly = $this->isReadonly($name);
+            $column->readonly = $this->isColumnReadonly($name);
+            $column->notnull = $this->isColumnNotNull($name);
 
             $datatype = $column->getDataType();
 
@@ -136,7 +137,7 @@ class Table
         return $metadata[$column]['type'];
     }
 
-    private function isReadonly(string $column): bool
+    private function isColumnReadonly(string $column): bool
     {
         if ($column === $this->getKeyColumn() || in_array($column, ['updatedate', 'updatetime', 'updateuser'])) {
             return true;
@@ -149,6 +150,15 @@ class Table
         return false;
     }
 
+    private function isColumnNotNull(string $column): bool
+    {
+        $notnull = array_filter($this->constraints, function ($constraint) use ($column) {
+            return $constraint->isCheck() && $constraint->getCheckClause() === sprintf('%s IS NOT NULL', $column);
+        });
+
+        return count($notnull) > 0;
+    }
+
     // private function isColumnUnique(string $column): bool
     // {
     //     $unique = array_filter($this->constraints, function ($constraint) use ($column) {
@@ -156,15 +166,6 @@ class Table
     //     });
 
     //     return count($unique) > 0;
-    // }
-
-    // private function isColumnNotNull(string $column): bool
-    // {
-    //     $notnull = array_filter($this->constraints, function ($constraint) use ($column) {
-    //         return $constraint->isCheck() && $constraint->getCheckClause() === sprintf('%s IS NOT NULL', $column);
-    //     });
-
-    //     return count($notnull) > 0;
     // }
 
     public function toArray(): array
@@ -177,6 +178,7 @@ class Table
                 'default'   => $column->getColumnDefault(),
                 'maxlength' => $column->getCharacterMaximumLength(),
                 'readonly'  => $column->readonly,
+                'notnull'   => $column->notnull,
             ];
         }
 
