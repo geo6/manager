@@ -58,7 +58,7 @@
 {% for column in columns if (column.name != geometryColumn and column.readonly == false) %}
                 <div class="form-group mb-2">
                     <div class="d-flex justify-content-between">
-                        <label class="font-weight-bold" for="input-{{ column.name }}">
+                        <label class="font-weight-bold{{ column.notnull ? ' text-primary' }}" for="input-{{ column.name }}">
                             {{ column.name }}
                         </label>
                         <div>
@@ -69,17 +69,17 @@
                     </div>
 {% if (column.name == keyColumn) %}
 {% elseif column.datatype == 'boolean' %}
-                    <select class="form-control form-control-sm" id="input-{{ column.name }}" name="{{ column.name }}" data-datatype="{{ column.datatype }}">
-                        <option></option>
+                    <select class="form-control form-control-sm" id="input-{{ column.name }}" name="{{ column.name }}" data-datatype="{{ column.datatype }}"{{ column.notnull ? ' required' }}>
+                        {{ column.notnull ?: '<option></option>' }}
                         <option value="1">TRUE</option>
                         <option value="0">FALSE</option>
                     </select>
 {% elseif column.datatype == 'integer' %}
-                    <input type="number" class="form-control form-control-sm" id="input-{{ column.name }}" name="{{ column.name }}" data-datatype="{{ column.datatype }}">
+                    <input type="number" class="form-control form-control-sm" id="input-{{ column.name }}" name="{{ column.name }}" data-datatype="{{ column.datatype }}"{{ column.notnull ? ' required' }}>
 {% elseif column.datatype == 'text' %}
-                    <textarea class="form-control form-control-sm" id="input-{{ column.name }}" name="{{ column.name }}" data-datatype="{{ column.datatype }}"></textarea>
+                    <textarea class="form-control form-control-sm" id="input-{{ column.name }}" name="{{ column.name }}" data-datatype="{{ column.datatype }}"{{ column.notnull ? ' required' }}></textarea>
 {% else %}
-                    <input type="text" class="form-control form-control-sm" id="input-{{ column.name }}" name="{{ column.name }}" data-datatype="{{ column.datatype }}">
+                    <input type="text" class="form-control form-control-sm" id="input-{{ column.name }}" name="{{ column.name }}" data-datatype="{{ column.datatype }}"{{ column.notnull ? ' required' }}>
 {% endif %}
                 </div>
 {% endfor %}
