@@ -1,6 +1,7 @@
 'use strict';
 
 import Form from '../Form';
+import Table from '../Table';
 
 export default class Input {
     static getElement (key) {
@@ -35,10 +36,12 @@ export default class Input {
         })
             .then(response => response.json())
             .then(json => {
-                window.app.highlightLayer
+                const feature = window.app.highlightLayer
                     .getSource()
-                    .getFeatureById(id)
-                    .setProperties(json.properties);
+                    .getFeatureById(id);
+
+                feature.setProperties(json.properties);
+                Table.fill(feature);
             });
     }
 
