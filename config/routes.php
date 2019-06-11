@@ -1,13 +1,13 @@
 <?php
 
-declare (strict_types = 1);
+declare(strict_types = 1);
 
 use Psr\Container\ContainerInterface;
 use Zend\Expressive\Application;
-use Zend\Expressive\MiddlewareFactory;
 use Zend\Expressive\Helper\BodyParams\BodyParamsMiddleware;
+use Zend\Expressive\MiddlewareFactory;
 
-/**
+/*
  * Setup routes with a single request method:
  *
  * $app->get('/', App\Handler\HomePageHandler::class, 'home');
@@ -48,7 +48,7 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
         '/{config:\w+}/api/db/records',
         [
             App\Middleware\DbAdapterMiddleware::class,
-            App\Handler\API\Database\RecordsHandler::class
+            App\Handler\API\Database\RecordsHandler::class,
         ],
         ['GET', 'POST'],
         'api.db.records'
@@ -58,7 +58,7 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
         [
             BodyParamsMiddleware::class,
             App\Middleware\DbAdapterMiddleware::class,
-            App\Handler\API\Database\RecordsHandler::class
+            App\Handler\API\Database\RecordsHandler::class,
         ],
         ['GET', 'PUT', 'DELETE'],
         'api.db.records.id'

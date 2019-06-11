@@ -1,10 +1,9 @@
 <?php
 
-declare (strict_types = 1);
+declare(strict_types = 1);
 
 namespace App\Middleware;
 
-use App\Middleware\ConfigMiddleware;
 use Exception;
 use PDO;
 use Psr\Http\Message\ResponseInterface;

@@ -1,14 +1,14 @@
 <?php
 
-declare (strict_types = 1);
+declare(strict_types = 1);
 
 namespace App\Model;
 
 use ArrayObject;
 use Zend\Db\Adapter\Adapter;
 use Zend\Db\Sql\Expression;
-use Zend\Db\Sql\Sql;
 use Zend\Db\Sql\Select;
+use Zend\Db\Sql\Sql;
 use Zend\Db\Sql\Update;
 
 class Record
@@ -67,8 +67,8 @@ class Record
         $select = $select->columns([
             '*',
             '_geojson' => new Expression('ST_AsGeoJSON(' . $geometryColumn . ') '),
-            '_length' => new Expression('ST_Length(' . $geometryColumn . ') '),
-            '_area' => new Expression('ST_Area(' . $geometryColumn . ') '),
+            '_length'  => new Expression('ST_Length(' . $geometryColumn . ') '),
+            '_area'    => new Expression('ST_Area(' . $geometryColumn . ') '),
         ]);
 
         if (!is_null($this->id)) {
@@ -104,16 +104,17 @@ class Record
         $sql = new Sql($this->adapter);
 
         $qsz = $sql->buildSqlString($query);
+
         return $this->adapter->query($qsz, $this->adapter::QUERY_MODE_EXECUTE);
     }
 
     public function toGeoJSON(): array
     {
         return [
-            'type' => 'Feature',
-            'id' => $this->id,
+            'type'       => 'Feature',
+            'id'         => $this->id,
             'properties' => $this->properties,
-            'geometry' => $this->geometry,
+            'geometry'   => $this->geometry,
         ];
     }
 }

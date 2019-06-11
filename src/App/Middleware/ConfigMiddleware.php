@@ -86,7 +86,7 @@ class ConfigMiddleware implements MiddlewareInterface
         }
 
         return (new ConfigAggregator([
-            new ZendConfigProvider($directory[0].'/*.{php,ini,xml,json,yaml}'),
+            new ZendConfigProvider($directory[0] . '/*.{php,ini,xml,json,yaml}'),
         ]))->getMergedConfig();
     }
 }

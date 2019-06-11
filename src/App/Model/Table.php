@@ -1,15 +1,15 @@
 <?php
 
-declare (strict_types = 1);
+declare(strict_types = 1);
 
 namespace App\Model;
 
 use Exception;
 use Zend\Db\Adapter\Adapter;
 use Zend\Db\Metadata\Metadata;
-use Zend\Db\Sql\TableIdentifier;
 use Zend\Db\Sql\Expression;
 use Zend\Db\Sql\Sql;
+use Zend\Db\Sql\TableIdentifier;
 
 class Table
 {
@@ -172,24 +172,24 @@ class Table
         $columns = [];
         foreach ($this->columns as $column) {
             $columns[] = [
-                'name' => $column->getName(),
-                'type' => $column->getDataType(),
-                'default' => $column->getColumnDefault(),
+                'name'      => $column->getName(),
+                'type'      => $column->getDataType(),
+                'default'   => $column->getColumnDefault(),
                 'maxlength' => $column->getCharacterMaximumLength(),
-                'readonly' => $column->readonly,
+                'readonly'  => $column->readonly,
             ];
         }
 
         $constraints = [];
         foreach ($this->constraints as $constraint) {
             $constraints[] = [
-                'name' => $constraint->getName(),
-                'type' => $constraint->getType(),
-                'columns' => $constraint->hasColumns() ? $constraint->getColumns() : null,
-                'check' => $constraint->isCheck() ? $constraint->getCheckClause() : null,
+                'name'      => $constraint->getName(),
+                'type'      => $constraint->getType(),
+                'columns'   => $constraint->hasColumns() ? $constraint->getColumns() : null,
+                'check'     => $constraint->isCheck() ? $constraint->getCheckClause() : null,
                 'reference' => $constraint->isForeignKey() ? [
-                    'schema' => $constraint->getReferencedTableSchema(),
-                    'table' => $constraint->getReferencedTableName(),
+                    'schema'  => $constraint->getReferencedTableSchema(),
+                    'table'   => $constraint->getReferencedTableName(),
                     'columns' => $constraint->getReferencedColumns(),
                 ] : null,
             ];
@@ -197,11 +197,11 @@ class Table
 
         return [
             'schema' => $this->schema,
-            'table' => $this->name,
+            'table'  => $this->name,
             // 'count' => $count,
-            'key' => $this->getKeyColumn(),
-            'geometry' => $this->getGeometryColumn(),
-            'columns' => $columns,
+            'key'         => $this->getKeyColumn(),
+            'geometry'    => $this->getGeometryColumn(),
+            'columns'     => $columns,
             'constraints' => $constraints,
         ];
     }

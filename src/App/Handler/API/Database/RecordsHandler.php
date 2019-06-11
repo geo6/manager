@@ -1,17 +1,17 @@
 <?php
 
-declare (strict_types = 1);
+declare(strict_types = 1);
 
 namespace App\Handler\API\Database;
 
-use App\Model\Table;
 use App\Middleware\ConfigMiddleware;
 use App\Middleware\DbAdapterMiddleware;
+use App\Model\Record;
+use App\Model\Table;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Zend\Diactoros\Response\JsonResponse;
-use App\Model\Record;
 
 class RecordsHandler implements RequestHandlerInterface
 {
@@ -30,13 +30,13 @@ class RecordsHandler implements RequestHandlerInterface
             case 'GET':
                 if (is_null($id)) {
                     return new JsonResponse([
-                        'type' => 'FeatureCollection',
+                        'type'     => 'FeatureCollection',
                         'features' => $table->getRecords(
                             isset($params['order']) ? $params['order'] : null,
                             isset($params['limit']) ? intval($params['limit']) : null,
                             null,
                             true
-                        )
+                        ),
                     ]);
                 } else {
                     return new JsonResponse($table->getRecord(intval($id))->toGeoJSON());

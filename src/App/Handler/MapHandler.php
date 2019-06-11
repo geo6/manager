@@ -1,17 +1,17 @@
 <?php
 
-declare (strict_types = 1);
+declare(strict_types = 1);
 
 namespace App\Handler;
 
 use App\Middleware\ConfigMiddleware;
 use App\Middleware\DbAdapterMiddleware;
+use App\Model\Table;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Zend\Diactoros\Response\HtmlResponse;
 use Zend\Expressive\Template\TemplateRendererInterface;
-use App\Model\Table;
 
 class MapHandler implements RequestHandlerInterface
 {
@@ -36,9 +36,9 @@ class MapHandler implements RequestHandlerInterface
         return new HtmlResponse($this->renderer->render(
             'app::map',
             [
-                'config' => $config['custom'],
-                'columns' => $columns,
-                'keyColumn' => $table->getKeyColumn(),
+                'config'         => $config['custom'],
+                'columns'        => $columns,
+                'keyColumn'      => $table->getKeyColumn(),
                 'geometryColumn' => $table->getGeometryColumn(),
             ]
         ));

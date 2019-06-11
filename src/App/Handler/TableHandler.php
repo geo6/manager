@@ -1,12 +1,12 @@
 <?php
 
-declare (strict_types = 1);
+declare(strict_types = 1);
 
 namespace App\Handler;
 
-use App\Model\Table;
 use App\Middleware\ConfigMiddleware;
 use App\Middleware\DbAdapterMiddleware;
+use App\Model\Table;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -37,7 +37,7 @@ class TableHandler implements RequestHandlerInterface
 
         $order = [
             'column' => 'id',
-            'order' => 'asc',
+            'order'  => 'asc',
         ];
 
         $table = new Table($adapter, $config['config']);
@@ -52,7 +52,7 @@ class TableHandler implements RequestHandlerInterface
             if (count($result) > 0) {
                 $order = [
                     'column' => current($result)->getName(),
-                    'order' => 'asc',
+                    'order'  => 'asc',
                 ];
 
                 if (isset($params['order']) && in_array(strtolower($params['order']), ['asc', 'desc'])) {
@@ -61,7 +61,7 @@ class TableHandler implements RequestHandlerInterface
             } else {
                 $order = [
                     'column' => 'id',
-                    'order' => 'asc',
+                    'order'  => 'asc',
                 ];
             }
         }
@@ -69,16 +69,16 @@ class TableHandler implements RequestHandlerInterface
         return new HtmlResponse($this->renderer->render(
             'app::table',
             [
-                'config' => $config['custom'],
-                'pages' => floor($count / $config['config']['limit']),
-                'limit' => $config['config']['limit'],
-                'offset' => $offset,
-                'order' => $order,
-                'count' => $count,
-                'keyColumn' => $table->getKeyColumn(),
+                'config'         => $config['custom'],
+                'pages'          => floor($count / $config['config']['limit']),
+                'limit'          => $config['config']['limit'],
+                'offset'         => $offset,
+                'order'          => $order,
+                'count'          => $count,
+                'keyColumn'      => $table->getKeyColumn(),
                 'geometryColumn' => $table->getGeometryColumn(),
-                'columns' => $columns,
-                'records' => $table->getRecords(
+                'columns'        => $columns,
+                'records'        => $table->getRecords(
                     $order['column'] . ' ' . $order['order'],
                     $config['config']['limit'],
                     $offset

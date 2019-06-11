@@ -83,7 +83,7 @@ class AuthMiddleware implements MiddlewareInterface
         $redirect = ($basePath !== '/' ? $basePath : '');
         $redirect .= $this->router->generateUri($this->config['redirect']);
 
-        return $this->auth->unauthorizedResponse($request)->withHeader('Location', $redirect.'?'.http_build_query($query));
+        return $this->auth->unauthorizedResponse($request)->withHeader('Location', $redirect . '?' . http_build_query($query));
     }
 
     public static function getProjects(string $username, iterable $roles = []) : array

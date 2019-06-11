@@ -6,13 +6,13 @@
  * removing factory definitions; other dependency types may be overwritten
  * when regenerating this file via zend-expressive-tooling commands.
  */
- 
+
 declare(strict_types=1);
 
 return [
     'dependencies' => [
         'factories' => [
-            App\Handler\MapHandler::class => App\Handler\MapHandlerFactory::class,
+            App\Handler\MapHandler::class   => App\Handler\MapHandlerFactory::class,
             App\Handler\TableHandler::class => App\Handler\TableHandlerFactory::class,
         ],
     ],
