@@ -60,6 +60,7 @@
                     <div class="d-flex justify-content-between">
                         <label class="font-weight-bold{{ column.notnull ? ' text-primary' }}" for="input-{{ column.name }}">
                             {{ column.name }}
+                            {{ column.notnull ? '<i class="far fa-question-circle" style="cursor: help;" title="NOT NULL"></i>' }}
                         </label>
                         <div>
                             <i class="fas fa-check-circle text-success" hidden></i>
