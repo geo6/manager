@@ -1,0 +1,5 @@
+<select class="form-control form-control-sm" id="input-{{ column.name }}" name="{{ column.name }}" data-datatype="{{ column.datatype }}"{{ column.notnull ? ' required' }}>
+    {{ column.notnull ?: '<option></option>' }}
+    <option value="1">TRUE</option>
+    <option value="0">FALSE</option>
+</select>

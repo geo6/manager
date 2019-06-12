@@ -30,61 +30,8 @@
                 </div>
             </div>
         </div>
-        <div id="info-table">
-            <table class="table table-bordered table-striped table-sm small">
-                <caption>
-                    <div><i class="fas fa-bookmark"></i> Feature id: <span id="info-details-id"></span></div>
-                    <div id="info-details-geometry"></div>
-                    <div class="text-info">
-                        Last update
-                        <span id="info-details-updateuser" class="text-nowrap">by <i class="far fa-user"></i> <span style="font-style: italic;"></span></span>
-                        <span id="info-details-updatetime" class="text-nowrap">on <i class="far fa-clock"></i> <time></time></span>
-                    </div>
-                </caption>
-                <tbody>
-{% for column in columns if column.name not in [geometryColumn, 'updateuser', 'updatetime'] %}
-                    <tr>
-                        <th>{{ column.name == keyColumn ? '<i class="fas fa-bookmark"></i> ' }}{{ column.name }}</th>
-                        <td data-column="{{ column.name }}"></td>
-                    </tr>
-{% endfor %}
-                </tbody>
-            </table>
-            <div id="info-details-geometry" class="text-info"></div>
-        </div>
-        <div id="info-form" hidden>
-            <form class="small" autocomplete="off">
-                <input type="text" name="{{ keyColumn }}" readonly hidden>
-{% for column in columns if (column.name != geometryColumn and column.readonly == false) %}
-                <div class="form-group mb-2">
-                    <div class="d-flex justify-content-between">
-                        <label class="font-weight-bold{{ column.notnull ? ' text-primary' }}" for="input-{{ column.name }}">
-                            {{ column.name }}
-                            {{ column.notnull ? '<i class="far fa-question-circle" style="cursor: help;" title="NOT NULL"></i>' }}
-                        </label>
-                        <div>
-                            <i class="fas fa-check-circle text-success" hidden></i>
-                            <i class="fas fa-exclamation-circle text-warning" hidden></i>
-                            <i class="fas fa-times-circle text-danger" hidden></i>
-                        </div>
-                    </div>
-{% if (column.name == keyColumn) %}
-{% elseif column.datatype == 'boolean' %}
-                    <select class="form-control form-control-sm" id="input-{{ column.name }}" name="{{ column.name }}" data-datatype="{{ column.datatype }}"{{ column.notnull ? ' required' }}>
-                        {{ column.notnull ?: '<option></option>' }}
-                        <option value="1">TRUE</option>
-                        <option value="0">FALSE</option>
-                    </select>
-{% elseif column.datatype == 'integer' %}
-                    <input type="number" class="form-control form-control-sm" id="input-{{ column.name }}" name="{{ column.name }}" data-datatype="{{ column.datatype }}"{{ column.notnull ? ' required' }}>
-{% elseif column.datatype == 'text' %}
-                    <textarea class="form-control form-control-sm" id="input-{{ column.name }}" name="{{ column.name }}" data-datatype="{{ column.datatype }}"{{ column.notnull ? ' required' }}></textarea>
-{% else %}
-                    <input type="text" class="form-control form-control-sm" id="input-{{ column.name }}" name="{{ column.name }}" data-datatype="{{ column.datatype }}"{{ column.notnull ? ' required' }}>
-{% endif %}
-                </div>
-{% endfor %}
-            </form>
+        {{ include('@app/partial/sidebar/info/table.html.twig') }}
+        {{ include('@app/partial/sidebar/info/form.html.twig') }}
         </div>
     </div>
 </div>

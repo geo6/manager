@@ -1,0 +1,22 @@
+<div id="info-table">
+    <table class="table table-bordered table-striped table-sm small">
+        <caption>
+            <div><i class="fas fa-bookmark"></i> Feature id: <span id="info-details-id"></span></div>
+            <div id="info-details-geometry"></div>
+            <div class="text-info">
+                Last update
+                <span id="info-details-updateuser" class="text-nowrap">by <i class="far fa-user"></i> <span style="font-style: italic;"></span></span>
+                <span id="info-details-updatetime" class="text-nowrap">on <i class="far fa-clock"></i> <time></time></span>
+            </div>
+        </caption>
+        <tbody>
+{% for column in columns if column.name not in [geometryColumn, 'updateuser', 'updatetime'] %}
+            <tr>
+                <th>{{ column.name == keyColumn ? '<i class="fas fa-bookmark"></i> ' }}{{ column.name }}</th>
+                <td data-column="{{ column.name }}"></td>
+            </tr>
+{% endfor %}
+        </tbody>
+    </table>
+    <div id="info-details-geometry" class="text-info"></div>
+</div>
