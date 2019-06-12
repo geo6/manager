@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare (strict_types = 1);
 
 namespace App\Model;
 
@@ -139,7 +139,7 @@ class Table
 
     private function isColumnReadonly(string $column): bool
     {
-        if ($column === $this->getKeyColumn() || in_array($column, ['updatedate', 'updatetime', 'updateuser'])) {
+        if ($column === $this->getKeyColumn() || in_array($column, ['updatetime', 'updateuser'])) {
             return true;
         }
 
