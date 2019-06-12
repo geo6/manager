@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare (strict_types = 1);
 
 namespace App\Handler;
 
@@ -37,6 +37,7 @@ class MapHandler implements RequestHandlerInterface
             'app::map',
             [
                 'config'         => $config['custom'],
+                'table'          => $table,
                 'columns'        => $columns,
                 'keyColumn'      => $table->getKeyColumn(),
                 'geometryColumn' => $table->getGeometryColumn(),

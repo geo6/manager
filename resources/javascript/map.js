@@ -10,6 +10,7 @@ import initMap from './map/init';
 import initLayer from './map/layer/layer';
 import initHighlightLayer from './map/layer/highlight';
 import initFeatureInfoUI from './map/feature/info';
+import initFilter from './filter/init';
 import Records from './Records';
 
 require('sidebar-v2/js/jquery-sidebar.js');
@@ -56,4 +57,5 @@ window.app = {
     window.app.highlightLayer = initHighlightLayer(window.app.map);
 
     initFeatureInfoUI();
+    initFilter();
 })();

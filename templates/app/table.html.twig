@@ -31,7 +31,7 @@
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link disabled" href="#modal-filter">
+        <a class="nav-link" href="#modal-filter" data-toggle="modal">
             <i class="fas fa-filter"></i>
             Filter
         </a>
@@ -168,4 +168,5 @@
             </table>
         </div>
     </main>
+    {{ include('@app/modal/filter.html.twig') }}
 {% endblock %}
