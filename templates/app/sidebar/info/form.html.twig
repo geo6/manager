@@ -15,13 +15,13 @@
                 </div>
             </div>
 {% if column.datatype == 'boolean' %}
-            {{ include('@app/partial/sidebar/info/form/input-boolean.html.twig') }}
+            {{ include('@app/sidebar/info/form/input-boolean.html.twig') }}
 {% elseif column.datatype == 'integer' %}
-            {{ include('@app/partial/sidebar/info/form/input-integer.html.twig') }}
+            {{ include('@app/sidebar/info/form/input-integer.html.twig') }}
 {% elseif column.datatype == 'text' %}
-            {{ include('@app/partial/sidebar/info/form/input-text.html.twig') }}
+            {{ include('@app/sidebar/info/form/input-text.html.twig') }}
 {% else %}
-            {{ include('@app/partial/sidebar/info/form/input-varchar.html.twig') }}
+            {{ include('@app/sidebar/info/form/input-varchar.html.twig') }}
 {% endif %}
         </div>
 {% endfor %}
