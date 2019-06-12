@@ -1,16 +1,16 @@
 <?php
 
-declare (strict_types = 1);
+declare(strict_types = 1);
 
 namespace App\Model;
 
 use ArrayObject;
 use Zend\Db\Adapter\Adapter;
+use Zend\Db\Sql\Delete;
 use Zend\Db\Sql\Expression;
 use Zend\Db\Sql\Select;
 use Zend\Db\Sql\Sql;
 use Zend\Db\Sql\Update;
-use Zend\Db\Sql\Delete;
 
 class Record
 {
