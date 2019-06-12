@@ -6,20 +6,21 @@ import { Vector as VectorSource, Cluster } from 'ol/source';
 
 import styleFunction from '../style/style';
 import styleClusterFunction from '../style/cluster';
+import Records from '../../Records';
 
 export default function (map, geojson) {
-    const source = new VectorSource({
+    window.app.source = new VectorSource({
         features: new GeoJSON().readFeatures(geojson, {
             featureProjection: window.app.map.getView().getProjection()
         })
     });
 
-    const count = source.getFeatures().length;
+    const count = window.app.source.getFeatures().length;
     const labelColumn = 'label';
 
     const layer = new VectorLayer({
         map: map,
-        source: source,
+        source: window.app.source,
         style: feature => {
             return styleFunction(feature, labelColumn);
         }
@@ -27,7 +28,7 @@ export default function (map, geojson) {
 
     if (count > 1000) {
         const cluster = new Cluster({
-            source: source
+            source: window.app.source
         });
 
         layer.setStyle(feature => {
@@ -47,6 +48,13 @@ export default function (map, geojson) {
             window.app.map.getView().fit(layer.getSource().getExtent());
         });
     }
+
+    window.app.source.on('removefeature', event => {
+        const feature = event.feature;
+        const id = feature.getId();
+
+        Records.delete(id).then(data => console.log(data));
+    });
 
     return layer;
 }

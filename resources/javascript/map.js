@@ -10,7 +10,7 @@ import initMap from './map/init';
 import initLayer from './map/layer/layer';
 import initHighlightLayer from './map/layer/highlight';
 import initFeatureInfoUI from './map/feature/info';
-import getRecords from './map/records';
+import Records from './Records';
 
 require('sidebar-v2/js/jquery-sidebar.js');
 
@@ -20,7 +20,8 @@ window.app = {
     highlightLayer: null,
     layer: null,
     map: null,
-    sidebar: null
+    sidebar: null,
+    source: null
 };
 
 (function () {
@@ -46,7 +47,7 @@ window.app = {
         fetch(`/app/manager/test/api/db/table`).then(response =>
             response.json()
         ),
-        getRecords()
+        Records.getAll()
     ]).then(data => {
         window.app.cache.setTable(data[0]);
         window.app.layer = initLayer(window.app.map, data[1]);

@@ -25,5 +25,17 @@
         "build": "concurrently --raw \"npm:build:*\"",
         "build:map": "parcel build --out-dir=public/ --out-file=map.js --no-source-maps resources/javascript/map.js",
         "build:table": "parcel build --out-dir=public/ --out-file=table.js --no-source-maps resources/javascript/table.js"
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
     }
 }

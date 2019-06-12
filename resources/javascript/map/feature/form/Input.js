@@ -2,6 +2,7 @@
 
 import Form from '../Form';
 import Table from '../Table';
+import Records from '../../../Records';
 
 export default class Input {
     static getElement (key) {
@@ -27,22 +28,14 @@ export default class Input {
         const properties = {};
         properties[key] = element.value;
 
-        fetch(`/app/manager/test/api/db/records/${id}`, {
-            body: JSON.stringify({ properties }),
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            method: 'PUT'
-        })
-            .then(response => response.json())
-            .then(json => {
-                const feature = window.app.highlightLayer
-                    .getSource()
-                    .getFeatureById(id);
+        Records.update(id, { properties }).then(data => {
+            const feature = window.app.highlightLayer
+                .getSource()
+                .getFeatureById(id);
 
-                feature.setProperties(json.properties);
-                Table.fill(feature);
-            });
+            feature.setProperties(data.properties);
+            Table.fill(feature);
+        });
     }
 
     static enableOnChange (element) {

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare (strict_types = 1);
 
 namespace App\Handler\API\Database;
 
@@ -47,6 +47,12 @@ class RecordsHandler implements RequestHandlerInterface
                 $update = $record->update($data, true);
 
                 return new JsonResponse($record->toGeoJSON());
+            case 'DELETE':
+                $data = $request->getParsedBody();
+                $record = new Record($adapter, $table, intval($id));
+                $delete = $record->delete(true);
+
+                return new JsonResponse((object)[]);
         }
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare (strict_types = 1);
 
 namespace App\Model;
 
@@ -10,6 +10,7 @@ use Zend\Db\Sql\Expression;
 use Zend\Db\Sql\Select;
 use Zend\Db\Sql\Sql;
 use Zend\Db\Sql\Update;
+use Zend\Db\Sql\Delete;
 
 class Record
 {
@@ -97,6 +98,16 @@ class Record
         $update = $update->where([$keyColumn => $this->id]);
 
         return $execute ? $this->execute($update) : $update;
+    }
+
+    public function delete(bool $execute)
+    {
+        $keyColumn = $this->table->getKeyColumn();
+
+        $delete = new Delete($this->table->getIdentifier());
+        $delete = $delete->where([$keyColumn => $this->id]);
+
+        return $execute ? $this->execute($delete) : $delete;
     }
 
     private function execute($query)

@@ -31,11 +31,24 @@ function deleteButton () {
     document
         .getElementById('infos-details-btn-delete')
         .addEventListener('click', () => {
+            const id = Form.getElement().dataset.id;
+
             const confirm = window.confirm(
-                'Are you sure you want to delete this feature ?'
+                `Are you sure you want to delete feature ${id} ?`
             );
 
-            console.log(confirm);
+            if (confirm === true) {
+                const feature = window.app.source.getFeatureById(id);
+
+                window.app.source.removeFeature(feature);
+                window.app.highlightLayer.getSource().clear();
+
+                $('.sidebar-tabs > ul > li:has(a[href="#info"])')
+                    .get(0)
+                    .classList.add('disabled');
+
+                window.app.sidebar.close();
+            }
         });
 }
 
