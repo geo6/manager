@@ -30,18 +30,19 @@ export default function (map, layer) {
             }
         });
 
+        const liElement = Array.prototype.filter.call(
+            document.querySelectorAll('.sidebar-tabs > ul > li'),
+            liElement => liElement.querySelector('a[href="#info"]') !== null
+        )[0];
+
         if (features.getLength() > 0) {
-            $('.sidebar-tabs > ul > li:has(a[href="#info"])')
-                .get(0)
-                .classList.remove('disabled');
+            liElement.classList.remove('disabled');
 
             displayRecord(features, 0);
 
             window.app.sidebar.open('info');
         } else {
-            $('.sidebar-tabs > ul > li:has(a[href="#info"])')
-                .get(0)
-                .classList.add('disabled');
+            liElement.classList.add('disabled');
 
             window.app.sidebar.close();
         }
