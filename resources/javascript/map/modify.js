@@ -3,6 +3,7 @@
 import { Modify } from 'ol/interaction';
 import GeoJSON from 'ol/format/GeoJSON';
 
+import Table from './feature/Table';
 import Records from '../Records';
 
 function onmodifyend (event) {
@@ -24,6 +25,8 @@ function onmodifyend (event) {
             });
 
             feature.setGeometry(geometry);
+
+            Table.fill(feature);
         });
     });
 }
