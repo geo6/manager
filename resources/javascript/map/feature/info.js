@@ -43,9 +43,12 @@ function deleteButton () {
                 window.app.source.removeFeature(feature);
                 window.app.highlightLayer.getSource().clear();
 
-                $('.sidebar-tabs > ul > li:has(a[href="#info"])')
-                    .get(0)
-                    .classList.add('disabled');
+                const liElement = Array.prototype.filter.call(
+                    document.querySelectorAll('.sidebar-tabs > ul > li'),
+                    liElement =>
+                        liElement.querySelector('a[href="#info"]') !== null
+                )[0];
+                liElement.classList.add('disabled');
 
                 window.app.sidebar.close();
             }
