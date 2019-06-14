@@ -1,10 +1,11 @@
 <?php
 
-declare(strict_types = 1);
+declare (strict_types = 1);
 
 namespace App\Model;
 
 use ArrayObject;
+use ErrorException;
 use Zend\Db\Adapter\Adapter;
 use Zend\Db\Sql\Delete;
 use Zend\Db\Sql\Expression;
@@ -79,31 +80,57 @@ class Record
         return $execute ? $this->execute($select) : $select;
     }
 
-    public function update(array $data, bool $execute)
+    public function update(array $data, bool $execute, ?string $user = null)
     {
-        $keyColumn = $this->table->getKeyColumn();
+        if (!isset($data['properties']) && !isset($data['geometry'])) {
+            throw new ErrorException('Missing "properties" and "geometry" parameters.');
+        }
 
-        $update = new Update($this->table->getIdentifier());
+        $columns = $this->table->getColumns();
+        $columnsName = [];
+        foreach ($columns as $column) {
+            $columnsName[] = $column->getName();
+        }
+
+        $set = [];
 
         if (isset($data['properties'])) {
             $properties = array_map(function ($value) {
                 return strlen($value) === 0 ? null : $value;
             }, $data['properties']);
 
-            $update = $update->set($properties);
+            $set = array_merge($set, $properties);
 
             $this->properties = array_merge($this->properties, $properties);
         }
+
         if (isset($data['geometry'])) {
             $geometryColumn = $this->table->getGeometryColumn();
 
-            $update = $update->set([
+            $set = array_merge($set, [
                 $geometryColumn => new Expression('ST_GeomFromGeoJSON(\'' . json_encode($data['geometry']) . '\')'),
             ]);
 
             $this->geometry = $data['geometry'];
         }
 
+        if (in_array('updatetime', $columnsName)) {
+            $datetime = date('Y-m-d H:i:s');
+
+            $set = array_merge($set, ['updatetime' => $datetime]);
+
+            $this->properties['updatetime'] = $datetime;
+        }
+        if (in_array('updateuser', $columnsName) && !is_null($user)) {
+            $set = array_merge($set, ['updateuser' => $user]);
+
+            $this->properties['updateuser'] = $user;
+        }
+
+        $keyColumn = $this->table->getKeyColumn();
+
+        $update = new Update($this->table->getIdentifier());
+        $update = $update->set($set);
         $update = $update->where([$keyColumn => $this->id]);
 
         return $execute ? $this->execute($update) : $update;
