@@ -7,12 +7,21 @@ export default function (feature, labelColumn) {
     const type = feature.getGeometry().getType();
     const label = feature.get(labelColumn);
 
+    let symbol = {
+        color: window.app.thematic.default
+    };
+    if (window.app.thematic.column !== null) {
+        const value = feature.get(window.app.thematic.column);
+
+        symbol = window.app.thematic.values[value];
+    }
+
     const fill = new Fill({
-        color: 'rgba(255,255,255,0.4)'
+        color: symbol.color
     });
     const stroke = new Stroke({
-        color: '#3399CC',
-        width: 1.25
+        color: '#fff',
+        width: 2
     });
 
     const text = new Text({
@@ -41,7 +50,7 @@ export default function (feature, labelColumn) {
         fill: fill,
         image: new Circle({
             fill: fill,
-            radius: 5,
+            radius: 6,
             stroke: stroke
         }),
         stroke: stroke,

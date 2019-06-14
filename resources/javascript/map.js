@@ -23,7 +23,8 @@ window.app = {
     layer: null,
     map: null,
     sidebar: null,
-    source: null
+    source: null,
+    thematic: null
 };
 
 (function () {
@@ -38,6 +39,9 @@ window.app = {
 
     window.app.custom = window.custom || 'default';
     delete window.custom;
+
+    window.app.thematic = window.thematic;
+    delete window.thematic;
 
     window.app.cache = new Cache();
 

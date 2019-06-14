@@ -1,0 +1,31 @@
+<div id="modal-thematic" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="fas fa-palette"></i> Thematic
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <strong>Column: {{ thematic.column }}</strong>
+                </div>
+                <table class="table table-sm mb-0">
+                    <tbody>
+                        {% for value, symbol in thematic.values %}
+                        <tr>
+                            <td class="text-center" style="color: {{ symbol.color }};">
+                                <i class="fas fa-circle"></i>
+                            </td>
+                            <td>{{ value }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

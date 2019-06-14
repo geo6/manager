@@ -1,12 +1,13 @@
 <?php
 
-declare(strict_types = 1);
+declare (strict_types = 1);
 
 namespace App\Handler;
 
 use App\Middleware\ConfigMiddleware;
 use App\Middleware\DbAdapterMiddleware;
 use App\Model\Table;
+use App\Model\Thematic;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -33,6 +34,8 @@ class MapHandler implements RequestHandlerInterface
         $table = new Table($adapter, $config['config']);
         $columns = $table->getColumns();
 
+        $thematic = new Thematic($adapter, $config['config']);
+
         return new HtmlResponse($this->renderer->render(
             'app::map',
             [
@@ -41,6 +44,7 @@ class MapHandler implements RequestHandlerInterface
                 'columns'        => $columns,
                 'keyColumn'      => $table->getKeyColumn(),
                 'geometryColumn' => $table->getGeometryColumn(),
+                'thematic'       => $thematic,
             ]
         ));
     }

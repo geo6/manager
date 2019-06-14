@@ -3,170 +3,194 @@
 {% block title %}Table{% endblock %}
 
 {% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset('/table.css') }}">
+<link rel="stylesheet" href="{{ asset('/table.css') }}">
 {% endblock %}
 
 {% block javascript %}
-    <script src="{{ asset('/table.js') }}"></script>
-    <script>
-        document.getElementById("table-wrapper").addEventListener("scroll", function () {
-            this.querySelector("thead").style.transform = "translateY(" + (
-                this.scrollTop - 1
-            ) + "px)";
-        });
-    </script>
+<script src="{{ asset('/table.js') }}"></script>
+<script>
+    document.getElementById("table-wrapper").addEventListener("scroll", function () {
+        this.querySelector("thead").style.transform = "translateY(" + (
+            this.scrollTop - 1
+        ) + "px)";
+    });
+</script>
 {% endblock %}
 
 {% block links %}
-    <li class="nav-item">
-        <a href="{{ path('map', {'config': config}) }}" class="nav-link">
-            <i class="fas fa-map-marked-alt"></i>
-            Map
+<li class="nav-item">
+    <a href="{{ path('map', {'config': config}) }}" class="nav-link">
+        <i class="fas fa-map-marked-alt"></i>
+        Map
+    </a>
+</li>
+<li class="nav-item">
+    <a class="nav-link disabled" href="#modal-columns">
+        <i class="fas fa-columns"></i>
+        Columns
+    </a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="#modal-filter" data-toggle="modal">
+        <i class="fas fa-filter"></i>
+        Filter
+    </a>
+</li>
+{% if thematic.column != null %}
+<li class="nav-item">
+    <a class="nav-link" href="#modal-thematic" data-toggle="modal">
+        <i class="fas fa-palette"></i>
+        Thematic
+    </a>
+</li>
+{% endif %}
+<li class="nav-item dropdown">
+    <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"
+        role="button">
+        <i class="fas fa-file-download"></i>
+        Export
+    </a>
+    <div class="dropdown-menu">
+        <a class="dropdown-item disabled" href="{{ path('export', {'config': config, 'format':'geojson'}) }}">
+            <i class="far fa-file-code"></i>
+            GeoJSON
         </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link disabled" href="#modal-columns">
-            <i class="fas fa-columns"></i>
-            Columns
+        <a class="dropdown-item disabled" href="{{ path('export', {'config': config, 'format':'kml'}) }}">
+            <i class="far fa-file-code"></i>
+            KML
         </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="#modal-filter" data-toggle="modal">
-            <i class="fas fa-filter"></i>
-            Filter
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item disabled" href="{{ path('export', {'config': config, 'format':'csv'}) }}">
+            <i class="fas fa-file-csv"></i>
+            CSV
         </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link disabled" href="#modal-thematic">
-            <i class="fas fa-palette"></i>
-            Thematic
+        <a class="dropdown-item disabled" href="{{ path('export', {'config': config, 'format':'csv'}) }}">
+            <i class="far fa-file-excel"></i>
+            Excel
         </a>
-    </li>
-    <li class="nav-item dropdown">
-        <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button">
-            <i class="fas fa-file-download"></i>
-            Export
-        </a>
-        <div class="dropdown-menu">
-            <a class="dropdown-item disabled" href="{{ path('export', {'config': config, 'format':'geojson'}) }}">
-                <i class="far fa-file-code"></i>
-                GeoJSON
-            </a>
-            <a class="dropdown-item disabled" href="{{ path('export', {'config': config, 'format':'kml'}) }}">
-                <i class="far fa-file-code"></i>
-                KML
-            </a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item disabled" href="{{ path('export', {'config': config, 'format':'csv'}) }}">
-                <i class="fas fa-file-csv"></i>
-                CSV
-            </a>
-            <a class="dropdown-item disabled" href="{{ path('export', {'config': config, 'format':'csv'}) }}">
-                <i class="far fa-file-excel"></i>
-                Excel
-            </a>
-        </div>
-    </li>
+    </div>
+</li>
 {% endblock %}
 
 {% block content %}
-    <main class="container-fluid">
-        <div class="d-flex align-items-center justify-content-between my-3">
+<main class="container-fluid">
+    <div class="d-flex align-items-center justify-content-between my-3">
+        <div>
             <div>
-                <div>
-                    <strong>Table: {{ table.identifier.table }}</strong>
-                    {% if filter is defined %}
-                        {{ records | length }}
-                        record(s) (Total:
-                        {{ count }})
-                    {% else %}
-                        {{ count }}
-                        record(s)
-                    {% endif %}
-                </div>
+                <strong>Table: {{ table.identifier.table }}</strong>
                 {% if filter is defined %}
-                    <div>
-                        <i class="fas fa-filter"></i>
-                        Filter:
-                        {{ filter }}
-                    </div>
+                {{ records | length }}
+                record(s) (Total:
+                {{ count }})
+                {% else %}
+                {{ count }}
+                record(s)
                 {% endif %}
             </div>
-            <nav>
-                <ul class="pagination pagination-sm mb-0">
-                    {% if offset > 0 %}
-                        <li class="page-item">
-                            <a aria-disabled="true" class="page-link" href="{{ path('table', {'config': config, 'offset': (offset - limit) })}}?sort={{ order.column }}&amp;order={{ order.order }}" tabindex="-1">
-                                <i class="far fa-caret-square-left"></i>
-                            </a>
-                        </li>
-                    {% else %}
-                        <li class="page-item disabled">
-                            <a aria-disabled="true" class="page-link" href="#" tabindex="-1">
-                                <i class="far fa-caret-square-left"></i>
-                            </a>
-                        </li>
-                    {% endif %}
-                    {% for p in 0..pages %}
-                        <li class="page-item {{ offset == (limit * p) ? 'active' }}">
-                            <a class="page-link" href="{{ path('table', {'config': config, 'offset': (limit * p) })}}?sort={{ order.column }}&amp;order={{ order.order }}">{{ p + 1 }}</a>
-                        </li>
-                    {% endfor %}
-                    {% if offset < (limit * pages) %}
-                        <li class="page-item">
-                            <a aria-disabled="true" class="page-link" href="{{ path('table', {'config': config, 'offset': (offset + limit) })}}?sort={{ order.column }}&amp;order={{ order.order }}" tabindex="-1">
-                                <i class="far fa-caret-square-right"></i>
-                            </a>
-                        </li>
-                    {% else %}
-                        <li class="page-item disabled">
-                            <a class="page-link" href="#">
-                                <i class="far fa-caret-square-right"></i>
-                            </a>
-                        </li>
-                    {% endif %}
-                </ul>
-            </nav>
+            {% if filter is defined %}
+            <div>
+                <i class="fas fa-filter"></i>
+                Filter:
+                {{ filter }}
+            </div>
+            {% endif %}
         </div>
-        <div class="table-responsive" id="table-wrapper">
-            <table class="table table-sm table-bordered table-striped table-hover mb-0">
-                <thead class="thead-light">
-                    <tr>
-                        {% for column in columns if column.name != geometryColumn %}
-                            <th scope="col">
-                                <a href="{{ path('table', {'config': config, 'offset': 0}) }}?sort={{ column.name }}&amp;order={{ order.column == column.name and order.order == 'asc' ? 'desc' : 'asc' }}" class="d-flex justify-content-between align-items-center">
-                                    <span>{{ column.name }}</span>
-                                    {% if order.column == column.name and order.order == 'asc' %}
-                                        <i class="fas fa-sort-up"></i>
-                                    {% elseif order.column == column.name and order.order == 'desc' %}
-                                        <i class="fas fa-sort-down"></i>
-                                    {% else %}
-                                        <i class="fas fa-sort"></i>
-                                    {% endif %}
-                                </a>
-                            </th>
-                        {% endfor %}
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for record in records %}
-                        <tr>
-                            <th class="text-right" scope="row">{{ record.id }}</th>
-                            {% for column in columns if column.name != keyColumn and column.name != geometryColumn %}
-                                {% set value = attribute(record.properties, column.name) %}
-                                <td class="text-nowrap">
-                                    {% if value is null %}
-                                        <span class="text-muted font-italic">NULL</span>
-                                    {% else %}
-                                        {{ value }}
-                                    {% endif %}
-                                </td>
-                            {% endfor %}
-                        </tr>
+        <nav>
+            <ul class="pagination pagination-sm mb-0">
+                {% if offset > 0 %}
+                <li class="page-item">
+                    <a aria-disabled="true" class="page-link"
+                        href="{{ path('table', {'config': config, 'offset': (offset - limit) })}}?sort={{ order.column }}&amp;order={{ order.order }}"
+                        tabindex="-1">
+                        <i class="far fa-caret-square-left"></i>
+                    </a>
+                </li>
+                {% else %}
+                <li class="page-item disabled">
+                    <a aria-disabled="true" class="page-link" href="#" tabindex="-1">
+                        <i class="far fa-caret-square-left"></i>
+                    </a>
+                </li>
+                {% endif %}
+                {% for p in 0..pages %}
+                <li class="page-item {{ offset == (limit * p) ? 'active' }}">
+                    <a class="page-link"
+                        href="{{ path('table', {'config': config, 'offset': (limit * p) })}}?sort={{ order.column }}&amp;order={{ order.order }}">{{ p + 1 }}</a>
+                </li>
+                {% endfor %}
+                {% if offset < (limit * pages) %}
+                <li class="page-item">
+                    <a aria-disabled="true" class="page-link"
+                        href="{{ path('table', {'config': config, 'offset': (offset + limit) })}}?sort={{ order.column }}&amp;order={{ order.order }}"
+                        tabindex="-1">
+                        <i class="far fa-caret-square-right"></i>
+                    </a>
+                </li>
+                {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link" href="#">
+                        <i class="far fa-caret-square-right"></i>
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+    <div class="table-responsive" id="table-wrapper">
+        <table class="table table-sm table-bordered table-striped table-hover mb-0">
+            <thead class="thead-light">
+                <tr>
+                    {% for column in columns if column.name != geometryColumn %}
+                    <th scope="col" {{ thematic.column == column.name ? ' colspan="2"'}}>
+                        <a href="{{ path('table', {'config': config, 'offset': 0}) }}?sort={{ column.name }}&amp;order={{ order.column == column.name and order.order == 'asc' ? 'desc' : 'asc' }}"
+                            class="d-flex justify-content-between align-items-center">
+                            <span>
+                                {{ thematic.column == column.name ? '<i class="fas fa-palette"></i>'}}
+                                {{ column.name }}
+                            </span>
+                            {% if order.column == column.name and order.order == 'asc' %}
+                            <i class="fas fa-sort-up"></i>
+                            {% elseif order.column == column.name and order.order == 'desc' %}
+                            <i class="fas fa-sort-down"></i>
+                            {% else %}
+                            <i class="fas fa-sort"></i>
+                            {% endif %}
+                        </a>
+                    </th>
                     {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </main>
-    {{ include('@app/modal/filter.html.twig') }}
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in records %}
+                <tr>
+                    <th class="text-right" scope="row">{{ record.id }}</th>
+                    {% for column in columns if column.name != keyColumn and column.name != geometryColumn %}
+
+                    {% set value = attribute(record.properties, column.name) %}
+
+                    {% if thematic.column == column.name %}
+                    {% set symbol = attribute(thematic.values, value) %}
+                    <td class="text-center" style="color: {{ symbol.color }};">
+                        <i class="fas fa-circle"></i>
+                    </td>
+                    {% endif %}
+
+                    <td class="text-nowrap">
+                        {% if value is null %}
+                        <span class="text-muted font-italic">NULL</span>
+                        {% else %}
+                        {{ value }}
+                        {% endif %}
+                    </td>
+
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</main>
+
+{{ include('@app/modal/filter.html.twig') }}
+{{ include('@app/modal/thematic.html.twig') }}
 {% endblock %}
