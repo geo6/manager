@@ -24,6 +24,7 @@ function onmodifyend (event) {
                 featureProjection: window.app.map.getView().getProjection()
             });
 
+            feature.setProperties(data.properties);
             feature.setGeometry(geometry);
 
             Table.fill(feature);
