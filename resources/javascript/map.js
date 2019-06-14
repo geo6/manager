@@ -7,6 +7,7 @@ import '../sass/map.scss';
 
 import Cache from './cache';
 import initMap from './map/init';
+import initSelect from './map/select';
 import initLayer from './map/layer/layer';
 import initHighlightLayer from './map/layer/highlight';
 import initFeatureInfoUI from './map/feature/info';
@@ -52,6 +53,8 @@ window.app = {
     ]).then(data => {
         window.app.cache.setTable(data[0]);
         window.app.layer = initLayer(window.app.map, data[1]);
+
+        initSelect(window.app.map, window.app.layer);
     });
 
     window.app.highlightLayer = initHighlightLayer(window.app.map);

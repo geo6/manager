@@ -1,12 +1,15 @@
 'use strict';
 
-import { defaults as defaultControls, Attribution, ScaleLine } from 'ol/control.js';
+import {
+    defaults as defaultControls,
+    Attribution,
+    ScaleLine
+} from 'ol/control.js';
 import Map from 'ol/Map';
 import TileLayer from 'ol/layer/Tile';
 import OSM from 'ol/source/OSM';
 import View from 'ol/View';
 
-import singleclick from './singleclick';
 import initPermalink from './permalink';
 
 export default function () {
@@ -16,7 +19,10 @@ export default function () {
     const scaleLine = new ScaleLine();
 
     const map = new Map({
-        controls: defaultControls({ attribution: false }).extend([attribution, scaleLine]),
+        controls: defaultControls({ attribution: false }).extend([
+            attribution,
+            scaleLine
+        ]),
         layers: [
             new TileLayer({
                 source: new OSM()
@@ -29,9 +35,9 @@ export default function () {
         })
     });
 
-    map.on('singleclick', (event) => {
-        return singleclick(event);
-    });
+    // map.on('singleclick', (event) => {
+    //     return singleclick(event);
+    // });
 
     initPermalink(map);
 
