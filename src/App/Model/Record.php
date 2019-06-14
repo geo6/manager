@@ -1,6 +1,6 @@
 <?php
 
-declare (strict_types = 1);
+declare(strict_types = 1);
 
 namespace App\Model;
 
@@ -98,7 +98,7 @@ class Record
             $geometryColumn = $this->table->getGeometryColumn();
 
             $update = $update->set([
-                $geometryColumn => new Expression('ST_GeomFromGeoJSON(\'' . json_encode($data['geometry']) . '\')')
+                $geometryColumn => new Expression('ST_GeomFromGeoJSON(\'' . json_encode($data['geometry']) . '\')'),
             ]);
 
             $this->geometry = $data['geometry'];
