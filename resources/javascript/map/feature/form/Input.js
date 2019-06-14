@@ -34,6 +34,7 @@ export default class Input {
                 .getFeatureById(id);
 
             feature.setProperties(data.properties);
+
             Table.fill(feature);
         });
     }
