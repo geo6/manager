@@ -2,6 +2,7 @@
 
 import Form from './Form';
 import Input from './form/Input';
+import { add as addModify, remove as removeModify } from '../modify';
 
 export default function () {
     editButton();
@@ -18,11 +19,18 @@ function editButton () {
             if (Form.isActive() === true) {
                 event.target.classList.remove('active');
 
+                removeModify(window.app.map);
+
                 Form.disable();
             } else {
                 event.target.classList.add('active');
 
                 Form.enable();
+
+                addModify(
+                    window.app.map,
+                    window.app.highlightLayer.getSource()
+                );
             }
         });
 }
