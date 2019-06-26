@@ -2,6 +2,9 @@
 
 import { toLonLat } from 'ol/proj';
 
+import valueNull from '../../value/null';
+import valueVarchar from '../../value/varchar';
+
 export default class Table {
     static getElement () {
         return document.getElementById('info-table');
@@ -23,10 +26,14 @@ export default class Table {
                 td.innerText = '';
 
                 if (properties[key] === null) {
-                    td.innerHTML =
-                        '<span class="text-muted font-italic">NULL</span>';
+                    td.innerHTML = valueNull();
                 } else {
-                    td.innerText = properties[key];
+                    const content = valueVarchar(properties[key]);
+                    if (typeof content === 'object') {
+                        td.append(content);
+                    } else {
+                        td.innerHTML = content;
+                    }
                 }
             }
         });
