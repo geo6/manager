@@ -13,7 +13,9 @@ export default function (feature, labelColumn) {
     if (window.app.thematic.column !== null) {
         const value = feature.get(window.app.thematic.column);
 
-        symbol = window.app.thematic.values[value];
+        if (typeof window.app.thematic.values[value] !== 'undefined') {
+            symbol = window.app.thematic.values[value];
+        }
     }
 
     const fill = new Fill({
