@@ -1,6 +1,6 @@
 'use strict';
 
-import { Modify } from 'ol/interaction';
+import Modify from 'ol/interaction/Modify';
 import GeoJSON from 'ol/format/GeoJSON';
 
 import Table from './feature/Table';
