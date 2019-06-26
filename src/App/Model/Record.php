@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare (strict_types = 1);
 
 namespace App\Model;
 
@@ -68,9 +68,9 @@ class Record
         $select = new Select($this->table->getIdentifier());
         $select = $select->columns([
             '*',
-            '_geojson' => new Expression('ST_AsGeoJSON(' . $geometryColumn . ') '),
-            '_length'  => new Expression('ST_Length(' . $geometryColumn . ') '),
-            '_area'    => new Expression('ST_Area(' . $geometryColumn . ') '),
+            '_geojson' => new Expression('ST_AsGeoJSON(' . $geometryColumn . '::geometry) '),
+            '_length'  => new Expression('ST_Length(' . $geometryColumn . '::geometry::geography) '),
+            '_area'    => new Expression('ST_Area(' . $geometryColumn . '::geometry::geography) '),
         ]);
 
         if (!is_null($this->id)) {
