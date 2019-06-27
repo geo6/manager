@@ -79,6 +79,6 @@ function formInput () {
     const form = InfoForm.getElement().querySelector('form');
 
     form.querySelectorAll('input,select,textarea').forEach(element => {
-        Input.enableOnChange(element);
+        Input.enableOnChange(element, true);
     });
 }

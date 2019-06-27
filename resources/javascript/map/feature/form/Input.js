@@ -39,7 +39,7 @@ export default class Input {
         });
     }
 
-    static enableOnChange (element) {
+    static enableOnChange (element, save) {
         element.addEventListener('change', event => {
             const key = event.target.name;
             const value = event.target.value;
@@ -70,7 +70,9 @@ export default class Input {
             } else {
                 statusElement.success.removeAttribute('hidden');
 
-                Input.save(key);
+                if (save === true) {
+                    Input.save(key);
+                }
             }
 
             console.log(event.type, valid, key, value);
