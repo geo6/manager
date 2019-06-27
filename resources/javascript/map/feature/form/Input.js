@@ -29,7 +29,7 @@ export default class Input {
         properties[key] = element.value;
 
         Records.update(id, { properties }).then(data => {
-            const feature = window.app.highlightLayer
+            const feature = window.app.layers.highlight
                 .getSource()
                 .getFeatureById(id);
 
