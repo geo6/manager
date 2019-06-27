@@ -1,6 +1,6 @@
 <?php
 
-declare (strict_types = 1);
+declare(strict_types = 1);
 
 namespace App\Model;
 
@@ -9,10 +9,10 @@ use ErrorException;
 use Zend\Db\Adapter\Adapter;
 use Zend\Db\Sql\Delete;
 use Zend\Db\Sql\Expression;
+use Zend\Db\Sql\Insert;
 use Zend\Db\Sql\Select;
 use Zend\Db\Sql\Sql;
 use Zend\Db\Sql\Update;
-use Zend\Db\Sql\Insert;
 
 class Record
 {
