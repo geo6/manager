@@ -1,12 +1,12 @@
 'use strict';
 
-import Form from '../Form';
+import InfoForm from './InfoForm';
 import Table from '../Table';
 import Records from '../../../Records';
 
 export default class Input {
     static getElement (key) {
-        return Form.getElement().querySelector(`[name="${key}"]`);
+        return InfoForm.getElement().querySelector(`[name="${key}"]`);
     }
 
     static fill (key, value) {
@@ -22,8 +22,8 @@ export default class Input {
     }
 
     static save (key) {
-        const element = Form.getElement().querySelector(`[name="${key}"]`);
-        const id = Form.getElement().dataset.id;
+        const element = InfoForm.getElement().querySelector(`[name="${key}"]`);
+        const id = InfoForm.getElement().dataset.id;
 
         const properties = {};
         properties[key] = element.value;

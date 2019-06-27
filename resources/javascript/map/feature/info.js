@@ -1,6 +1,6 @@
 'use strict';
 
-import Form from './Form';
+import InfoForm from './form/InfoForm';
 import Input from './form/Input';
 import { add as addModify, remove as removeModify } from '../modify';
 
@@ -16,16 +16,16 @@ function editButton () {
     document
         .getElementById('infos-details-btn-edit')
         .addEventListener('click', () => {
-            if (Form.isActive() === true) {
+            if (InfoForm.isActive() === true) {
                 event.target.classList.remove('active');
 
                 removeModify(window.app.map);
 
-                Form.disable();
+                InfoForm.disable();
             } else {
                 event.target.classList.add('active');
 
-                Form.enable();
+                InfoForm.enable();
 
                 addModify(
                     window.app.map,
@@ -39,7 +39,7 @@ function deleteButton () {
     document
         .getElementById('infos-details-btn-delete')
         .addEventListener('click', () => {
-            const id = Form.getElement().dataset.id;
+            const id = InfoForm.getElement().dataset.id;
 
             const confirm = window.confirm(
                 `Are you sure you want to delete feature ${id} ?`
@@ -76,7 +76,7 @@ function locateButton () {
 }
 
 function formInput () {
-    const form = Form.getElement().querySelector('form');
+    const form = InfoForm.getElement().querySelector('form');
 
     form.querySelectorAll('input,select,textarea').forEach(element => {
         Input.enableOnChange(element);

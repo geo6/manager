@@ -1,7 +1,7 @@
 'use strict';
 
 import highlight from './highlight';
-import Form from './Form';
+import InfoForm from './form/InfoForm';
 import Table from './Table';
 import list from './list';
 
@@ -17,7 +17,7 @@ export default function (features, current) {
     list(features, current);
 
     Table.fill(feature);
-    Form.fill(feature);
+    InfoForm.fill(feature);
 
     highlight(feature);
 }

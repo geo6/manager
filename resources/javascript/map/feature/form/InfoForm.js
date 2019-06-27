@@ -1,7 +1,7 @@
 'use strict';
 
-import Table from './Table';
-import Input from './form/Input';
+import Table from '../Table';
+import Input from './Input';
 
 export default class Form {
     static getElement () {

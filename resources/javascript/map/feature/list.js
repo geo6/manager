@@ -1,14 +1,14 @@
 'use strict';
 
 import displayRecord from './display';
-import Form from './Form';
+import InfoForm from './form/InfoForm';
 
 export default function (features, current) {
     const count = features.getLength();
 
     document.getElementById('info-list').innerText = `${current + 1}/${count}`;
 
-    Form.disable();
+    InfoForm.disable();
 
     if (count === 1) {
         document.getElementById(
