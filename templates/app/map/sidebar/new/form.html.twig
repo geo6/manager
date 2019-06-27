@@ -1,0 +1,42 @@
+<div id="new-form" hidden>
+    <form class="small" autocomplete="off">
+        <div class="mb-3">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <button id="new-btn-save" type="submit" class="btn btn-primary btn-sm">
+                        <i class="fas fa-save"></i>
+                        Save
+                    </button>
+                    <button id="new-btn-cancel" type="button" class="btn btn-outline-secondary btn-sm">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="alert alert-danger" role="alert" hidden></div>
+        {% for column in columns if (column.name != geometryColumn.name and column.readonly == false) %}
+        <div class="form-group mb-2">
+            <div class="d-flex justify-content-between">
+                <label class="font-weight-bold{{ column.notnull ? ' text-primary' }}" for="input-{{ column.name }}">
+                    {{ column.name }}
+                    {{ column.notnull ? '<i class="far fa-question-circle" style="cursor: help;" title="NOT NULL"></i>' }}
+                </label>
+                <div>
+                    <i class="fas fa-check-circle text-success" hidden></i>
+                    <i class="fas fa-exclamation-circle text-warning" hidden></i>
+                    <i class="fas fa-times-circle text-danger" hidden></i>
+                </div>
+            </div>
+            {% if column.datatype == 'boolean' %}
+            {{ include('@app/map/sidebar/form/input-boolean.html.twig') }}
+            {% elseif column.datatype == 'integer' %}
+            {{ include('@app/map/sidebar/form/input-integer.html.twig') }}
+            {% elseif column.datatype == 'text' %}
+            {{ include('@app/map/sidebar/form/input-text.html.twig') }}
+            {% else %}
+            {{ include('@app/map/sidebar/form/input-varchar.html.twig') }}
+            {% endif %}
+        </div>
+        {% endfor %}
+    </form>
+</div>

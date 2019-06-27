@@ -7,6 +7,28 @@ export default class Records {
         return response.json();
     }
 
+    static async insert (data) {
+        const response = await fetch('/app/manager/test/api/db/records', {
+            body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            method: 'POST'
+        });
+
+        if (response.ok !== true) {
+            try {
+                const json = await response.json();
+
+                return Promise.reject(new Error(json.error));
+            } catch (e) {
+                return Promise.reject(new Error(response.statusText));
+            }
+        }
+
+        return response.json();
+    }
+
     static async get (id) {
         const response = await fetch(`/app/manager/test/api/db/records/${id}`);
 

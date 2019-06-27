@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare (strict_types = 1);
 
 namespace App\Handler\API\Database;
 
@@ -8,9 +8,11 @@ use App\Middleware\ConfigMiddleware;
 use App\Middleware\DbAdapterMiddleware;
 use App\Model\Record;
 use App\Model\Table;
+use Exception;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Zend\Diactoros\Response\EmptyResponse;
 use Zend\Diactoros\Response\JsonResponse;
 
 class RecordsHandler implements RequestHandlerInterface
@@ -38,9 +40,20 @@ class RecordsHandler implements RequestHandlerInterface
                             true
                         ),
                     ]);
-                } else {
-                    return new JsonResponse($table->getRecord(intval($id))->toGeoJSON());
                 }
+
+                return new JsonResponse($table->getRecord(intval($id))->toGeoJSON());
+            case 'POST':
+                $data = $request->getParsedBody();
+                $record = new Record($adapter, $table);
+
+                try {
+                    $insert = $record->insert($data, true);
+                } catch (Exception $e) {
+                    return new JsonResponse(['error' => $e->getMessage()], 500);
+                }
+
+                return new JsonResponse($record->toGeoJSON());
             case 'PUT':
                 $data = $request->getParsedBody();
                 $record = new Record($adapter, $table, intval($id));
@@ -53,6 +66,8 @@ class RecordsHandler implements RequestHandlerInterface
                 $delete = $record->delete(true);
 
                 return new JsonResponse((object)[]);
+            default:
+                return new EmptyResponse(405);
         }
     }
 }

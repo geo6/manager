@@ -83,6 +83,11 @@
                         <i class="fas fa-map-marker-alt"></i>
                     </a>
                 </li>
+                <li>
+                    <a href="#new" role="tab" title="Create new object">
+                        <i class="fas fa-plus-circle"></i>
+                    </a>
+                </li>
             </ul>
 
             <ul role="tablist">
@@ -98,6 +103,7 @@
             {{ include('@app/map/sidebar/baselayers.html.twig') }}
             {{ include('@app/map/sidebar/info.html.twig') }}
             {{ include('@app/map/sidebar/geocoder.html.twig') }}
+            {{ include('@app/map/sidebar/new.html.twig') }}
             {{ include('@app/map/sidebar/about.html.twig') }}
         </div>
     </div>

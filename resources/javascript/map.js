@@ -10,7 +10,9 @@ import initMap from './map/init';
 import initSelect from './map/select';
 import initLayer from './map/layer/layer';
 import initHighlightLayer from './map/layer/highlight';
+import initNewLayer from './map/layer/new';
 import initFeatureInfoUI from './map/feature/info';
+import initNew from './map/feature/new/init';
 import initFilter from './filter/init';
 import Records from './Records';
 
@@ -21,7 +23,7 @@ window.app = {
     custom: null,
     layers: {
         highlight: null,
-    layer: null,
+        layer: null,
         new: null
     },
     map: null,
@@ -65,7 +67,9 @@ window.app = {
     });
 
     window.app.layers.highlight = initHighlightLayer(window.app.map);
+    window.app.layers.new = initNewLayer(window.app.map);
 
     initFeatureInfoUI();
     initFilter();
+    initNew();
 })();

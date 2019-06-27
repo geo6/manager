@@ -84,6 +84,53 @@ class Record
         return $execute ? $this->execute($select) : $select;
     }
 
+    public function insert(array $data, bool $execute, ?string $user = null)
+    {
+        if (!isset($data['properties'], $data['geometry'])) {
+            throw new ErrorException('Missing "properties" or "geometry" parameters.');
+        }
+
+        $insert = new Insert($this->table->getIdentifier());
+
+        $properties = array_map(function ($value) {
+            return strlen($value) === 0 ? null : $value;
+        }, $data['properties']);
+
+        $insert = $insert->values($properties);
+
+        $geometryColumn = $this->table->getGeometryColumn();
+
+        $geometry = [
+            $geometryColumn->getName() => new Expression(
+                sprintf(
+                    'ST_GeomFromGeoJSON(\'%s\')::%s',
+                    json_encode($data['geometry']),
+                    $geometryColumn->getDataType()
+                )
+            ),
+        ];
+
+        $insert = $insert->values($geometry, Insert::VALUES_MERGE);
+
+        if (in_array('updatetime', $this->keys)) {
+            $insert = $insert->values(['updatetime' => date('Y-m-d H:i:s')], Insert::VALUES_MERGE);
+        }
+        if (in_array('updateuser', $this->keys)) {
+            $insert = $insert->values(['updateuser' => $user], Insert::VALUES_MERGE);
+        }
+
+        if ($execute === true) {
+            $result = $this->execute($insert);
+
+            $this->id = $this->adapter->getDriver()->getLastGeneratedValue('eve_point_id_seq');
+            $this->refresh();
+
+            return $result;
+        }
+
+        return $insert;
+    }
+
     public function update(array $data, bool $execute, ?string $user = null)
     {
         if (!isset($data['properties']) && !isset($data['geometry'])) {
