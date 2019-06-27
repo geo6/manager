@@ -5,17 +5,21 @@
             <div id="info-details-geometry"></div>
             <div class="text-info">
                 Last update
-                <span id="info-details-updateuser" class="text-nowrap">by <i class="far fa-user"></i> <span style="font-style: italic;"></span></span>
-                <span id="info-details-updatetime" class="text-nowrap">on <i class="far fa-clock"></i> <time></time></span>
+                <span id="info-details-updateuser" class="text-nowrap">
+                    by <i class="far fa-user"></i> <span style="font-style: italic;"></span>
+                </span>
+                <span id="info-details-updatetime" class="text-nowrap">
+                    on <i class="far fa-clock"></i> <time></time>
+                </span>
             </div>
         </caption>
         <tbody>
-{% for column in columns if column.name not in [geometryColumn, 'updateuser', 'updatetime'] %}
+            {% for column in columns if column.name not in [geometryColumn.name, 'updateuser', 'updatetime'] %}
             <tr>
-                <th>{{ column.name == keyColumn ? '<i class="fas fa-bookmark"></i> ' }}{{ column.name }}</th>
+                <th>{{ column.name == keyColumn.name ? '<i class="fas fa-bookmark"></i> ' }}{{ column.name }}</th>
                 <td data-column="{{ column.name }}"></td>
             </tr>
-{% endfor %}
+            {% endfor %}
         </tbody>
     </table>
     <div id="info-details-geometry" class="text-info"></div>

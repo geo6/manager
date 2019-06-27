@@ -12,12 +12,16 @@ use Zend\Db\Sql\Expression;
 use Zend\Db\Sql\Select;
 use Zend\Db\Sql\Sql;
 use Zend\Db\Sql\Update;
+use Zend\Db\Sql\Insert;
 
 class Record
 {
     private $adapter;
 
     private $table;
+    private $keys;
+    private $geometryName;
+    private $geometryType;
 
     public $id;
     public $properties;
@@ -29,30 +33,30 @@ class Record
         $this->table = $table;
         $this->id = $id;
 
+        $columns = $this->table->getColumns();
+        $propertiesColumns = array_filter($columns, function ($column) {
+            return $column !== $this->table->getGeometryColumn();
+        });
+        $propertiesNames = array_map(function ($column) {
+            return $column->getName();
+        }, $propertiesColumns);
+
+        $this->keys = array_values($propertiesNames);
+
         if (!is_null($this->id)) {
-            $query = $this->select(true);
-
-            $result = $query->current();
-
-            if (is_null($result)) {
-                throw new Exception(sprintf('Record #%d does not exist.', $this->id));
-            }
-
-            $this->hydrate($result);
+            $this->refresh();
         }
     }
 
     public function hydrate(ArrayObject $object): self
     {
-        $table = $this->table;
-
         if (is_null($this->id)) {
-            $keyColumn = $this->table->getKeyColumn();
+            $keyColumn = $this->table->getKeyColumn()->getName();
             $this->id = $object->{$keyColumn};
         }
 
-        $this->properties = array_filter((array)$object, function ($key) use ($table) {
-            return substr($key, 0, 1) !== '_' && $key !== $table->getGeometryColumn();
+        $this->properties = array_filter((array)$object, function ($key) {
+            return substr($key, 0, 1) !== '_' && $key !== $this->table->getGeometryColumn()->getName();
         }, ARRAY_FILTER_USE_KEY);
 
         $this->geometry = json_decode($object->_geojson);
@@ -62,8 +66,8 @@ class Record
 
     public function select(bool $execute = false)
     {
-        $keyColumn = $this->table->getKeyColumn();
-        $geometryColumn = $this->table->getGeometryColumn();
+        $keyColumn = $this->table->getKeyColumn()->getName();
+        $geometryColumn = $this->table->getGeometryColumn()->getName();
 
         $select = new Select($this->table->getIdentifier());
         $select = $select->columns([
@@ -100,45 +104,45 @@ class Record
             }, $data['properties']);
 
             $set = array_merge($set, $properties);
-
-            $this->properties = array_merge($this->properties, $properties);
         }
 
         if (isset($data['geometry'])) {
-            $geometryColumn = $this->table->getGeometryColumn();
+            $geometryColumn = $this->table->getGeometryColumn()->getName();
 
             $set = array_merge($set, [
                 $geometryColumn => new Expression('ST_GeomFromGeoJSON(\'' . json_encode($data['geometry']) . '\')'),
             ]);
-
-            $this->geometry = $data['geometry'];
         }
 
         if (in_array('updatetime', $columnsName)) {
             $datetime = date('Y-m-d H:i:s');
 
             $set = array_merge($set, ['updatetime' => $datetime]);
-
-            $this->properties['updatetime'] = $datetime;
         }
-        if (in_array('updateuser', $columnsName) && !is_null($user)) {
+        if (in_array('updateuser', $columnsName)) {
             $set = array_merge($set, ['updateuser' => $user]);
-
-            $this->properties['updateuser'] = $user;
         }
 
-        $keyColumn = $this->table->getKeyColumn();
+        $keyColumn = $this->table->getKeyColumn()->getName();
 
         $update = new Update($this->table->getIdentifier());
         $update = $update->set($set);
         $update = $update->where([$keyColumn => $this->id]);
 
-        return $execute ? $this->execute($update) : $update;
+        if ($execute === true) {
+            $result = $this->execute($update);
+
+            $this->refresh();
+
+            return $result;
+        }
+
+        return $update;
     }
 
     public function delete(bool $execute)
     {
-        $keyColumn = $this->table->getKeyColumn();
+        $keyColumn = $this->table->getKeyColumn()->getName();
 
         $delete = new Delete($this->table->getIdentifier());
         $delete = $delete->where([$keyColumn => $this->id]);
@@ -153,6 +157,21 @@ class Record
         $qsz = $sql->buildSqlString($query);
 
         return $this->adapter->query($qsz, $this->adapter::QUERY_MODE_EXECUTE);
+    }
+
+    private function refresh()
+    {
+        if (!is_null($this->id)) {
+            $query = $this->select(true);
+
+            $result = $query->current();
+
+            if (is_null($result)) {
+                throw new Exception(sprintf('Record #%d does not exist.', $this->id));
+            }
+
+            $this->hydrate($result);
+        }
     }
 
     public function toGeoJSON(): array

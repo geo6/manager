@@ -1,12 +1,13 @@
 <?php
 
-declare(strict_types = 1);
+declare (strict_types = 1);
 
 namespace App\Model;
 
 use Exception;
 use Zend\Db\Adapter\Adapter;
 use Zend\Db\Metadata\Metadata;
+use Zend\Db\Metadata\Object\ColumnObject;
 use Zend\Db\Sql\Expression;
 use Zend\Db\Sql\Sql;
 use Zend\Db\Sql\TableIdentifier;
@@ -68,7 +69,7 @@ class Table
         return $count;
     }
 
-    public function getKeyColumn(): string
+    public function getKeyColumn(): ColumnObject
     {
         $primaryKey = current(array_filter($this->constraints, function ($constraint) {
             return $constraint->getType() === 'PRIMARY KEY';
@@ -86,14 +87,36 @@ class Table
 
         if (count($keys) > 1 || $column->getDataType() !== 'integer') {
             throw new Exception(
-                sprintf('The PRIMARY KEY for table "%s" should be only one single INTEGER column.', $this->name)
+                sprintf(
+                    'The PRIMARY KEY for table "%s" should be only one single auto-incremented INTEGER column.',
+                    $this->name
+                )
             );
         }
 
-        return $column->getName();
+        return $column;
     }
 
-    public function getGeometryColumn(): string
+    public function getKeySequence(): string
+    {
+        $default = $this->getKeyColumn()->getColumnDefault();
+
+        if (is_null($default)) {
+            throw new Exception(
+                sprintf('The PRIMARY KEY for table "%s" is currently not auto-incremented.', $this->name)
+            );
+        }
+
+        if (preg_match('/^nextval\(\'(\w +) \'(?:\:\:regclass)?\)$/', $default, $matches) === 0) {
+            throw new Exception(
+                sprintf('The PRIMARY KEY for table "%s" is currently not auto-incremented.', $this->name)
+            );
+        }
+
+        return $matches[1];
+    }
+
+    public function getGeometryColumn(): ColumnObject
     {
         $columns = array_filter($this->columns, function ($column) {
             return in_array(
@@ -108,11 +131,7 @@ class Table
             );
         });
 
-        $columnsName = array_map(function ($column) {
-            return $column->getName();
-        }, $columns);
-
-        return current(array_values($columnsName));
+        return current($columns);
     }
 
     private function getColumnDataType(string $column): string
@@ -139,7 +158,9 @@ class Table
 
     private function isColumnReadonly(string $column): bool
     {
-        if ($column === $this->getKeyColumn() || in_array($column, ['updatetime', 'updateuser'])) {
+        $keyColumn = $this->getKeyColumn()->getName();
+
+        if (in_array($column, [$keyColumn, 'updatetime', 'updateuser'])) {
             return true;
         }
 
@@ -201,8 +222,8 @@ class Table
             'schema' => $this->schema,
             'table'  => $this->name,
             // 'count' => $count,
-            'key'         => $this->getKeyColumn(),
-            'geometry'    => $this->getGeometryColumn(),
+            'key'         => $this->getKeyColumn()->getName(),
+            'geometry'    => $this->getGeometryColumn()->getName(),
             'columns'     => $columns,
             'constraints' => $constraints,
         ];
@@ -235,7 +256,7 @@ class Table
         if (!is_null($order)) {
             $select = $select->order($order);
         } else {
-            $select = $select->order($this->getKeyColumn());
+            $select = $select->order($this->getKeyColumn()->getName());
         }
         if (!is_null($limit)) {
             $select = $select->limit($limit);

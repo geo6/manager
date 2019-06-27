@@ -1,7 +1,7 @@
 <div id="info-form" hidden>
     <form class="small" autocomplete="off">
-        <input type="text" name="{{ keyColumn }}" readonly hidden>
-        {% for column in columns if (column.name != geometryColumn and column.readonly == false) %}
+        <input type="text" name="{{ keyColumn.name }}" readonly hidden>
+        {% for column in columns if (column.name != geometryColumn.name and column.readonly == false) %}
         <div class="form-group mb-2">
             <div class="d-flex justify-content-between">
                 <label class="font-weight-bold{{ column.notnull ? ' text-primary' }}" for="input-{{ column.name }}">

@@ -13,7 +13,7 @@
                         <div class="col-4">
                             <select name="key" class="form-control">
                                 <optgroup label="Table: {{ table.identifier.table }}">
-                                    {% for column in columns if column.name not in [geometryColumn, 'updateuser', 'updatetime'] %}
+                                    {% for column in columns if column.name not in [geometryColumn.name, 'updateuser', 'updatetime'] %}
                                     <option
                                         value="{{ table.identifier.schema }}.{{ table.identifier.table }}.{{ column.name }}"
                                         data-datatype="{{ column.datatype }}">{{ column.name }}</option>
