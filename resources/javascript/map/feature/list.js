@@ -55,7 +55,7 @@ export default function (features, current) {
             document.getElementById('infos-list-btn-next').addEventListener(
                 'click',
                 () => {
-                    window.app.highlightLayer.getSource().clear();
+                    window.app.layers.highlight.getSource().clear();
 
                     displayRecord(features, current + 1);
                 },

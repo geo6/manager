@@ -6,7 +6,7 @@ import Collection from 'ol/Collection';
 import displayRecord from './feature/display';
 
 function onselect (event, features) {
-    window.app.highlightLayer.getSource().clear();
+    window.app.layers.highlight.getSource().clear();
 
     const collection = new Collection();
 

@@ -19,8 +19,11 @@ require('sidebar-v2/js/jquery-sidebar.js');
 window.app = {
     cache: null,
     custom: null,
-    highlightLayer: null,
+    layers: {
+        highlight: null,
     layer: null,
+        new: null
+    },
     map: null,
     sidebar: null,
     source: null,
@@ -56,12 +59,12 @@ window.app = {
         Records.getAll()
     ]).then(data => {
         window.app.cache.setTable(data[0]);
-        window.app.layer = initLayer(window.app.map, data[1]);
+        window.app.layers.layer = initLayer(window.app.map, data[1]);
 
-        initSelect(window.app.map, window.app.layer);
+        initSelect(window.app.map, window.app.layers.layer);
     });
 
-    window.app.highlightLayer = initHighlightLayer(window.app.map);
+    window.app.layers.highlight = initHighlightLayer(window.app.map);
 
     initFeatureInfoUI();
     initFilter();

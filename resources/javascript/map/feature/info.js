@@ -29,7 +29,7 @@ function editButton () {
 
                 addModify(
                     window.app.map,
-                    window.app.highlightLayer.getSource()
+                    window.app.layers.highlight.getSource()
                 );
             }
         });
@@ -49,7 +49,7 @@ function deleteButton () {
                 const feature = window.app.source.getFeatureById(id);
 
                 window.app.source.removeFeature(feature);
-                window.app.highlightLayer.getSource().clear();
+                window.app.layers.highlight.getSource().clear();
 
                 const liElement = Array.prototype.filter.call(
                     document.querySelectorAll('.sidebar-tabs > ul > li'),
@@ -69,7 +69,7 @@ function locateButton () {
         .addEventListener('click', () => {
             window.app.map
                 .getView()
-                .fit(window.app.highlightLayer.getSource().getExtent(), {
+                .fit(window.app.layers.highlight.getSource().getExtent(), {
                     maxZoom: 20
                 });
         });

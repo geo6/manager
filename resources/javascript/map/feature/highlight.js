@@ -1,5 +1,5 @@
 'use strict';
 
 export default function (feature) {
-    window.app.highlightLayer.getSource().addFeature(feature);
+    window.app.layers.highlight.getSource().addFeature(feature);
 }

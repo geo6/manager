@@ -16,7 +16,7 @@ function onmodifyend (event) {
         });
 
         Records.update(id, { geometry: JSON.parse(geojson) }).then(data => {
-            const feature = window.app.highlightLayer
+            const feature = window.app.layers.highlight
                 .getSource()
                 .getFeatureById(id);
 
