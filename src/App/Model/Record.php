@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare (strict_types = 1);
 
 namespace App\Model;
 
@@ -154,10 +154,16 @@ class Record
         }
 
         if (isset($data['geometry'])) {
-            $geometryColumn = $this->table->getGeometryColumn()->getName();
+            $geometryColumn = $this->table->getGeometryColumn();
 
             $set = array_merge($set, [
-                $geometryColumn => new Expression('ST_GeomFromGeoJSON(\'' . json_encode($data['geometry']) . '\')'),
+                $geometryColumn->getName() => new Expression(
+                    sprintf(
+                        'ST_GeomFromGeoJSON(\'%s\')::%s',
+                        json_encode($data['geometry']),
+                        $geometryColumn->getDataType()
+                    )
+                ),
             ]);
         }
 
