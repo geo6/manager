@@ -7,14 +7,11 @@
 {% endblock %}
 
 {% block javascript %}
-<script src="{{ asset('/table.js') }}"></script>
 <script>
-    document.getElementById("table-wrapper").addEventListener("scroll", function () {
-        this.querySelector("thead").style.transform = "translateY(" + (
-            this.scrollTop - 1
-        ) + "px)";
-    });
+    window.custom = {{ config | json_encode | raw }};
+    window.thematic = {{ thematic | json_encode | raw }};
 </script>
+<script src="{{ asset('/table.js') }}"></script>
 {% endblock %}
 
 {% block links %}
