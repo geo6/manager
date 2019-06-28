@@ -6,7 +6,10 @@ import submit from './submit';
 export default function () {
     document
         .querySelectorAll('#modal-filter select[name=key]')
-        .forEach(element => eventKey(element));
+        .forEach(element => {
+            eventKey(element);
+            element.dispatchEvent(new Event('change'));
+        });
 
     document
         .querySelectorAll('#modal-filter select[name=operation]')
@@ -14,5 +17,9 @@ export default function () {
 
     document
         .querySelector('#modal-filter form')
-        .addEventListener('submit', element => submit(element));
+        .addEventListener('submit', event => {
+            event.preventDefault();
+
+            submit(event.target);
+        });
 }
