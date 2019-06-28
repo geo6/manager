@@ -3,7 +3,7 @@
 import Modify from 'ol/interaction/Modify';
 import GeoJSON from 'ol/format/GeoJSON';
 
-import Table from './feature/Table';
+import Table from './feature/info/Table';
 import Records from '../Records';
 
 function onmodifyend (event) {

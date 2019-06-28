@@ -1,6 +1,6 @@
 'use strict';
 
-import Table from '../Table';
+import Table from '../info/Table';
 import Input from './Input';
 
 export default class Form {

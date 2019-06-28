@@ -2,8 +2,8 @@
 
 import { toLonLat } from 'ol/proj';
 
-import valueNull from '../../value/null';
-import valueVarchar from '../../value/varchar';
+import valueNull from '../../../value/null';
+import valueVarchar from '../../../value/varchar';
 
 export default class Table {
     static getElement () {

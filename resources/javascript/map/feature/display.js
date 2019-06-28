@@ -1,8 +1,8 @@
 'use strict';
 
 import highlight from './highlight';
-import InfoForm from './form/InfoForm';
-import Table from './Table';
+import InfoForm from './edit/Form';
+import Table from './info/Table';
 import list from './list';
 
 export default function (features, current) {

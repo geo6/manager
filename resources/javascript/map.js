@@ -11,7 +11,8 @@ import initSelect from './map/select';
 import initLayer from './map/layer/layer';
 import initHighlightLayer from './map/layer/highlight';
 import initNewLayer from './map/layer/new';
-import initFeatureInfoUI from './map/feature/info';
+import initInfo from './map/feature/info/init';
+import initEdit from './map/feature/edit/init';
 import initNew from './map/feature/new/init';
 import initFilter from './filter/init';
 import Records from './Records';
@@ -69,7 +70,8 @@ window.app = {
     window.app.layers.highlight = initHighlightLayer(window.app.map);
     window.app.layers.new = initNewLayer(window.app.map);
 
-    initFeatureInfoUI();
     initFilter();
+    initInfo();
+    initEdit();
     initNew();
 })();

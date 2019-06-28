@@ -1,7 +1,7 @@
 'use strict';
 
-import InfoForm from './InfoForm';
-import Table from '../Table';
+import InfoForm from './Form';
+import Table from '../info/Table';
 import Records from '../../../Records';
 
 export default class Input {

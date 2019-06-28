@@ -1,7 +1,7 @@
 'use strict';
 
 import displayRecord from './display';
-import InfoForm from './form/InfoForm';
+import InfoForm from './edit/Form';
 
 export default function (features, current) {
     const count = features.getLength();

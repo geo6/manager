@@ -1,13 +1,12 @@
 'use strict';
 
-import InfoForm from './form/InfoForm';
-import Input from './form/Input';
-import { add as addModify, remove as removeModify } from '../modify';
+import InfoForm from './Form';
+import Input from './Input';
+import { add as addModify, remove as removeModify } from '../../modify';
 
 export default function () {
     editButton();
     deleteButton();
-    locateButton();
 
     formInput();
 }
@@ -60,18 +59,6 @@ function deleteButton () {
 
                 window.app.sidebar.close();
             }
-        });
-}
-
-function locateButton () {
-    document
-        .getElementById('infos-details-btn-locate')
-        .addEventListener('click', () => {
-            window.app.map
-                .getView()
-                .fit(window.app.layers.highlight.getSource().getExtent(), {
-                    maxZoom: 20
-                });
         });
 }
 
