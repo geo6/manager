@@ -3,6 +3,7 @@
 import { toLonLat } from 'ol/proj';
 
 import valueNull from '../../../value/null';
+import valueBoolean from '../../../value/boolean';
 import valueVarchar from '../../../value/varchar';
 
 export default class Table {
@@ -27,6 +28,8 @@ export default class Table {
 
                 if (properties[key] === null) {
                     td.innerHTML = valueNull();
+                } else if (td.dataset.datatype === 'boolean') {
+                    td.innerHTML = valueBoolean(properties[key]);
                 } else {
                     td.innerHTML = valueVarchar(properties[key]);
                 }

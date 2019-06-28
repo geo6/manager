@@ -17,7 +17,7 @@
             {% for column in columns if column.name not in [geometryColumn.name, 'updateuser', 'updatetime'] %}
             <tr>
                 <th>{{ column.name == keyColumn.name ? '<i class="fas fa-bookmark"></i> ' }}{{ column.name }}</th>
-                <td data-column="{{ column.name }}"></td>
+                <td data-column="{{ column.name }}" data-datatype="{{ column.datatype }}"></td>
             </tr>
             {% endfor %}
         </tbody>
