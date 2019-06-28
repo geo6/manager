@@ -1,0 +1,7 @@
+<select class="form-control form-control-sm" id="input-{{ column.name }}" name="{{ column.name }}"
+    data-datatype="{{ column.datatype }}" {{ column.notnull ? ' required' }}>
+    {{ column.notnull ?: '<option></option>' }}
+    {% for value, symbol in thematic.values %}
+    <option value="{{ value }}">{{ value }}</option>
+    {% endfor %}
+</select>
