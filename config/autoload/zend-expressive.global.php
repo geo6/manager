@@ -14,6 +14,12 @@ return [
     // Enable debugging; typically used to provide debugging information within templates.
     'debug' => false,
 
+    'twig' => [
+        'extensions' => [
+            new App\Twig\ValueExtension(),
+        ],
+    ],
+
     'zend-expressive' => [
         // Provide templates for the error handling middleware to use when
         // generating responses.
