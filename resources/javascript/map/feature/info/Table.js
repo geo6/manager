@@ -28,12 +28,7 @@ export default class Table {
                 if (properties[key] === null) {
                     td.innerHTML = valueNull();
                 } else {
-                    const content = valueVarchar(properties[key]);
-                    if (typeof content === 'object') {
-                        td.append(content);
-                    } else {
-                        td.innerHTML = content;
-                    }
+                    td.innerHTML = valueVarchar(properties[key]);
                 }
             }
         });

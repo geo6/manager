@@ -9,5 +9,5 @@ export default function (value) {
     a.style.textDecoration = 'none';
     a.innerHTML = '<i class="fas fa-external-link-alt"></i> ' + url.hostname;
 
-    return a;
+    return a.outerHTML;
 }
