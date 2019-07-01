@@ -18,6 +18,7 @@
         "sass": "^1.22.1"
     },
     "scripts": {
+        "postinstall": "npm run build",
         "test": "eslint resources/javascript/",
         "fix": "eslint resources/javascript/ --fix",
         "watch": "concurrently --raw \"npm:watch:*\"",
