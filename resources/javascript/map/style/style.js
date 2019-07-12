@@ -3,7 +3,8 @@
 import { Fill, Stroke, Circle, Style, Text } from 'ol/style';
 import TextPlacement from 'ol/style/TextPlacement';
 
-export default function (feature, labelColumn) {
+export default function (feature, labelColumn, resolution) {
+    const zoom = window.app.map.getView().getZoomForResolution(resolution);
     const type = feature.getGeometry().getType();
     const label = feature.get(labelColumn);
 
@@ -34,7 +35,7 @@ export default function (feature, labelColumn) {
             color: 'rgba(0, 0, 0, 0.6)',
             width: 3
         }),
-        text: label || null
+        text: zoom >= 16 ? (label || null) : null
     });
 
     switch (type) {

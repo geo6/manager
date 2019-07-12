@@ -23,8 +23,8 @@ export default function (map, geojson) {
         map: map,
         renderMode: count > 500 ? 'image' : 'vector',
         source: window.app.source,
-        style: feature => {
-            return styleFunction(feature, labelColumn);
+        style: (feature, resolution) => {
+            return styleFunction(feature, labelColumn, resolution);
         }
     });
 
