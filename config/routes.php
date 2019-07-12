@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 use Psr\Container\ContainerInterface;
 use Zend\Expressive\Application;
@@ -33,11 +33,11 @@ use Zend\Expressive\MiddlewareFactory;
  *     'contact'
  * );
  */
+
 return function (Application $app, MiddlewareFactory $factory, ContainerInterface $container): void {
-    // $app->get('/', App\Handler\HomePageHandler::class, 'home');
+    $app->get('/', App\Handler\HomePageHandler::class, 'home');
     $app->get('/api/ping', App\Handler\PingHandler::class, 'api.ping');
 
-    // $app->get('/{config:\w+}/', [App\Middleware\DbAdapterMiddleware::class, App\Handler\MapHandler::class], 'map');
     $app->get('/{config:\w+}/map', [App\Middleware\DbAdapterMiddleware::class, App\Handler\MapHandler::class], 'map');
     $app->get('/{config:\w+}/table[/{offset:\d+}]', [App\Middleware\DbAdapterMiddleware::class, App\Handler\TableHandler::class], 'table');
 

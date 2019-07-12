@@ -1,0 +1,30 @@
+{% extends '@layout/default.html.twig' %}
+
+{% block content %}
+<main>
+    <div class="container">
+        <div class="mt-3">
+            <h1 class="h3">
+                <i class="fas fa-cloud"></i>
+                Public
+            </h1>
+            <div class="list-group">
+                {% for key, config in settings.public %}
+                <a href="{{ path('map', {config: config.id}) }}" class="list-group-item list-group-item-action">
+                    <div class="d-flex w-100 justify-content-between">
+                        <strong class="mb-1">{{ config.title ?? config.id }}</strong>
+                        <div>
+                            <span class="badge badge-light">{{ config.id }}</span>
+                        </div>
+                    </div>
+                    {% if config.description is not null %}
+                    <p class="mb-0 small text-info">{{ config.description | nl2br }}</p>
+                    {% endif %}
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+        <hr>
+    </div>
+</main>
+{% endblock %}
