@@ -11,6 +11,7 @@ import OSM from 'ol/source/OSM';
 import View from 'ol/View';
 
 import initPermalink from './permalink';
+import initBaselayers from './baselayers';
 
 export default function () {
     const attribution = new Attribution({
@@ -34,12 +35,14 @@ export default function () {
             zoom: 2
         })
     });
+    map.once('rendercomplete', () => {
+        initPermalink(map);
+        initBaselayers();
+    });
 
     // map.on('singleclick', (event) => {
     //     return singleclick(event);
     // });
-
-    initPermalink(map);
 
     return map;
 }

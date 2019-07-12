@@ -10,6 +10,7 @@
 <script>
     window.custom = {{ config | json_encode | raw }};
     window.thematic = {{ thematic | json_encode | raw }};
+    window.baselayers = {{ baselayers | json_encode | raw }};
 </script>
 <script src="{{ asset('/map.js') }}"></script>
 {% endblock %}

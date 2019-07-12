@@ -20,6 +20,7 @@ import Records from './Records';
 require('sidebar-v2/js/jquery-sidebar.js');
 
 window.app = {
+    baselayers: [],
     cache: null,
     custom: null,
     layers: {
@@ -42,6 +43,9 @@ window.app = {
             $(window).height() - $('body > header > nav.navbar').outerHeight()
         );
     });
+
+    window.app.baselayers = window.baselayers || [];
+    delete window.baselayers;
 
     window.app.custom = window.custom || 'default';
     delete window.custom;

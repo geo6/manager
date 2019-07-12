@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Handler;
 
@@ -45,7 +45,28 @@ class MapHandler implements RequestHandlerInterface
                 'keyColumn'      => $table->getKeyColumn(),
                 'geometryColumn' => $table->getGeometryColumn(),
                 'thematic'       => $thematic,
+                'baselayers'     => self::getBaselayers($config['global']['baselayers'] ?? []),
             ]
         ));
+    }
+
+    private static function getBaselayers(array $configBaselayers): array
+    {
+        $baselayers = $configBaselayers;
+
+        if (count($baselayers) === 0) {
+            $baselayers = [
+                'osm' => [
+                    'name'         => 'OpenStreetMap',
+                    'url'          => 'https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                    'attributions' => [
+                        '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors.',
+                    ],
+                    'maxZoom' => 19,
+                ],
+            ];
+        }
+
+        return $baselayers;
     }
 }
