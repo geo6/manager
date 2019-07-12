@@ -21,6 +21,7 @@ export default function (map, geojson) {
 
     const layer = new VectorLayer({
         map: map,
+        renderMode: count > 500 ? 'image' : 'vector',
         source: window.app.source,
         style: feature => {
             return styleFunction(feature, labelColumn);
