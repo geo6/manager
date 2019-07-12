@@ -7,10 +7,10 @@ namespace App\Handler;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Zend\ConfigAggregator\ConfigAggregator;
+use Zend\ConfigAggregator\ZendConfigProvider;
 use Zend\Diactoros\Response\HtmlResponse;
 use Zend\Expressive\Template\TemplateRendererInterface;
-use Zend\ConfigAggregator\ZendConfigProvider;
-use Zend\ConfigAggregator\ConfigAggregator;
 
 class HomePageHandler implements RequestHandlerInterface
 {
@@ -32,13 +32,13 @@ class HomePageHandler implements RequestHandlerInterface
             [
                 'settings' => [
                     'public' => self::getPublic(),
-                    'roles' => [
+                    'roles'  => [
                         'test' => [],
                     ],
                     'users' => [
                         'test' => [],
-                    ]
-                ]
+                    ],
+                ],
             ]
         ));
     }
@@ -56,13 +56,12 @@ class HomePageHandler implements RequestHandlerInterface
 
     private static function extract(string $path): array
     {
-
         $config = (new ConfigAggregator(
             [
                 new ZendConfigProvider($path . '/*.{php,ini,xml,json,yaml}'),
                 function () use ($path) {
                     return ['id' => basename($path)];
-                }
+                },
             ]
         ))->getMergedConfig();
 
