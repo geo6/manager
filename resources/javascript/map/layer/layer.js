@@ -16,6 +16,7 @@ export default function (map, geojson) {
     });
 
     const count = window.app.source.getFeatures().length;
+    const geometryColumn = window.app.cache.table.columns.find(column => column.name === window.app.cache.table.geometry);
     const labelColumn = 'label';
 
     const layer = new VectorLayer({
@@ -26,7 +27,7 @@ export default function (map, geojson) {
         }
     });
 
-    if (count > 1000) {
+    if (geometryColumn.type === 'point' && count > 1000) {
         const cluster = new Cluster({
             source: window.app.source
         });
