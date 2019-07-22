@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Handler\API\Database;
 
@@ -30,19 +30,21 @@ class RecordsHandler implements RequestHandlerInterface
 
         switch ($request->getMethod()) {
             case 'GET':
-                if (is_null($id)) {
-                    return new JsonResponse([
-                        'type'     => 'FeatureCollection',
-                        'features' => $table->getRecords(
-                            isset($params['order']) ? $params['order'] : null,
-                            isset($params['limit']) ? intval($params['limit']) : null,
-                            null,
-                            true
-                        ),
-                    ]);
+                if (!is_null($id)) {
+                    return new JsonResponse($table->getRecord(intval($id))->toGeoJSON());
                 }
 
-                return new JsonResponse($table->getRecord(intval($id))->toGeoJSON());
+                return new JsonResponse([
+                    'type'     => 'FeatureCollection',
+                    'features' => $table->getRecords(
+                        isset($params['filter']) ? $params['filter'] : null,
+                        isset($params['order']) ? $params['order'] : null,
+                        isset($params['limit']) ? intval($params['limit']) : null,
+                        null,
+                        true
+                    ),
+                ]);
+
             case 'POST':
                 $data = $request->getParsedBody();
                 $record = new Record($adapter, $table);
@@ -54,18 +56,21 @@ class RecordsHandler implements RequestHandlerInterface
                 }
 
                 return new JsonResponse($record->toGeoJSON());
+
             case 'PUT':
                 $data = $request->getParsedBody();
                 $record = new Record($adapter, $table, intval($id));
                 $update = $record->update($data, true);
 
                 return new JsonResponse($record->toGeoJSON());
+
             case 'DELETE':
                 $data = $request->getParsedBody();
                 $record = new Record($adapter, $table, intval($id));
                 $delete = $record->delete(true);
 
-                return new JsonResponse((object)[]);
+                return new JsonResponse((object) []);
+
             default:
                 return new EmptyResponse(405);
         }

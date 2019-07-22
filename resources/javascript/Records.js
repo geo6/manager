@@ -1,8 +1,8 @@
 'use strict';
 
 export default class Records {
-    static async getAll () {
-        const response = await fetch('/app/manager/test/api/db/records');
+    static async getAll (filter) {
+        const response = await fetch(typeof filter === 'undefined' ? '/app/manager/test/api/db/records' : `/app/manager/test/api/db/records?filter=${filter}`);
 
         return response.json();
     }

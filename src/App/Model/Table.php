@@ -245,6 +245,7 @@ class Table
     }
 
     public function getRecords(
+        ?string $filter = null,
         ?string $order = null,
         ?int $limit = null,
         ?int $start = null,
@@ -253,6 +254,10 @@ class Table
         $sql = new Sql($this->adapter);
 
         $select = (new Record($this->adapter, $this))->select();
+
+        if (!is_null($filter)) {
+            $select = $select->where((new Filter($filter))->getPredicate());
+        }
         if (!is_null($order)) {
             $select = $select->order($order);
         } else {

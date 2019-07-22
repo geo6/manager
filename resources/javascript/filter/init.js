@@ -1,6 +1,7 @@
 'use strict';
 
 import { eventKey, eventOperation } from './events';
+import reset from './reset';
 import submit from './submit';
 
 export default function () {
@@ -21,5 +22,11 @@ export default function () {
             event.preventDefault();
 
             submit(event.target);
+        });
+
+    document
+        .querySelector('#modal-filter form')
+        .addEventListener('reset', event => {
+            reset(event.target);
         });
 }

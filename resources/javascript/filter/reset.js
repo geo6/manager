@@ -10,8 +10,8 @@ function removeLayer () {
     removeSelect(window.app.map);
 }
 
-function addFilteredLayer (filter) {
-    Records.getAll(filter)
+function addLayer () {
+    Records.getAll()
         .then(data => {
             window.app.layers.layer = initLayer(window.app.map, data);
 
@@ -19,15 +19,7 @@ function addFilteredLayer (filter) {
         });
 }
 
-export default function (form) {
-    const data = Object.fromEntries(new FormData(form).entries());
-
-    let filter = `${data.key} ${data.operation}`;
-
-    if (typeof data.value !== 'undefined') {
-        filter += ` ${data.value}`;
-    }
-
+export default function () {
     removeLayer();
-    addFilteredLayer(filter);
+    addLayer();
 }

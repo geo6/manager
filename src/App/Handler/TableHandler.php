@@ -83,6 +83,7 @@ class TableHandler implements RequestHandlerInterface
                 'table'          => $table,
                 'columns'        => $columns,
                 'records'        => $table->getRecords(
+                    $params['filter'] ?? null,
                     $order['column'] . ' ' . $order['order'],
                     $config['config']['limit'],
                     $offset
