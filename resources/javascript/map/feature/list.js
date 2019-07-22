@@ -1,5 +1,7 @@
 'use strict';
 
+import app from '../../app';
+
 import displayRecord from './display';
 import InfoForm from './edit/Form';
 
@@ -33,7 +35,7 @@ export default function (features, current) {
             document.getElementById('infos-list-btn-prev').addEventListener(
                 'click',
                 () => {
-                    window.app.layers.highlight.getSource().clear();
+                    app.layers.highlight.getSource().clear();
 
                     displayRecord(features, current - 1);
                 },
@@ -55,7 +57,7 @@ export default function (features, current) {
             document.getElementById('infos-list-btn-next').addEventListener(
                 'click',
                 () => {
-                    window.app.layers.highlight.getSource().clear();
+                    app.layers.highlight.getSource().clear();
 
                     displayRecord(features, current + 1);
                 },

@@ -1,21 +1,23 @@
 'use strict';
 
+import app from '../app';
+
 import initLayer from '../map/layer/layer';
 import { add as initSelect, remove as removeSelect } from '../map/select';
 import Records from '../Records';
 
 function removeLayer () {
-    window.app.map.removeLayer(window.app.layers.layer);
+    app.map.removeLayer(app.layers.layer);
 
-    removeSelect(window.app.map);
+    removeSelect(app.map);
 }
 
 function addFilteredLayer (filter) {
     Records.getAll(filter)
         .then(data => {
-            window.app.layers.layer = initLayer(window.app.map, data);
+            app.layers.layer = initLayer(app.map, data);
 
-            initSelect(window.app.map, window.app.layers.layer);
+            initSelect(app.map, app.layers.layer);
         });
 }
 

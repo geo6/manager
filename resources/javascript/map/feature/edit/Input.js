@@ -1,5 +1,7 @@
 'use strict';
 
+import app from '../../../app';
+
 import InfoForm from './Form';
 import Table from '../info/Table';
 import Records from '../../../Records';
@@ -29,7 +31,7 @@ export default class Input {
         properties[key] = element.value;
 
         Records.update(id, { properties }).then(data => {
-            const feature = window.app.layers.highlight
+            const feature = app.layers.highlight
                 .getSource()
                 .getFeatureById(id);
 

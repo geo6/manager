@@ -1,5 +1,7 @@
 'use strict';
 
+import app from '../../../app';
+
 import Table from '../info/Table';
 import Input from './Input';
 
@@ -35,7 +37,7 @@ export default class Form {
 
         Form.getElement().dataset.id = id;
 
-        const readonly = window.app.cache.table.columns
+        const readonly = app.cache.table.columns
             .filter(column => column.readonly === true)
             .map(column => column.name);
 

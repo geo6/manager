@@ -1,5 +1,7 @@
 'use strict';
 
+import app from '../app';
+
 export function eventKey (element) {
     return element.addEventListener('change', event => {
         const selectElement = event.target;
@@ -16,7 +18,7 @@ export function eventKey (element) {
 
             updateOperationList(divElement, datatype);
 
-            if (column === window.app.thematic.column) {
+            if (column === app.thematic.column) {
                 inputValueElement.setAttribute('list', 'filter-value-thematic');
             } else if (datatype === 'integer') {
                 inputValueElement.type = 'number';

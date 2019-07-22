@@ -1,12 +1,14 @@
 'use strict';
 
+import app from '../../../app';
+
 export default function () {
     document
         .getElementById('infos-details-btn-locate')
         .addEventListener('click', () => {
-            window.app.map
+            app.map
                 .getView()
-                .fit(window.app.layers.highlight.getSource().getExtent(), {
+                .fit(app.layers.highlight.getSource().getExtent(), {
                     maxZoom: 20
                 });
         });

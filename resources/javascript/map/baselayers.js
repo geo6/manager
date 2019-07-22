@@ -9,13 +9,15 @@ import {
 } from 'ol/source';
 import { optionsFromCapabilities } from 'ol/source/WMTS';
 
+import app from '../app';
+
 function loadBaselayer (index) {
-    if (typeof window.app.baselayers[index] !== 'undefined') {
-        let baselayer = window.app.baselayers[index];
+    if (typeof app.baselayers[index] !== 'undefined') {
+        let baselayer = app.baselayers[index];
 
         switch (baselayer.mode) {
         case 'wms':
-            window.app.map.getLayers().setAt(0,
+            app.map.getLayers().setAt(0,
                 new TileLayer({
                     source: new TileWMS({
                         attributions: baselayer.attributions,
@@ -46,7 +48,7 @@ function loadBaselayer (index) {
                     });
                     options.attributions = baselayer.attributions;
 
-                    window.app.map.getLayers().setAt(0,
+                    app.map.getLayers().setAt(0,
                         new TileLayer({
                             source: new WMTS(options)
                         })
@@ -55,7 +57,7 @@ function loadBaselayer (index) {
             break;
 
         default:
-            window.app.map.getLayers().setAt(0,
+            app.map.getLayers().setAt(0,
                 new TileLayer({
                     source: new XYZ({
                         attributions: baselayer.attributions,
@@ -78,14 +80,14 @@ export default function () {
 
         loadBaselayer(index);
 
-        window.app.cache.setBaselayer(index);
+        app.cache.setBaselayer(index);
     });
 
-    const keys = Object.keys(window.app.baselayers);
-    if (typeof window.app.cache.baselayer === 'undefined' || window.app.cache.baselayer === null) {
-        window.app.cache.setBaselayer(keys[0]);
+    const keys = Object.keys(app.baselayers);
+    if (typeof app.cache.baselayer === 'undefined' || app.cache.baselayer === null) {
+        app.cache.setBaselayer(keys[0]);
     }
 
-    $('#baselayers button[data-index=' + window.app.cache.baselayer + ']').addClass('active');
-    loadBaselayer(window.app.cache.baselayer);
+    $('#baselayers button[data-index=' + app.cache.baselayer + ']').addClass('active');
+    loadBaselayer(app.cache.baselayer);
 }

@@ -3,19 +3,21 @@
 import { Fill, Stroke, Circle, Style, Text } from 'ol/style';
 import TextPlacement from 'ol/style/TextPlacement';
 
+import app from '../../app';
+
 export default function (feature, labelColumn, resolution) {
-    const zoom = window.app.map.getView().getZoomForResolution(resolution);
+    const zoom = app.map.getView().getZoomForResolution(resolution);
     const type = feature.getGeometry().getType();
     const label = feature.get(labelColumn);
 
     let symbol = {
-        color: window.app.thematic.default
+        color: app.thematic.default
     };
-    if (window.app.thematic.column !== null) {
-        const value = feature.get(window.app.thematic.column);
+    if (app.thematic.column !== null) {
+        const value = feature.get(app.thematic.column);
 
-        if (typeof window.app.thematic.values[value] !== 'undefined') {
-            symbol = window.app.thematic.values[value];
+        if (typeof app.thematic.values[value] !== 'undefined') {
+            symbol = app.thematic.values[value];
         }
     }
 

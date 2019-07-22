@@ -1,10 +1,13 @@
 'use strict';
 
 import Draw from 'ol/interaction/Draw';
+
+import app from '../../app';
+
 import NewForm from '../feature/new/Form';
 
 function ondrawend (event) {
-    remove(window.app.map);
+    remove(app.map);
 
     document
         .getElementById('new')

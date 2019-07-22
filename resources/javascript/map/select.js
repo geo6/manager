@@ -3,10 +3,12 @@
 import { Select } from 'ol/interaction';
 import Collection from 'ol/Collection';
 
+import app from '../app';
+
 import displayRecord from './feature/display';
 
 function onselect (event, features) {
-    window.app.layers.highlight.getSource().clear();
+    app.layers.highlight.getSource().clear();
 
     const collection = new Collection();
 
@@ -32,11 +34,11 @@ function onselect (event, features) {
 
         displayRecord(collection, 0);
 
-        window.app.sidebar.open('info');
+        app.sidebar.open('info');
     } else {
         liElement.classList.add('disabled');
 
-        window.app.sidebar.close();
+        app.sidebar.close();
     }
 }
 

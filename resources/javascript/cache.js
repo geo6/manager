@@ -1,9 +1,11 @@
 'use strict';
 
+import app from './app';
+
 class Cache {
     constructor () {
-        if (window.app.custom !== null) {
-            this.storageKey = `manager.${window.app.custom}.cache`;
+        if (app.custom !== null) {
+            this.storageKey = `manager.${app.custom}.cache`;
         } else {
             this.storageKey = 'manager.cache';
         }

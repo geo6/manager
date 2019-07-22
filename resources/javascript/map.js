@@ -5,6 +5,8 @@ import 'sidebar-v2/css/ol3-sidebar.css';
 
 import '../sass/map.scss';
 
+import app from './app';
+
 import Cache from './cache';
 import initMap from './map/init';
 import { add as initSelect } from './map/select';
@@ -19,21 +21,6 @@ import Records from './Records';
 
 require('sidebar-v2/js/jquery-sidebar.js');
 
-window.app = {
-    baselayers: [],
-    cache: null,
-    custom: null,
-    layers: {
-        highlight: null,
-        layer: null,
-        new: null
-    },
-    map: null,
-    sidebar: null,
-    source: null,
-    thematic: null
-};
-
 (function () {
     $('#map').height(
         $(window).height() - $('body > header > nav.navbar').outerHeight()
@@ -44,20 +31,20 @@ window.app = {
         );
     });
 
-    window.app.baselayers = window.baselayers || [];
+    app.baselayers = window.baselayers || [];
     delete window.baselayers;
 
-    window.app.custom = window.custom || 'default';
+    app.custom = window.custom || 'default';
     delete window.custom;
 
-    window.app.thematic = window.thematic;
+    app.thematic = window.thematic;
     delete window.thematic;
 
-    window.app.cache = new Cache();
+    app.cache = new Cache();
 
-    window.app.sidebar = $('#sidebar').sidebar();
+    app.sidebar = $('#sidebar').sidebar();
 
-    window.app.map = initMap();
+    app.map = initMap();
 
     Promise.all([
         fetch(`/app/manager/test/api/db/table`).then(response =>
@@ -65,14 +52,14 @@ window.app = {
         ),
         Records.getAll()
     ]).then(data => {
-        window.app.cache.setTable(data[0]);
-        window.app.layers.layer = initLayer(window.app.map, data[1]);
+        app.cache.setTable(data[0]);
+        app.layers.layer = initLayer(app.map, data[1]);
 
-        initSelect(window.app.map, window.app.layers.layer);
+        initSelect(app.map, app.layers.layer);
     });
 
-    window.app.layers.highlight = initHighlightLayer(window.app.map);
-    window.app.layers.new = initNewLayer(window.app.map);
+    app.layers.highlight = initHighlightLayer(app.map);
+    app.layers.new = initNewLayer(app.map);
 
     initFilter();
     initInfo();

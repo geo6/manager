@@ -4,24 +4,26 @@ import VectorLayer from 'ol/layer/Vector';
 import GeoJSON from 'ol/format/GeoJSON';
 import { Vector as VectorSource, Cluster } from 'ol/source';
 
+import app from '../../app';
+
 import styleFunction from '../style/style';
 import styleClusterFunction from '../style/cluster';
 import Records from '../../Records';
 
 export default function (map, geojson) {
-    window.app.source = new VectorSource({
+    app.source = new VectorSource({
         features: new GeoJSON().readFeatures(geojson, {
-            featureProjection: window.app.map.getView().getProjection()
+            featureProjection: app.map.getView().getProjection()
         })
     });
 
-    const count = window.app.source.getFeatures().length;
-    const geometryColumn = window.app.cache.table.columns.find(column => column.name === window.app.cache.table.geometry);
+    const count = app.source.getFeatures().length;
+    const geometryColumn = app.cache.table.columns.find(column => column.name === app.cache.table.geometry);
     const labelColumn = 'label';
 
     const layer = new VectorLayer({
         renderMode: count > 500 ? 'image' : 'vector',
-        source: window.app.source,
+        source: app.source,
         style: (feature, resolution) => {
             return styleFunction(feature, labelColumn, resolution);
         }
@@ -31,7 +33,7 @@ export default function (map, geojson) {
 
     if (geometryColumn.type === 'point' && count > 1000) {
         const cluster = new Cluster({
-            source: window.app.source
+            source: app.source
         });
 
         layer.setStyle(feature => {
@@ -48,11 +50,11 @@ export default function (map, geojson) {
 
     if (window.location.hash === '') {
         layer.once('render', () => {
-            window.app.map.getView().fit(layer.getSource().getExtent());
+            app.map.getView().fit(layer.getSource().getExtent());
         });
     }
 
-    window.app.source.on('removefeature', event => {
+    app.source.on('removefeature', event => {
         const feature = event.feature;
         const id = feature.getId();
 

@@ -1,5 +1,7 @@
 'use strict';
 
+import app from '../../app';
+
 export default function (feature) {
-    window.app.layers.highlight.getSource().addFeature(feature);
+    app.layers.highlight.getSource().addFeature(feature);
 }

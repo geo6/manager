@@ -1,5 +1,7 @@
 'use strict';
 
+import app from '../../../app';
+
 import InfoForm from './Form';
 import Input from './Input';
 import { add as addModify, remove as removeModify } from '../../modify';
@@ -18,7 +20,7 @@ function editButton () {
             if (InfoForm.isActive() === true) {
                 event.target.classList.remove('active');
 
-                removeModify(window.app.map);
+                removeModify(app.map);
 
                 InfoForm.disable();
             } else {
@@ -27,8 +29,8 @@ function editButton () {
                 InfoForm.enable();
 
                 addModify(
-                    window.app.map,
-                    window.app.layers.highlight.getSource()
+                    app.map,
+                    app.layers.highlight.getSource()
                 );
             }
         });
@@ -45,10 +47,10 @@ function deleteButton () {
             );
 
             if (confirm === true) {
-                const feature = window.app.source.getFeatureById(id);
+                const feature = app.source.getFeatureById(id);
 
-                window.app.source.removeFeature(feature);
-                window.app.layers.highlight.getSource().clear();
+                app.source.removeFeature(feature);
+                app.layers.highlight.getSource().clear();
 
                 const liElement = Array.prototype.filter.call(
                     document.querySelectorAll('.sidebar-tabs > ul > li'),
@@ -57,7 +59,7 @@ function deleteButton () {
                 )[0];
                 liElement.classList.add('disabled');
 
-                window.app.sidebar.close();
+                app.sidebar.close();
             }
         });
 }

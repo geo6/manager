@@ -3,6 +3,8 @@
 import Modify from 'ol/interaction/Modify';
 import GeoJSON from 'ol/format/GeoJSON';
 
+import app from '../app';
+
 import Table from './feature/info/Table';
 import Records from '../Records';
 
@@ -12,16 +14,16 @@ function onmodifyend (event) {
         const geometry = feature.getGeometry();
         const geojson = new GeoJSON().writeGeometry(geometry, {
             decimals: 6,
-            featureProjection: window.app.map.getView().getProjection()
+            featureProjection: app.map.getView().getProjection()
         });
 
         Records.update(id, { geometry: JSON.parse(geojson) }).then(data => {
-            const feature = window.app.layers.highlight
+            const feature = app.layers.highlight
                 .getSource()
                 .getFeatureById(id);
 
             const geometry = new GeoJSON().readGeometry(data.geometry, {
-                featureProjection: window.app.map.getView().getProjection()
+                featureProjection: app.map.getView().getProjection()
             });
 
             feature.setProperties(data.properties);
