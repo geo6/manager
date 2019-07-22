@@ -3,9 +3,9 @@
 import { Select } from 'ol/interaction';
 import Collection from 'ol/Collection';
 
-import app from '../app';
+import app from '../../app';
 
-import displayRecord from './feature/display';
+import displayRecord from '../feature/display';
 
 function onselect (event, features) {
     app.layers.highlight.getSource().clear();

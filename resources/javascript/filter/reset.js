@@ -3,7 +3,7 @@
 import app from '../app';
 
 import initLayer from '../map/layer/layer';
-import { add as initSelect, remove as removeSelect } from '../map/select';
+import { add as initSelect, remove as removeSelect } from '../map/interaction/select';
 import Records from '../Records';
 
 function removeLayer () {

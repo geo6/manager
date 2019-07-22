@@ -9,7 +9,7 @@ import app from './app';
 
 import Cache from './cache';
 import initMap from './map/init';
-import { add as initSelect } from './map/select';
+import { add as initSelect } from './map/interaction/select';
 import initLayer from './map/layer/layer';
 import initHighlightLayer from './map/layer/highlight';
 import initNewLayer from './map/layer/new';
