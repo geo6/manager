@@ -36,13 +36,13 @@ export default function (map, geojson) {
             source: app.source
         });
 
-        layer.setStyle(feature => {
+        layer.setStyle((feature, resolution) => {
             const features = feature.get('features');
 
             if (features.length > 1) {
                 return styleClusterFunction(features.length);
             } else {
-                return styleFunction(features[0], labelColumn);
+                return styleFunction(features[0], labelColumn, resolution);
             }
         });
         layer.setSource(cluster);
