@@ -30,6 +30,13 @@ export default function (form) {
         filter += ` ${data.value}`;
     }
 
-    removeLayer();
-    addFilteredLayer(filter);
+    switch (app.mode) {
+    case 'map':
+        removeLayer();
+        addFilteredLayer(filter);
+        break;
+    case 'table':
+        window.location.href = document.location.origin + document.location.pathname + `?filter=${filter}`;
+        break;
+    }
 }

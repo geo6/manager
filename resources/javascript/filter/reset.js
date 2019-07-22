@@ -22,6 +22,13 @@ function addLayer () {
 }
 
 export default function () {
-    removeLayer();
-    addLayer();
+    switch (app.mode) {
+    case 'map':
+        removeLayer();
+        addLayer();
+        break;
+    case 'table':
+        window.location.href = document.location.origin + document.location.pathname;
+        break;
+    }
 }
