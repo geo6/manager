@@ -3,10 +3,10 @@
 import Modify from 'ol/interaction/Modify';
 import GeoJSON from 'ol/format/GeoJSON';
 
-import app from '../app';
+import app from '../../app';
 
-import Table from './feature/info/Table';
-import Records from '../Records';
+import Table from '../feature/info/Table';
+import Records from '../../Records';
 
 function onmodifyend (event) {
     event.features.forEach(feature => {

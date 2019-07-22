@@ -4,7 +4,7 @@ import app from '../../../app';
 
 import InfoForm from './Form';
 import Input from './Input';
-import { add as addModify, remove as removeModify } from '../../modify';
+import { add as addModify, remove as removeModify } from '../../interaction/modify';
 
 export default function () {
     editButton();
