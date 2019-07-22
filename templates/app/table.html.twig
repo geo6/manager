@@ -75,7 +75,7 @@
         <div>
             <div>
                 <strong>Table: {{ table.identifier.table }}</strong>
-                {% if filter is defined %}
+                {% if filter is not null %}
                 {{ records | length }}
                 record(s) (Total:
                 {{ count }})
@@ -84,10 +84,12 @@
                 record(s)
                 {% endif %}
             </div>
-            {% if filter is defined %}
+            {% if filter is not null %}
             <div>
-                <i class="fas fa-filter"></i>
-                Filter:
+                <strong class="text-info">
+                    <i class="fas fa-filter"></i>
+                    Filter:
+                </strong>
                 {{ filter }}
             </div>
             {% endif %}

@@ -45,6 +45,8 @@ class TableHandler implements RequestHandlerInterface
         $count = $table->getCount();
         $columns = $table->getColumns();
 
+        $filter = $params['filter'] ?? null;
+
         if (isset($params['sort'])) {
             $result = array_filter($columns, function ($column) use ($params) {
                 return $column->getName() === $params['sort'];
@@ -83,11 +85,12 @@ class TableHandler implements RequestHandlerInterface
                 'table'          => $table,
                 'columns'        => $columns,
                 'records'        => $table->getRecords(
-                    $params['filter'] ?? null,
+                    $filter,
                     $order['column'] . ' ' . $order['order'],
                     $config['config']['limit'],
                     $offset
                 ),
+                'filter'         => $filter,
                 'thematic'       => $thematic,
             ]
         ));
