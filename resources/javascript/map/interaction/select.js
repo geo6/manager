@@ -5,6 +5,7 @@ import Collection from 'ol/Collection';
 
 import app from '../../app';
 
+import styleFunction from '../style/style';
 import displayRecord from '../feature/display';
 
 function onselect (event, features) {
@@ -46,7 +47,21 @@ export function add (map, layer) {
     const select = new Select({
         layers: [layer],
         multi: false,
-        style: () => false,
+        style: (feature, resolution) => {
+            const properties = feature.getProperties();
+
+            if (typeof properties.features !== 'undefined') {
+                // Cluster
+                if (properties.features.length > 1) {
+                    return false;
+                } else {
+                    return styleFunction(properties.features[0], 'label', resolution);
+                }
+            } else {
+                // Feature
+                return styleFunction(feature, 'label', resolution);
+            }
+        },
         wrapX: false
     });
 
