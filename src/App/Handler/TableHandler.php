@@ -8,21 +8,27 @@ use App\Middleware\ConfigMiddleware;
 use App\Middleware\DbAdapterMiddleware;
 use App\Model\Table;
 use App\Model\Thematic;
+use Blast\BaseUrl\BaseUrlMiddleware;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Zend\Diactoros\Response\HtmlResponse;
+use Zend\Diactoros\Response\RedirectResponse;
+use Zend\Expressive\Router\RouteResult;
+use Zend\Expressive\Router\RouterInterface;
 use Zend\Expressive\Template\TemplateRendererInterface;
 
 class TableHandler implements RequestHandlerInterface
 {
-    /**
-     * @var TemplateRendererInterface
-     */
+    /** @var RouterInterface */
+    private $router;
+
+    /** @var TemplateRendererInterface */
     private $renderer;
 
-    public function __construct(TemplateRendererInterface $renderer)
+    public function __construct(RouterInterface $router, TemplateRendererInterface $renderer)
     {
+        $this->router = $router;
         $this->renderer = $renderer;
     }
 
@@ -30,13 +36,14 @@ class TableHandler implements RequestHandlerInterface
     {
         $adapter = $request->getAttribute(DbAdapterMiddleware::DBADAPTER_ATTRIBUTE);
         $config = $request->getAttribute(ConfigMiddleware::CONFIG_ATTRIBUTE);
+        $basePath = $request->getAttribute(BaseUrlMiddleware::BASE_PATH);
 
         $params = $request->getQueryParams();
 
         $offset = $request->getAttribute('offset', 0);
         $offset = intval(floor(intval($offset) / $config['config']['limit']) * $config['config']['limit']);
 
-        $filter = $params['filter'] ?? null;
+        $filter = isset($params['filter']) && strlen($params['filter']) > 0 ? $params['filter'] : null;
 
         $table = new Table($adapter, $config['config']);
         $total = $table->getCount();
@@ -68,6 +75,22 @@ class TableHandler implements RequestHandlerInterface
                     'order'  => 'asc',
                 ];
             }
+        }
+
+        if ($offset > $count) {
+            $offset = intval(floor($count / $config['config']['limit']) * $config['config']['limit']);
+
+            $redirect = ($basePath !== '/' ? $basePath : '');
+            $redirect .= $this->router->generateUri('table', [
+                'config' => $config['custom'],
+                'offset' => $offset,
+            ]);
+
+            return new RedirectResponse($redirect . '?' . http_build_query([
+                'filter' => $filter,
+                'sort'   => $order['column'],
+                'order'  => $order['order'],
+            ]));
         }
 
         $thematic = new Thematic($adapter, $config['config']);
