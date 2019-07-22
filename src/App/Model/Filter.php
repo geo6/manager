@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Model;
 
 use Exception;
-use Zend\Db\Sql\TableIdentifier;
 use Zend\Db\Sql\Predicate\Predicate;
+use Zend\Db\Sql\TableIdentifier;
 
 class Filter
 {
