@@ -8,6 +8,8 @@ import Cache from './cache';
 import initFilter from './filter/init';
 
 (function () {
+    app.mode = 'table';
+
     app.custom = window.custom || 'default';
     delete window.custom;
 

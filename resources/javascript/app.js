@@ -8,6 +8,7 @@ export default {
         new: null
     },
     map: null,
+    mode: null,
     sidebar: null,
     source: null,
     thematic: null

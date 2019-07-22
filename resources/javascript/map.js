@@ -22,6 +22,8 @@ import Records from './Records';
 require('sidebar-v2/js/jquery-sidebar.js');
 
 (function () {
+    app.mode = 'map';
+
     $('#map').height(
         $(window).height() - $('body > header > nav.navbar').outerHeight()
     );
