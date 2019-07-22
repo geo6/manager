@@ -39,14 +39,18 @@ export function eventOperation (element) {
     return element.addEventListener('change', event => {
         const selectOpElement = event.target;
         const divRowElement = element.closest('.row');
-        const divValueColElement = divRowElement
-            .querySelector('input[name=value]')
-            .closest('.col');
+        const inputValueElement = divRowElement.querySelector('input[name=value]');
+        const divValueColElement = inputValueElement.closest('.col');
 
         if (['null', 'nnull'].indexOf(selectOpElement.value) !== -1) {
+            inputValueElement.value = '';
+            inputValueElement.disabled = true;
+
             divValueColElement.style.display = 'none';
             element.parentElement.className = 'col-8';
         } else {
+            inputValueElement.removeAttribute('disabled');
+
             divValueColElement.style.display = null;
             element.parentElement.className = 'col-3';
         }
