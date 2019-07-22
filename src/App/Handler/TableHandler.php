@@ -38,6 +38,11 @@ class TableHandler implements RequestHandlerInterface
 
         $filter = $params['filter'] ?? null;
 
+        $table = new Table($adapter, $config['config']);
+        $total = $table->getCount();
+        $count = $table->getCount($filter);
+        $columns = $table->getColumns();
+
         $order = [
             'column' => 'id',
             'order'  => 'asc',
