@@ -32,8 +32,8 @@ function loadBaselayer (index) {
 
         case 'wmts':
             const url = baselayer.url + '?' + $.param({
-                SERVICE: 'WMTS',
                 REQUEST: 'GetCapabilities',
+                SERVICE: 'WMTS',
                 VERSION: '1.0.0'
             });
             fetch(url)
