@@ -4,6 +4,7 @@ import app from '../../app';
 
 import displayRecord from './display';
 import InfoForm from './edit/Form';
+import { remove as removeModify } from '../interaction/modify';
 
 export default function (features, current) {
     const count = features.getLength();
@@ -37,6 +38,8 @@ export default function (features, current) {
                 () => {
                     app.layers.highlight.getSource().clear();
 
+                    removeModify(app.map);
+
                     displayRecord(features, current - 1);
                 },
                 { once: true }
@@ -58,6 +61,8 @@ export default function (features, current) {
                 'click',
                 () => {
                     app.layers.highlight.getSource().clear();
+
+                    removeModify(app.map);
 
                     displayRecord(features, current + 1);
                 },
