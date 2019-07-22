@@ -31,6 +31,12 @@ function onselect (event, features) {
     )[0];
 
     if (collection.getLength() > 0) {
+        if (collection.getLength() > 1) {
+            app.map.getView().fit(collection.item(0).getGeometry(), {
+                maxZoom: 18
+            });
+        }
+
         liElement.classList.remove('disabled');
 
         displayRecord(collection, 0);
