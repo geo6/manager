@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Model;
 
@@ -56,11 +56,17 @@ class Table
         }
     }
 
-    public function getCount(): int
-    {
+    public function getCount(
+        ?string $filter = null
+    ): int {
         $sql = new Sql($this->adapter);
 
         $select = $sql->select()->from($this->identifier)->columns(['count' => new Expression('COUNT(*)')]);
+
+        if (!is_null($filter)) {
+            $select = $select->where((new Filter($filter))->getPredicate());
+        }
+
         $qsz = $sql->buildSqlString($select);
         $query = $this->adapter->query($qsz, $this->adapter::QUERY_MODE_EXECUTE);
 
@@ -165,7 +171,7 @@ class Table
         }
 
         if (isset($this->config['columns'], $this->config['columns'][$column], $this->config['columns'][$column]['readonly'])) {
-            return (bool)$this->config['columns'][$column]['readonly'];
+            return (bool) $this->config['columns'][$column]['readonly'];
         }
 
         return false;

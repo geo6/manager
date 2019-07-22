@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Handler;
 
@@ -36,16 +36,12 @@ class TableHandler implements RequestHandlerInterface
         $offset = $request->getAttribute('offset', 0);
         $offset = intval(floor(intval($offset) / $config['config']['limit']) * $config['config']['limit']);
 
+        $filter = $params['filter'] ?? null;
+
         $order = [
             'column' => 'id',
             'order'  => 'asc',
         ];
-
-        $table = new Table($adapter, $config['config']);
-        $count = $table->getCount();
-        $columns = $table->getColumns();
-
-        $filter = $params['filter'] ?? null;
 
         if (isset($params['sort'])) {
             $result = array_filter($columns, function ($column) use ($params) {
@@ -69,7 +65,19 @@ class TableHandler implements RequestHandlerInterface
             }
         }
 
+        $table = new Table($adapter, $config['config']);
+        $total = $table->getCount();
+        $count = $table->getCount($filter);
+        $columns = $table->getColumns();
+
         $thematic = new Thematic($adapter, $config['config']);
+
+        $records = $table->getRecords(
+            $filter,
+            $order['column'] . ' ' . $order['order'],
+            $config['config']['limit'],
+            $offset
+        );
 
         return new HtmlResponse($this->renderer->render(
             'app::table',
@@ -79,17 +87,12 @@ class TableHandler implements RequestHandlerInterface
                 'limit'          => $config['config']['limit'],
                 'offset'         => $offset,
                 'order'          => $order,
-                'count'          => $count,
+                'count'          => $total,
                 'keyColumn'      => $table->getKeyColumn(),
                 'geometryColumn' => $table->getGeometryColumn(),
                 'table'          => $table,
                 'columns'        => $columns,
-                'records'        => $table->getRecords(
-                    $filter,
-                    $order['column'] . ' ' . $order['order'],
-                    $config['config']['limit'],
-                    $offset
-                ),
+                'records'        => $records,
                 'filter'         => $filter,
                 'thematic'       => $thematic,
             ]
