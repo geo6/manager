@@ -74,15 +74,10 @@
     <div class="d-flex align-items-center justify-content-between my-3">
         <div>
             <div>
-                <strong>Table: {{ table.identifier.table }}</strong>
-                {% if filter is not null %}
-                {{ records | length }}
-                record(s) (Total:
-                {{ count }})
-                {% else %}
-                {{ count }}
-                record(s)
-                {% endif %}
+                <strong>
+                    Table: {{ table.identifier.table }}
+                </strong>
+                <span class="badge badge-pill badge-primary">{{ total }}</span>
             </div>
             {% if filter is not null %}
             <div>
@@ -91,6 +86,7 @@
                     Filter:
                 </strong>
                 {{ filter }}
+                <span class="badge badge-pill badge-primary">{{ count }}</span>
             </div>
             {% endif %}
         </div>
@@ -114,7 +110,7 @@
                 {% for p in 0..pages %}
                 <li class="page-item {{ offset == (limit * p) ? 'active' }}">
                     <a class="page-link"
-                        href="{{ path('table', {'config': config, 'offset': (limit * p) })}}?sort={{ order.column }}&amp;order={{ order.order }}">{{ p + 1 }}</a>
+                        href="{{ path('table', {'config': config, 'offset': (limit * p) })}}?filter={{ filter }}&amp;sort={{ order.column }}&amp;order={{ order.order }}">{{ p + 1 }}</a>
                 </li>
                 {% endfor %}
                 {% if offset < (limit * pages) %}
