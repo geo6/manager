@@ -20,13 +20,14 @@ export default function (map, geojson) {
     const labelColumn = 'label';
 
     const layer = new VectorLayer({
-        map: map,
         renderMode: count > 500 ? 'image' : 'vector',
         source: window.app.source,
         style: (feature, resolution) => {
             return styleFunction(feature, labelColumn, resolution);
         }
     });
+
+    map.addLayer(layer);
 
     if (geometryColumn.type === 'point' && count > 1000) {
         const cluster = new Cluster({
