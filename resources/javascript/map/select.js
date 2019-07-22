@@ -40,7 +40,7 @@ function onselect (event, features) {
     }
 }
 
-export default function (map, layer) {
+export function add (map, layer) {
     const select = new Select({
         layers: [layer],
         multi: false,
@@ -53,4 +53,12 @@ export default function (map, layer) {
     map.addInteraction(select);
 
     return select;
+}
+
+export function remove (map) {
+    map.getInteractions().forEach(interaction => {
+        if (interaction instanceof Select) {
+            map.removeInteraction(interaction);
+        }
+    });
 }
