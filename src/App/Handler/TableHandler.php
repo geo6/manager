@@ -70,11 +70,6 @@ class TableHandler implements RequestHandlerInterface
             }
         }
 
-        $table = new Table($adapter, $config['config']);
-        $total = $table->getCount();
-        $count = $table->getCount($filter);
-        $columns = $table->getColumns();
-
         $thematic = new Thematic($adapter, $config['config']);
 
         $records = $table->getRecords(
