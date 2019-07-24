@@ -1,25 +1,15 @@
 'use strict';
 
-import { Select } from 'ol/interaction';
 import Collection from 'ol/Collection';
+import Select from 'ol/interaction/Select';
 
 import styleFunction from '../style/style';
 import displayRecord from '../feature/display';
 
-export default class {
+export default class extends Select {
     constructor (map, layer, hightlightLayer, sidebar) {
-        this.map = map;
-        this.sidebar = sidebar;
-
-        this.layer = layer;
-        this.hightlightLayer = hightlightLayer;
-
-        this._select = null;
-    }
-
-    add () {
-        const select = new Select({
-            layers: [this.layer],
+        super({
+            layers: [layer],
             multi: false,
             style: (feature, resolution) => {
                 const properties = feature.getProperties();
@@ -39,13 +29,15 @@ export default class {
             wrapX: false
         });
 
-        select.on('select', event => this.onselect(event, select.getFeatures()));
+        this.map = map;
+        this.sidebar = sidebar;
 
-        this.map.addInteraction(select);
+        this.layer = layer;
+        this.hightlightLayer = hightlightLayer;
 
-        this._select = select;
+        this.on('select', event => this.onselect(event, this.getFeatures()));
 
-        return select;
+        this.map.addInteraction(this);
     }
 
     remove () {
@@ -54,10 +46,6 @@ export default class {
                 this.map.removeInteraction(interaction);
             }
         });
-    }
-
-    getFeatures () {
-        return this._select.getFeatures();
     }
 
     onselect (event, features) {
