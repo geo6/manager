@@ -9,7 +9,7 @@ import app from './app';
 
 import Cache from './cache';
 import initMap from './map/init';
-import { add as initSelect } from './map/interaction/select';
+import SelectInteraction from './map/interaction/Select';
 import initLayer from './map/layer/layer';
 import initHighlightLayer from './map/layer/highlight';
 import initNewLayer from './map/layer/new';
@@ -57,7 +57,8 @@ require('sidebar-v2/js/jquery-sidebar.js');
         app.cache.setTable(data[0]);
         app.layers.layer = initLayer(app.map, data[1]);
 
-        initSelect(app.map, app.layers.layer);
+        app.interaction.select = new SelectInteraction(app.map, app.layers.layer);
+        app.interaction.select.add();
     });
 
     app.layers.highlight = initHighlightLayer(app.map);

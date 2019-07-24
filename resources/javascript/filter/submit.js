@@ -3,13 +3,12 @@
 import app from '../app';
 
 import initLayer from '../map/layer/layer';
-import { add as initSelect, remove as removeSelect } from '../map/interaction/select';
 import Records from '../Records';
 
 function removeLayer () {
     app.map.removeLayer(app.layers.layer);
 
-    removeSelect(app.map);
+    app.interaction.select.remove();
 }
 
 function addFilteredLayer (filter) {
@@ -17,7 +16,7 @@ function addFilteredLayer (filter) {
         .then(data => {
             app.layers.layer = initLayer(app.map, data);
 
-            initSelect(app.map, app.layers.layer);
+            app.interaction.select.add();
         });
 }
 
