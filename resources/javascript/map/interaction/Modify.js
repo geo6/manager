@@ -7,15 +7,16 @@ import Table from '../feature/info/Table';
 import Records from '../../Records';
 
 export default class {
-    constructor (map, source) {
+    constructor (map, source, features) {
         this.map = map;
 
         this.source = source;
+        this.features = features;
     }
 
     add () {
         const modify = new Modify({
-            source: this.source
+            features: this.features
         });
 
         modify.on('modifyend', event => this.onmodifyend(event));

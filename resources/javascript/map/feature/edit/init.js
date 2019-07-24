@@ -14,23 +14,22 @@ export default function () {
 }
 
 function editButton () {
-    const modify = new ModifyInteraction(app.map, app.layers.layer.getSource());
-
     document
         .getElementById('infos-details-btn-edit')
         .addEventListener('click', () => {
             if (InfoForm.isActive() === true) {
                 event.target.classList.remove('active');
 
-                modify.remove();
-
                 InfoForm.disable();
+
+                app.interaction.modify.remove();
             } else {
                 event.target.classList.add('active');
 
                 InfoForm.enable();
 
-                modify.add();
+                app.interaction.modify = new ModifyInteraction(app.map, app.source, app.interaction.select.getFeatures());
+                app.interaction.modify.add();
             }
         });
 }

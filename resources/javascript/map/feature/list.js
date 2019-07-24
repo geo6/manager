@@ -4,11 +4,8 @@ import app from '../../app';
 
 import displayRecord from './display';
 import InfoForm from './edit/Form';
-import ModifyInteraction from '../interaction/Modify';
 
 export default function (features, current) {
-    const modify = new ModifyInteraction(app.map);
-
     const count = features.getLength();
 
     document.getElementById('info-list').innerText = `${current + 1}/${count}`;
@@ -40,7 +37,7 @@ export default function (features, current) {
                 () => {
                     app.layers.highlight.getSource().clear();
 
-                    modify.remove();
+                    app.interaction.modify.remove();
 
                     displayRecord(features, current - 1);
                 },
@@ -64,7 +61,7 @@ export default function (features, current) {
                 () => {
                     app.layers.highlight.getSource().clear();
 
-                    modify.remove();
+                    app.interaction.modify.remove();
 
                     displayRecord(features, current + 1);
                 },

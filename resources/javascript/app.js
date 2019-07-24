@@ -3,6 +3,7 @@ export default {
     cache: null,
     custom: null,
     interaction: {
+        modify: null,
         select: null
     },
     layers: {
