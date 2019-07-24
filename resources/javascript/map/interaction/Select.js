@@ -13,6 +13,8 @@ export default class {
 
         this.layer = layer;
         this.hightlightLayer = hightlightLayer;
+
+        this._select = null;
     }
 
     add () {
@@ -41,6 +43,8 @@ export default class {
 
         this.map.addInteraction(select);
 
+        this._select = select;
+
         return select;
     }
 
@@ -50,6 +54,10 @@ export default class {
                 this.map.removeInteraction(interaction);
             }
         });
+    }
+
+    getFeatures () {
+        return this._select.getFeatures();
     }
 
     onselect (event, features) {
