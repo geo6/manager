@@ -31,22 +31,22 @@ export default function (map, geojson) {
 
     map.addLayer(layer);
 
-    if (geometryColumn.type === 'point' && count > 1000) {
-        const cluster = new Cluster({
-            source: app.source
-        });
+    // if (geometryColumn.type === 'point' && count > 1000) {
+    //     const cluster = new Cluster({
+    //         source: app.source
+    //     });
 
-        layer.setStyle((feature, resolution) => {
-            const features = feature.get('features');
+    //     layer.setStyle((feature, resolution) => {
+    //         const features = feature.get('features');
 
-            if (features.length > 1) {
-                return styleClusterFunction(features.length);
-            } else {
-                return styleFunction(features[0], labelColumn, resolution);
-            }
-        });
-        layer.setSource(cluster);
-    }
+    //         if (features.length > 1) {
+    //             return styleClusterFunction(features.length);
+    //         } else {
+    //             return styleFunction(features[0], labelColumn, resolution);
+    //         }
+    //     });
+    //     layer.setSource(cluster);
+    // }
 
     if (window.location.hash === '') {
         layer.once('render', () => {
