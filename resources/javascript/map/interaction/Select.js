@@ -3,15 +3,16 @@
 import { Select } from 'ol/interaction';
 import Collection from 'ol/Collection';
 
-import app from '../../app';
-
 import styleFunction from '../style/style';
 import displayRecord from '../feature/display';
 
 export default class {
-    constructor (map, layer) {
+    constructor (map, layer, hightlightLayer, sidebar) {
         this.map = map;
+        this.sidebar = sidebar;
+
         this.layer = layer;
+        this.hightlightLayer = hightlightLayer;
     }
 
     add () {
@@ -52,7 +53,7 @@ export default class {
     }
 
     onselect (event, features) {
-        app.layers.highlight.getSource().clear();
+        this.hightlightLayer.getSource().clear();
 
         const collection = new Collection();
 
@@ -84,11 +85,11 @@ export default class {
 
             displayRecord(collection, 0);
 
-            app.sidebar.open('info');
+            this.sidebar.open('info');
         } else {
             liElement.classList.add('disabled');
 
-            app.sidebar.close();
+            this.sidebar.close();
         }
     }
 }
