@@ -4,7 +4,7 @@ import app from '../../../app';
 
 import InfoForm from './Form';
 import Input from './Input';
-import { add as addModify, remove as removeModify } from '../../interaction/modify';
+import ModifyInteraction from '../../interaction/Modify';
 
 export default function () {
     editButton();
@@ -14,13 +14,15 @@ export default function () {
 }
 
 function editButton () {
+    const modify = new ModifyInteraction(app.map, app.layers.layer.getSource());
+
     document
         .getElementById('infos-details-btn-edit')
         .addEventListener('click', () => {
             if (InfoForm.isActive() === true) {
                 event.target.classList.remove('active');
 
-                removeModify(app.map);
+                modify.remove();
 
                 InfoForm.disable();
             } else {
@@ -28,10 +30,7 @@ function editButton () {
 
                 InfoForm.enable();
 
-                addModify(
-                    app.map,
-                    app.layers.highlight.getSource()
-                );
+                modify.add();
             }
         });
 }

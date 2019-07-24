@@ -59,6 +59,8 @@ require('sidebar-v2/js/jquery-sidebar.js');
 
         app.interaction.select = new SelectInteraction(app.map, app.layers.layer, app.layers.highlight, app.sidebar);
         app.interaction.select.add();
+
+        initEdit();
     });
 
     app.layers.highlight = initHighlightLayer(app.map);
@@ -66,6 +68,5 @@ require('sidebar-v2/js/jquery-sidebar.js');
 
     initFilter();
     initInfo();
-    initEdit();
     initNew();
 })();
