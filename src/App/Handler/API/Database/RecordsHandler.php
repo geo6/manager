@@ -7,7 +7,7 @@ namespace App\Handler\API\Database;
 use App\Middleware\ConfigMiddleware;
 use App\Middleware\DbAdapterMiddleware;
 use App\Model\Record;
-use App\Model\Table;
+use App\Model\MainTable;
 use Exception;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -26,7 +26,7 @@ class RecordsHandler implements RequestHandlerInterface
 
         $params = $request->getQueryParams();
 
-        $table = new Table($adapter, $config['config']);
+        $table = new MainTable($adapter, $config['config']);
 
         switch ($request->getMethod()) {
             case 'GET':

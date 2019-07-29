@@ -6,7 +6,7 @@ namespace App\Handler;
 
 use App\Middleware\ConfigMiddleware;
 use App\Middleware\DbAdapterMiddleware;
-use App\Model\Table;
+use App\Model\MainTable;
 use App\Model\Thematic;
 use Blast\BaseUrl\BaseUrlMiddleware;
 use Psr\Http\Message\ResponseInterface;
@@ -44,7 +44,7 @@ class TableHandler implements RequestHandlerInterface
 
         $filter = isset($params['filter']) && strlen($params['filter']) > 0 ? $params['filter'] : null;
 
-        $table = new Table($adapter, $config['config']);
+        $table = new MainTable($adapter, $config['config']);
         $total = $table->getCount();
         $count = $table->getCount($filter);
         $columns = $table->getColumns();

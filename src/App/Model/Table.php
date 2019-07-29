@@ -15,18 +15,16 @@ use Zend\Db\Sql\TableIdentifier;
 
 class Table
 {
-    private $adapter;
-    private $config;
-    private $columns;
-    private $constraints;
-    private $identifier;
-    private $name;
-    private $schema;
+    protected $adapter;
+    protected $columns;
+    protected $constraints;
+    protected $identifier;
+    protected $name;
+    protected $schema;
 
-    public function __construct(Adapter $adapter, array $config)
+    public function __construct(Adapter $adapter)
     {
         $this->adapter = $adapter;
-        $this->config = $config;
 
         $connection = $this->adapter->getDriver()->getConnection()->getConnectionParameters();
 
@@ -45,7 +43,6 @@ class Table
         foreach ($this->columns as &$column) {
             $name = $column->getName();
 
-            $column->readonly = $this->isColumnReadonly($name);
             $column->notnull = $this->isColumnNotNull($name);
             $column->foreign = $this->isColumnForeignKey($name);
 
@@ -162,21 +159,6 @@ class Table
         pg_close($db);
 
         return $metadata[$column]['type'];
-    }
-
-    private function isColumnReadonly(string $column): bool
-    {
-        $keyColumn = $this->getKeyColumn()->getName();
-
-        if (in_array($column, [$keyColumn, 'updatetime', 'updateuser'])) {
-            return true;
-        }
-
-        if (isset($this->config['columns'], $this->config['columns'][$column], $this->config['columns'][$column]['readonly'])) {
-            return (bool) $this->config['columns'][$column]['readonly'];
-        }
-
-        return false;
     }
 
     private function isColumnNotNull(string $column): bool

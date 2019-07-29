@@ -6,7 +6,7 @@ namespace App\Handler;
 
 use App\Middleware\ConfigMiddleware;
 use App\Middleware\DbAdapterMiddleware;
-use App\Model\Table;
+use App\Model\MainTable;
 use App\Model\Thematic;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -31,7 +31,7 @@ class MapHandler implements RequestHandlerInterface
         $adapter = $request->getAttribute(DbAdapterMiddleware::DBADAPTER_ATTRIBUTE);
         $config = $request->getAttribute(ConfigMiddleware::CONFIG_ATTRIBUTE);
 
-        $table = new Table($adapter, $config['config']);
+        $table = new MainTable($adapter, $config['config']);
         $columns = $table->getColumns();
 
         $thematic = new Thematic($adapter, $config['config']);
