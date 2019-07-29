@@ -4,14 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model;
 
-use ArrayObject;
-use Exception;
 use Zend\Db\Adapter\Adapter;
-use Zend\Db\Metadata\Metadata;
-use Zend\Db\Metadata\Object\ColumnObject;
-use Zend\Db\Sql\Expression;
-use Zend\Db\Sql\Sql;
-use Zend\Db\Sql\TableIdentifier;
 
 class MainTable extends Table
 {
