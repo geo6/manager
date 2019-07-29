@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model;
 
+use ArrayObject;
 use Exception;
 use Zend\Db\Adapter\Adapter;
 use Zend\Db\Metadata\Metadata;
@@ -46,6 +47,7 @@ class Table
 
             $column->readonly = $this->isColumnReadonly($name);
             $column->notnull = $this->isColumnNotNull($name);
+            $column->foreign = $this->isColumnForeignKey($name);
 
             $datatype = $column->getDataType();
 
@@ -184,6 +186,25 @@ class Table
         });
 
         return count($notnull) > 0;
+    }
+
+    private function isColumnForeignKey(string $column)
+    {
+        // var_dump($this->constraints);
+
+        $foreign = current(array_filter($this->constraints, function ($constraint) use ($column) {
+            return $constraint->isForeignKey() && $constraint->getColumns() === [$column];
+        }));
+
+        if ($foreign !== false) {
+            return new ArrayObject([
+                'schema' => $foreign->getReferencedTableSchema(),
+                'table'  => $foreign->getReferencedTableName(),
+                'column' => $foreign->getReferencedColumns(),
+            ]);
+        }
+
+        return false;
     }
 
     // private function isColumnUnique(string $column): bool
