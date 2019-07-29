@@ -19,6 +19,7 @@ export function eventKey (element) {
             updateOperationList(divElement, datatype);
 
             if (column === app.thematic.column) {
+                inputValueElement.setAttribute('type', 'text');
                 inputValueElement.setAttribute('list', 'filter-value-thematic');
             } else if (datatype === 'integer') {
                 inputValueElement.type = 'number';
