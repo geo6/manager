@@ -9,13 +9,6 @@
             </div>
             <form autocomplete="off">
                 <div class="modal-body">
-                    {% if thematic.column is not null %}
-                    <datalist id="filter-value-thematic">
-                        {% for value, symbol in thematic.values %}
-                        <option value="{{ value }}">{{ value }}</option>
-                        {% endfor %}
-                    </datalist>
-                    {% endif %}
                     <div class="row">
                         <div class="col-4">
                             <select name="key" class="form-control">
@@ -56,6 +49,13 @@
                                 <option value="1">TRUE</option>
                                 <option value="0">FALSE</option>
                             </select>
+                            {% if thematic.column is not null %}
+                            <datalist id="filter-value-thematic">
+                                {% for value, symbol in thematic.values %}
+                                <option value="{{ value }}">{{ value }}</option>
+                                {% endfor %}
+                            </datalist>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
