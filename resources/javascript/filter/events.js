@@ -14,7 +14,7 @@ export function eventKey (element) {
         resetValue(divElement);
 
         if (typeof datatype !== 'undefined') {
-            inputValueElement.placeholder = datatype;
+            inputValueElement.setAttribute('placeholder', datatype);
 
             updateOperationList(divElement, datatype);
 
@@ -22,18 +22,18 @@ export function eventKey (element) {
                 inputValueElement.setAttribute('type', 'text');
                 inputValueElement.setAttribute('list', 'filter-value-thematic');
             } else if (datatype === 'integer') {
-                inputValueElement.type = 'number';
+                inputValueElement.setAttribute('type', 'number');
             } else if (datatype === 'boolean') {
                 displayValueBoolean(divElement);
             } else {
-                inputValueElement.type = 'text';
+                inputValueElement.setAttribute('type', 'text');
             }
         } else {
             divElement
                 .querySelector('input[name=value]')
                 .removeAttribute('placeholder');
 
-            inputValueElement.type = 'text';
+            inputValueElement.setAttribute('type', 'text');
         }
     });
 }
@@ -46,8 +46,8 @@ export function eventOperation (element) {
         const divValueColElement = inputValueElement.closest('.col');
 
         if (['null', 'nnull'].indexOf(selectOpElement.value) !== -1) {
-            inputValueElement.value = '';
-            inputValueElement.disabled = true;
+            inputValueElement.setAttribute('value', '');
+            inputValueElement.setAttribute('disabled', '');
 
             divValueColElement.style.display = 'none';
             element.parentElement.className = 'col-8';
@@ -75,7 +75,7 @@ function updateOperationList (div, datatype) {
         div.querySelectorAll(
             'select[name=operation] > option[value=like], select[name=operation] > option[value=nlike]'
         ).forEach(option => {
-            option.disabled = true;
+            option.setAttribute('disabled', '');
         });
     }
 }
@@ -86,8 +86,8 @@ function resetValue (div) {
     div.querySelectorAll('input[name=value], select[name=value]').forEach(
         element => {
             element.removeAttribute('list');
-            element.hidden = true;
-            element.disabled = true;
+            element.setAttribute('hidden', '');
+            element.setAttribute('disabled', '');
         }
     );
 
@@ -101,8 +101,8 @@ function displayValueBoolean (div) {
 
     resetValue(div);
 
-    input.hidden = true;
-    input.disabled = true;
+    input.setAttribute('hidden', '');
+    input.setAttribute('disabled', '');
 
     select.removeAttribute('hidden');
     select.removeAttribute('disabled');
