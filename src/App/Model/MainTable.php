@@ -12,7 +12,9 @@ class MainTable extends Table
 
     public function __construct(Adapter $adapter, array $config)
     {
-        parent::__construct($adapter);
+        $connection = $adapter->getDriver()->getConnection()->getConnectionParameters();
+
+        parent::__construct($adapter, $connection['schema'], $connection['table']);
 
         $this->config = $config;
 

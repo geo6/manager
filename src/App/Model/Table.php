@@ -22,14 +22,12 @@ class Table
     protected $name;
     protected $schema;
 
-    public function __construct(Adapter $adapter)
+    public function __construct(Adapter $adapter, string $schema, string $table)
     {
         $this->adapter = $adapter;
 
-        $connection = $this->adapter->getDriver()->getConnection()->getConnectionParameters();
-
-        $this->name = $connection['table'];
-        $this->schema = $connection['schema'];
+        $this->name = $table;
+        $this->schema = $schema;
 
         $this->identifier = new TableIdentifier($this->name, $this->schema);
 
