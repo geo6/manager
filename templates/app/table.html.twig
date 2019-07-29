@@ -74,18 +74,17 @@
     <div class="d-flex align-items-center justify-content-between my-3">
         <div>
             <div>
-                <strong>
-                    Table: {{ table.identifier.table }}
-                </strong>
+                <strong>Table:</strong>
+                <code>{{ table.identifier.table }}</code>
                 <span class="badge badge-pill badge-primary">{{ total }}</span>
             </div>
             {% if filter is not null %}
             <div>
-                <strong class="text-info">
+                <strong>
                     <i class="fas fa-filter"></i>
                     Filter:
                 </strong>
-                {{ filter }}
+                <code>{{ filter }}</code>
                 <span class="badge badge-pill badge-primary">{{ count }}</span>
             </div>
             {% endif %}
