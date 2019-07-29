@@ -40,6 +40,11 @@ export default function () {
         initBaselayers();
     });
 
+    // map.on('pointermove', evt => {
+    //     map.getTargetElement().style.cursor =
+    //         map.hasFeatureAtPixel(evt.pixel) ? 'pointer' : '';
+    // });
+
     // map.on('singleclick', (event) => {
     //     return singleclick(event);
     // });
