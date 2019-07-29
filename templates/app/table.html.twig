@@ -138,8 +138,9 @@
                     <th scope="col" {{ thematic.column == column.name ? ' colspan="2"'}}>
                         <a href="{{ path('table', {'config': configId, 'offset': 0}) }}?sort={{ column.name }}&amp;order={{ order.column == column.name and order.order == 'asc' ? 'desc' : 'asc' }}"
                             class="d-flex justify-content-between align-items-center">
-                            <span>
-                                {{ thematic.column == column.name ? '<i class="fas fa-palette"></i>'}}
+                            <span class="text-nowrap">
+                                {{ thematic.column == column.name ? '<i class="fas fa-palette"></i>' }}
+                                {{ column.foreign != false ? '<i class="fas fa-link"></i>' }}
                                 {{ column.name }}
                             </span>
                             {% if order.column == column.name and order.order == 'asc' %}
