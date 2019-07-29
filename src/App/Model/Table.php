@@ -78,7 +78,7 @@ class Table
     public function getKeyColumn(): ColumnObject
     {
         $primaryKey = current(array_filter($this->constraints, function ($constraint) {
-            return $constraint->getType() === 'PRIMARY KEY';
+            return $constraint->isPrimaryKey();
         }));
 
         $keys = $primaryKey->getColumns();
