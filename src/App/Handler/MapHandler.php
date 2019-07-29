@@ -39,7 +39,7 @@ class MapHandler implements RequestHandlerInterface
         return new HtmlResponse($this->renderer->render(
             'app::map',
             [
-                'config'         => $config['custom'],
+                'configId'       => $config['custom'],
                 'table'          => $table,
                 'columns'        => $columns,
                 'keyColumn'      => $table->getKeyColumn(),

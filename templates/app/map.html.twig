@@ -8,7 +8,7 @@
 
 {% block javascript %}
 <script>
-    window.custom = {{ config | json_encode | raw }};
+    window.custom = {{ configId | json_encode | raw }};
     window.thematic = {{ thematic | json_encode | raw }};
     window.baselayers = {{ baselayers | json_encode | raw }};
 </script>
@@ -17,7 +17,7 @@
 
 {% block links %}
 <li class="nav-item">
-    <a href="{{ path('table', {'config': config}) }}" class="nav-link">
+    <a href="{{ path('table', {'config': configId}) }}" class="nav-link">
         <i class="fas fa-table"></i>
         Table
     </a>
@@ -43,20 +43,20 @@
         Export
     </a>
     <div class="dropdown-menu">
-        <a class="dropdown-item disabled" href="{{ path('export', {'config': config, 'format':'geojson'}) }}">
+        <a class="dropdown-item disabled" href="{{ path('export', {'config': configId, 'format':'geojson'}) }}">
             <i class="far fa-file-code"></i>
             GeoJSON
         </a>
-        <a class="dropdown-item disabled" href="{{ path('export', {'config': config, 'format':'kml'}) }}">
+        <a class="dropdown-item disabled" href="{{ path('export', {'config': configId, 'format':'kml'}) }}">
             <i class="far fa-file-code"></i>
             KML
         </a>
         <div class="dropdown-divider"></div>
-        <a class="dropdown-item disabled" href="{{ path('export', {'config': config, 'format':'csv'}) }}">
+        <a class="dropdown-item disabled" href="{{ path('export', {'config': configId, 'format':'csv'}) }}">
             <i class="fas fa-file-csv"></i>
             CSV
         </a>
-        <a class="dropdown-item disabled" href="{{ path('export', {'config': config, 'format':'csv'}) }}">
+        <a class="dropdown-item disabled" href="{{ path('export', {'config': configId, 'format':'csv'}) }}">
             <i class="far fa-file-excel"></i>
             Excel
         </a>

@@ -104,7 +104,7 @@ class TableHandler implements RequestHandlerInterface
         return new HtmlResponse($this->renderer->render(
             'app::table',
             [
-                'config'         => $config['custom'],
+                'configId'       => $config['custom'],
                 'pages'          => floor($count / $config['config']['limit']),
                 'limit'          => $config['config']['limit'],
                 'offset'         => $offset,
