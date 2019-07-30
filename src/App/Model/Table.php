@@ -53,9 +53,8 @@ class Table
         }
     }
 
-    public function getCount(
-        ?string $filter = null
-    ): int {
+    public function getCount(?string $filter = null): int
+    {
         $sql = new Sql($this->adapter);
 
         $select = $sql->select()->from($this->identifier)->columns(['count' => new Expression('COUNT(*)')]);
