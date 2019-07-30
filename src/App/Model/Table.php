@@ -117,7 +117,7 @@ class Table
         return $matches[1];
     }
 
-    public function getGeometryColumn(): ColumnObject
+    public function getGeometryColumn(): ?ColumnObject
     {
         $columns = array_filter($this->columns, function ($column) {
             return in_array(
@@ -132,7 +132,7 @@ class Table
             );
         });
 
-        return current($columns);
+        return count($columns) > 0 ? current($columns) : null;
     }
 
     public function getAdapter(): Adapter
