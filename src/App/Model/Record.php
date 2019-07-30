@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Model;
 
@@ -55,7 +55,7 @@ class Record
             $this->id = $object->{$keyColumn};
         }
 
-        $this->properties = array_filter((array)$object, function ($key) {
+        $this->properties = array_filter((array) $object, function ($key) {
             return substr($key, 0, 1) !== '_' && $key !== $this->table->getGeometryColumn()->getName();
         }, ARRAY_FILTER_USE_KEY);
 
@@ -66,16 +66,26 @@ class Record
 
     public function select(bool $execute = false)
     {
+        $table = $this->table->getIdentifier()->getTable();
+
         $keyColumn = $this->table->getKeyColumn()->getName();
         $geometryColumn = $this->table->getGeometryColumn()->getName();
 
+        $columns = array_map(function ($column) {
+            return $column->getName();
+        }, $this->table->getColumns());
+
+        $columns = array_merge(
+            $columns,
+            [
+                '_geojson' => new Expression(sprintf('ST_AsGeoJSON("%s"."%s"::geometry)', $table, $geometryColumn)),
+                '_length'  => new Expression(sprintf('ST_Length("%s"."%s"::geometry::geography)', $table, $geometryColumn)),
+                '_area'    => new Expression(sprintf('ST_Area("%s"."%s"::geometry::geography)', $table, $geometryColumn)),
+            ]
+        );
+
         $select = new Select($this->table->getIdentifier());
-        $select = $select->columns([
-            '*',
-            '_geojson' => new Expression('ST_AsGeoJSON(' . $geometryColumn . '::geometry) '),
-            '_length'  => new Expression('ST_Length(' . $geometryColumn . '::geometry::geography) '),
-            '_area'    => new Expression('ST_Area(' . $geometryColumn . '::geometry::geography) '),
-        ]);
+        $select = $select->columns($columns, true);
 
         if (!is_null($this->id)) {
             $select = $select->where([$keyColumn => $this->id]);
