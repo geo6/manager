@@ -47,7 +47,6 @@ class Table
         $columns = $metadata->getColumns($this->name, $this->schema);
         foreach ($columns as $column) {
             $col = Column::fromColumnObject($adapter, $column);
-            $col->setConstraints($this->constraints);
 
             $this->columns[] = $col;
         }

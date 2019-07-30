@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Model;
 
 use Zend\Db\Adapter\Adapter;
+use Zend\Db\Metadata\Metadata;
 use Zend\Db\Metadata\Object\ColumnObject;
 use Zend\Db\Metadata\Object\ConstraintObject;
 
@@ -21,6 +22,11 @@ class Column extends ColumnObject
         parent::__construct($name, $tableName, $schemaName);
 
         $this->adapter = $adapter;
+
+        $constraints = (new Metadata($adapter))->getConstraints($this->tableName, $this->schemaName);
+        $this->constraints = array_filter($constraints, function (ConstraintObject $constraint) use ($name) {
+            return in_array($name, $constraint->getColumns());
+        });
     }
 
     public static function fromColumnObject(Adapter $adapter, ColumnObject $columnObject): self
