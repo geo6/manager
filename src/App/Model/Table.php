@@ -15,11 +15,19 @@ use Zend\Db\Sql\TableIdentifier;
 
 class Table
 {
+    /** @var Adapter */
     protected $adapter;
-    protected $columns;
+    /** @var \App\Model\Column[] */
+    protected $columns = [];
+    /** @var \Zend\Db\Metadata\Object\ConstraintObject[] */
     protected $constraints;
+    /** @var int */
+    protected $count;
+    /** @var \Zend\Db\Sql\TableIdentifier */
     protected $identifier;
+    /** @var string */
     protected $name;
+    /** @var string */
     protected $schema;
 
     public function __construct(Adapter $adapter, string $schema, string $table)
