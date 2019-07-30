@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Model;
 
-use ArrayObject;
 use Exception;
 use Zend\Db\Adapter\Adapter;
 use Zend\Db\Metadata\Metadata;
@@ -136,6 +135,7 @@ class Table
 
         return current($columns);
     }
+
     public function getAdapter(): Adapter
     {
         return $this->adapter;
