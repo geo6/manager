@@ -36,20 +36,13 @@ class Table
         $metadata = new Metadata($this->adapter);
 
         $this->constraints = $metadata->getConstraints($this->name, $this->schema);
-        $this->columns = $metadata->getColumns($this->name, $this->schema);
 
-        foreach ($this->columns as &$column) {
-            $name = $column->getName();
+        $columns = $metadata->getColumns($this->name, $this->schema);
+        foreach ($columns as $column) {
+            $col = Column::fromColumnObject($adapter, $column);
+            $col->setConstraints($this->constraints);
 
-            $column->notnull = $this->isColumnNotNull($name);
-            $column->foreign = $this->isColumnForeignKey($name);
-
-            $datatype = $column->getDataType();
-
-            if ($datatype === 'USER-DEFINED') {
-                $datatype = $this->getColumnDataType($name);
-                $column->setDataType($datatype);
-            }
+            $this->columns[] = $col;
         }
     }
 
@@ -135,106 +128,6 @@ class Table
 
         return current($columns);
     }
-
-    private function getColumnDataType(string $column): string
-    {
-        $connection = $this->adapter->getDriver()->getConnection()->getConnectionParameters();
-
-        $db = pg_connect(
-            sprintf(
-                'host=%s port=%d dbname=%s user=%s password=%s',
-                $connection['host'],
-                $connection['port'],
-                $connection['dbname'],
-                $connection['user'],
-                $connection['password']
-            )
-        );
-
-        $metadata = pg_meta_data($db, $this->schema . '.' . $this->name);
-
-        pg_close($db);
-
-        return $metadata[$column]['type'];
-    }
-
-    private function isColumnNotNull(string $column): bool
-    {
-        $notnull = array_filter($this->constraints, function ($constraint) use ($column) {
-            return $constraint->isCheck() && $constraint->getCheckClause() === sprintf('%s IS NOT NULL', $column);
-        });
-
-        return count($notnull) > 0;
-    }
-
-    private function isColumnForeignKey(string $column)
-    {
-        // var_dump($this->constraints);
-
-        $foreign = current(array_filter($this->constraints, function ($constraint) use ($column) {
-            return $constraint->isForeignKey() && $constraint->getColumns() === [$column];
-        }));
-
-        if ($foreign !== false) {
-            return new ArrayObject([
-                'schema' => $foreign->getReferencedTableSchema(),
-                'table'  => $foreign->getReferencedTableName(),
-                'column' => $foreign->getReferencedColumns(),
-            ]);
-        }
-
-        return false;
-    }
-
-    // private function isColumnUnique(string $column): bool
-    // {
-    //     $unique = array_filter($this->constraints, function ($constraint) use ($column) {
-    //         return $constraint->isUnique() && $constraint->hasColumns() && in_array($column, $constraint->getColumns()) && count($constraint->getColumns()) === 1;
-    //     });
-
-    //     return count($unique) > 0;
-    // }
-
-    public function toArray(): array
-    {
-        $columns = [];
-        foreach ($this->columns as $column) {
-            $columns[] = [
-                'name'      => $column->getName(),
-                'type'      => $column->getDataType(),
-                'default'   => $column->getColumnDefault(),
-                'maxlength' => $column->getCharacterMaximumLength(),
-                'readonly'  => $column->readonly,
-                'notnull'   => $column->notnull,
-            ];
-        }
-
-        $constraints = [];
-        foreach ($this->constraints as $constraint) {
-            $constraints[] = [
-                'name'      => $constraint->getName(),
-                'type'      => $constraint->getType(),
-                'columns'   => $constraint->hasColumns() ? $constraint->getColumns() : null,
-                'check'     => $constraint->isCheck() ? $constraint->getCheckClause() : null,
-                'reference' => $constraint->isForeignKey() ? [
-                    'schema'  => $constraint->getReferencedTableSchema(),
-                    'table'   => $constraint->getReferencedTableName(),
-                    'columns' => $constraint->getReferencedColumns(),
-                ] : null,
-            ];
-        }
-
-        return [
-            'schema' => $this->schema,
-            'table'  => $this->name,
-            // 'count' => $count,
-            'key'         => $this->getKeyColumn()->getName(),
-            'geometry'    => $this->getGeometryColumn()->getName(),
-            'columns'     => $columns,
-            'constraints' => $constraints,
-        ];
-    }
-
     public function getAdapter(): Adapter
     {
         return $this->adapter;
