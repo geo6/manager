@@ -13,7 +13,13 @@
                         <div class="col-4">
                             <select name="key" class="form-control">
                                 <optgroup label="Table: {{ table.identifier.table }}">
-                                    {% for column in columns if column.name not in [geometryColumn.name, 'updateuser', 'updatetime'] %}
+                                    {% if table.geometryColumn is not null %}
+                                    {% set columns = table.columns | filter(c => c.name != table.geometryColumn.name) %}
+                                    {% else %}
+                                    {% set columns = table.columns %}
+                                    {% endif %}
+
+                                    {% for column in columns if column.name not in ['updateuser', 'updatetime'] %}
                                     <option
                                         value="{{ table.identifier.schema }}.{{ table.identifier.table }}.{{ column.name }}"
                                         data-column="{{ column.name }}" data-datatype="{{ column.datatype }}">

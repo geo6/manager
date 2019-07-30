@@ -6,14 +6,16 @@
 
     <div class="mt-3">
         <div id="new-list-types" class="list-group">
-            {% if geometryColumn.datatype in ['geometry', 'geography', 'point'] %}
+            {% if table.geometryColumn is not null %}
+            {% if table.geometryColumn.datatype in ['geometry', 'geography', 'point'] %}
             <button type="button" class="list-group-item list-group-item-action" data-type="Point">Point</button>
             {% endif %}
-            {% if geometryColumn.datatype in ['geometry', 'geography', 'linestring'] %}
+            {% if table.geometryColumn.datatype in ['geometry', 'geography', 'linestring'] %}
             <button type="button" class="list-group-item list-group-item-action" data-type="LineString">Line</button>
             {% endif %}
-            {% if geometryColumn.datatype in ['geometry', 'geography', 'polygon'] %}
+            {% if table.geometryColumn.datatype in ['geometry', 'geography', 'polygon'] %}
             <button type="button" class="list-group-item list-group-item-action" data-type="Polygon">Polygon</button>
+            {% endif %}
             {% endif %}
         </div>
         {{ include('@app/map/sidebar/new/form.html.twig') }}

@@ -14,7 +14,14 @@
             </div>
         </div>
         <div class="alert alert-danger" role="alert" hidden></div>
-        {% for column in columns if (column.name != geometryColumn.name and column.readonly == false) %}
+
+        {% if table.geometryColumn is not null %}
+        {% set columns = table.columns | filter(c => c.name != table.geometryColumn.name) %}
+        {% else %}
+        {% set columns = table.columns %}
+        {% endif %}
+
+        {% for column in columns if column.readonly == false %}
         <div class="form-group mb-2">
             <div class="d-flex justify-content-between">
                 <label class="font-weight-bold{{ column.isnullable ?: ' text-primary' }}" for="input-{{ column.name }}">

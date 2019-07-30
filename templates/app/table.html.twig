@@ -134,7 +134,13 @@
         <table class="table table-sm table-bordered table-striped table-hover mb-0">
             <thead class="thead-light">
                 <tr>
-                    {% for column in columns if column.name != geometryColumn.name %}
+                    {% if table.geometryColumn is not null %}
+                    {% set columns = table.columns | filter(c => c.name != table.geometryColumn.name) %}
+                    {% else %}
+                    {% set columns = table.columns %}
+                    {% endif %}
+
+                    {% for column in columns %}
                     <th scope="col" {{ thematic.column == column.name ? ' colspan="2"'}}>
                         <a href="{{ path('table', {'config': configId, 'offset': 0}) }}?sort={{ column.name }}&amp;order={{ order.column == column.name and order.order == 'asc' ? 'desc' : 'asc' }}"
                             class="d-flex justify-content-between align-items-center">
@@ -161,7 +167,7 @@
                 {% for record in records %}
                 <tr>
                     <th class="text-right" scope="row">{{ record.id }}</th>
-                    {% for column in columns if column.name != keyColumn.name and column.name != geometryColumn.name %}
+                    {% for column in columns if column.name != table.keyColumn.name %}
 
                     {% set value = attribute(record.properties, column.name) %}
 

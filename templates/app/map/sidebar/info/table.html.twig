@@ -14,9 +14,15 @@
             </div>
         </caption>
         <tbody>
-            {% for column in columns if column.name not in [geometryColumn.name, 'updateuser', 'updatetime'] %}
+            {% if table.geometryColumn is not null %}
+            {% set columns = table.columns | filter(c => c.name != table.geometryColumn.name) %}
+            {% else %}
+            {% set columns = table.columns %}
+            {% endif %}
+
+            {% for column in columns if column.name not in ['updateuser', 'updatetime'] %}
             <tr>
-                <th>{{ column.name == keyColumn.name ? '<i class="fas fa-bookmark"></i> ' }}{{ column.name }}</th>
+                <th>{{ column.name == table.keyColumn.name ? '<i class="fas fa-bookmark"></i> ' }}{{ column.name }}</th>
                 <td data-column="{{ column.name }}" data-datatype="{{ column.datatype }}"></td>
             </tr>
             {% endfor %}

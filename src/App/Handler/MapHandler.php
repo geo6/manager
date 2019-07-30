@@ -42,9 +42,6 @@ class MapHandler implements RequestHandlerInterface
                 'config'         => $config['config'],
                 'configId'       => $config['custom'],
                 'table'          => $table,
-                'columns'        => $columns,
-                'keyColumn'      => $table->getKeyColumn(),
-                'geometryColumn' => $table->getGeometryColumn(),
                 'thematic'       => $thematic,
                 'baselayers'     => self::getBaselayers($config['global']['baselayers'] ?? []),
             ]
