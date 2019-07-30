@@ -166,9 +166,9 @@ class Table
             $select = $select->where((new Filter($filter))->getPredicate());
         }
         if (!is_null($order)) {
-            $select = $select->order($order);
+            $select = $select->order($this->name . '.' . $order);
         } else {
-            $select = $select->order($this->getKeyColumn()->getName());
+            $select = $select->order($this->name . '.' . $this->getKeyColumn()->getName());
         }
         if (!is_null($limit)) {
             $select = $select->limit($limit);
