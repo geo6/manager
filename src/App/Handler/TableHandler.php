@@ -6,7 +6,7 @@ namespace App\Handler;
 
 use App\Middleware\ConfigMiddleware;
 use App\Middleware\DbAdapterMiddleware;
-use App\Model\MainTable;
+use App\Model\Table\Main as MainTable;
 use App\Model\Thematic;
 use Blast\BaseUrl\BaseUrlMiddleware;
 use Psr\Http\Message\ResponseInterface;

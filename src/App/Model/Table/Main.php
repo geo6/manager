@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Model;
+namespace App\Model\Table;
 
 use Zend\Db\Adapter\Adapter;
 
-class MainTable extends Table
+class Main extends Table
 {
     private $config;
 
