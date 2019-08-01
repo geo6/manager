@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use App\Model\Table;
 use Zend\Db\Adapter\Adapter;
 
 class Main extends Table
