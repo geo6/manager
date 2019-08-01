@@ -17,8 +17,11 @@ export default class Table {
 
     static fill (feature) {
         const properties = feature.getProperties();
+        const geometryName = feature.getGeometryName();
 
-        Object.keys(properties).map(key => {
+        Object.keys(properties).filter(key => {
+            return [geometryName, 'updateuser', 'updatetime'].indexOf(key) === -1;
+        }).map(key => {
             const td = Table.getElement().querySelector(
                 `table > tbody > tr > td[data-column="${key}"]`
             );
@@ -33,6 +36,8 @@ export default class Table {
                 } else {
                     td.innerHTML = valueVarchar(properties[key]);
                 }
+            } else {
+                throw new Error(`No row in table for properties "${key}".`);
             }
         });
 
