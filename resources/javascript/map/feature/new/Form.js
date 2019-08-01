@@ -36,7 +36,7 @@ export default class Form {
         const formData = new FormData(Form.getElement().querySelector('form'));
         const alertElement = Form.getElement().querySelector('.alert-danger');
 
-        let data = {
+        const data = {
             geometry: JSON.parse(geojson),
             properties: {}
         };

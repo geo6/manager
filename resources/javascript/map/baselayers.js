@@ -13,7 +13,7 @@ import app from '../app';
 
 function loadBaselayer (index) {
     if (typeof app.baselayers[index] !== 'undefined') {
-        let baselayer = app.baselayers[index];
+        const baselayer = app.baselayers[index];
 
         switch (baselayer.mode) {
         case 'wms':
@@ -41,9 +41,9 @@ function loadBaselayer (index) {
             fetch(url)
                 .then(response => response.text())
                 .then((text) => {
-                    let capabilities = (new WMTSCapabilities()).read(text);
+                    const capabilities = (new WMTSCapabilities()).read(text);
 
-                    let options = optionsFromCapabilities(capabilities, {
+                    const options = optionsFromCapabilities(capabilities, {
                         layer: baselayer.layer
                     });
                     options.attributions = baselayer.attributions;
