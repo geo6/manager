@@ -7,14 +7,11 @@ import app from './app';
 import Cache from './cache';
 import initFilter from './filter/init';
 
-(function () {
+export function init (custom, thematic) {
     app.mode = 'table';
 
-    app.custom = window.custom || 'default';
-    delete window.custom;
-
-    app.thematic = window.thematic;
-    delete window.thematic;
+    app.custom = custom || 'default';
+    app.thematic = thematic;
 
     app.cache = new Cache();
 
@@ -26,4 +23,4 @@ import initFilter from './filter/init';
         });
 
     initFilter();
-})();
+}

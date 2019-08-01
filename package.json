@@ -22,11 +22,11 @@
         "test": "eslint resources/javascript/",
         "fix": "eslint resources/javascript/ --fix",
         "watch": "concurrently --raw \"npm:watch:*\"",
-        "watch:map": "parcel watch --out-dir=public/ --out-file=map.js resources/javascript/map.js --no-cache --no-hmr",
-        "watch:table": "parcel watch --out-dir=public/ --out-file=table.js resources/javascript/table.js --no-cache --no-hmr",
+        "watch:map": "parcel watch --out-dir=public/ --out-file=map.js --global map resources/javascript/map.js --no-cache --no-hmr",
+        "watch:table": "parcel watch --out-dir=public/ --out-file=table.js --global table resources/javascript/table.js --no-cache --no-hmr",
         "build": "concurrently --raw \"npm:build:*\"",
-        "build:map": "parcel build --out-dir=public/ --out-file=map.js --no-cache --no-source-maps resources/javascript/map.js",
-        "build:table": "parcel build --out-dir=public/ --out-file=table.js --no-cache --no-source-maps resources/javascript/table.js"
+        "build:map": "parcel build --out-dir=public/ --out-file=map.js --global map resources/javascript/map.js --no-cache --no-source-maps",
+        "build:table": "parcel build --out-dir=public/ --out-file=table.js --global table resources/javascript/table.js --no-cache --no-source-maps"
     },
     "browserslist": {
         "production": [

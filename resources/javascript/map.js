@@ -21,7 +21,7 @@ import Records from './Records';
 
 require('sidebar-v2/js/jquery-sidebar.js');
 
-(function () {
+export function init (custom, baselayers, thematic) {
     app.mode = 'map';
 
     $('#map').height(
@@ -33,14 +33,9 @@ require('sidebar-v2/js/jquery-sidebar.js');
         );
     });
 
-    app.baselayers = window.baselayers || [];
-    delete window.baselayers;
-
-    app.custom = window.custom || 'default';
-    delete window.custom;
-
-    app.thematic = window.thematic;
-    delete window.thematic;
+    app.baselayers = baselayers || [];
+    app.custom = custom || 'default';
+    app.thematic = thematic;
 
     app.cache = new Cache();
 
@@ -68,4 +63,4 @@ require('sidebar-v2/js/jquery-sidebar.js');
     initFilter();
     initInfo();
     initNew();
-})();
+}

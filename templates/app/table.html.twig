@@ -7,11 +7,15 @@
 {% endblock %}
 
 {% block javascript %}
-<script>
-    window.custom = {{ configId | json_encode | raw }};
-    window.thematic = {{ thematic | json_encode | raw }};
-</script>
 <script src="{{ asset('/table.js') }}"></script>
+<script>
+    const custom = {{ configId | json_encode | raw }};
+    const thematic = {{ thematic | json_encode | raw }};
+
+    (function () {
+        table.init(custom, thematic);
+    })();
+</script>
 {% endblock %}
 
 {% block links %}

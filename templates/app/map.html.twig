@@ -7,12 +7,16 @@
 {% endblock %}
 
 {% block javascript %}
-<script>
-    window.custom = {{ configId | json_encode | raw }};
-    window.thematic = {{ thematic | json_encode | raw }};
-    window.baselayers = {{ baselayers | json_encode | raw }};
-</script>
 <script src="{{ asset('/map.js') }}"></script>
+<script>
+    const custom = {{ configId | json_encode | raw }};
+    const thematic = {{ thematic | json_encode | raw }};
+    const baselayers = {{ baselayers | json_encode | raw }};
+
+    (function () {
+        map.init(custom, baselayers, thematic);
+    })();
+</script>
 {% endblock %}
 
 {% block links %}
