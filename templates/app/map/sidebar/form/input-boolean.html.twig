@@ -1,5 +1,5 @@
 <select class="form-control form-control-sm" id="input-{{ column.name }}" name="{{ column.name }}"
-    data-datatype="{{ column.datatype }}" {{ column.isnullable ?: ' required' }}>
+    data-datatype="{{ column.datatype }}" {{ column.isnullable ? '' : ' required' }}>
     {{ column.isnullable ? '<option></option>' }}
     <option value="1">TRUE</option>
     <option value="0">FALSE</option>
