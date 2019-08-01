@@ -6,8 +6,8 @@ namespace App\Handler\API\Database;
 
 use App\Middleware\ConfigMiddleware;
 use App\Middleware\DbAdapterMiddleware;
-use App\Model\Table\Main as MainTable;
 use App\Model\Record;
+use App\Model\Table\Main as MainTable;
 use Exception;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
