@@ -136,7 +136,17 @@
     </div>
     <div class="table-responsive" id="table-wrapper">
         <table class="table table-sm table-bordered table-striped table-hover mb-0">
-            <thead class="thead-light">
+            <thead>
+                <tr>
+                    <th colspan="{{ table.columns | length }}">
+                        <code>{{ table.name }}</code>
+                    </th>
+                    {% for foreign in foreignTables %}
+                    <th colspan="{{ foreign.columns | length }}">
+                        <code>{{ foreign.name }}</code>
+                    </th>
+                    {% endfor %}
+                </tr>
                 <tr>
                     {% if table.geometryColumn is not null %}
                     {% set columns = table.columns | filter(c => c.name != table.geometryColumn.name) %}
@@ -162,8 +172,35 @@
                             {% endif %}
                         </a>
                     </th>
-                    {% if column.isForeignKey == true %}
+                    {% endfor %}
+
+                    {% for foreign in foreignTables %}
+
+                    {% if foreign.geometryColumn is not null %}
+                    {% set fcolumns = foreign.columns | filter(c => c.name != foreign.geometryColumn.name) %}
+                    {% else %}
+                    {% set fcolumns = foreign.columns %}
                     {% endif %}
+
+                    {% for fcolumn in fcolumns %}
+                    <th scope="col">
+                        {% set columnName = foreign.name ~ '.' ~ fcolumn.name %}
+                        <a href="{{ path('table', {'config': configId, 'offset': 0}) }}?sort={{ columnName }}&amp;order={{ order.column == columnName and order.order == 'asc' ? 'desc' : 'asc' }}"
+                            class="d-flex justify-content-between align-items-center">
+                            <span class="text-nowrap">
+                                {{ fcolumn.name }}
+                            </span>
+                            {% if order.column == columnName and order.order == 'asc' %}
+                            <i class="fas fa-sort-up"></i>
+                            {% elseif order.column == columnName and order.order == 'desc' %}
+                            <i class="fas fa-sort-down"></i>
+                            {% else %}
+                            <i class="fas fa-sort"></i>
+                            {% endif %}
+                        </a>
+                    </th>
+                    {% endfor %}
+
                     {% endfor %}
                 </tr>
             </thead>
@@ -173,7 +210,7 @@
                     <th class="text-right" scope="row">{{ record.id }}</th>
                     {% for column in columns if column.name != table.keyColumn.name %}
 
-                    {% set value = attribute(record.properties, column.name) %}
+                    {% set value = attribute(record.properties, table.name ~ '.' ~ column.name) %}
 
                     {% if thematic.column == column.name %}
                     {% set symbol = attribute(thematic.values, value) %}
@@ -186,6 +223,23 @@
                         data-datatype="{{ column.datatype }}">
                         {{ value(value, column.datatype) }}
                     </td>
+
+                    {% endfor %}
+
+                    {% for foreign in foreignTables %}
+
+                    {% if foreign.geometryColumn is not null %}
+                    {% set fcolumns = foreign.columns | filter(c => c.name != foreign.geometryColumn.name) %}
+                    {% else %}
+                    {% set fcolumns = foreign.columns %}
+                    {% endif %}
+
+                    {% for fcolumn in fcolumns %}
+                    <td
+                        class="table-info text-nowrap{{ fcolumn.datatype == 'integer' ? ' text-right' : fcolumn.datatype == 'boolean' ? ' text-center' }}">
+                        {{ value(attribute(record.properties, foreign.name ~ '.' ~ fcolumn.name), fcolumn.datatype) }}
+                    </td>
+                    {% endfor %}
 
                     {% endfor %}
                 </tr>

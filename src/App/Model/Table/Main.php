@@ -45,6 +45,8 @@ class Main extends Table
     {
         $columns = [];
         foreach ($this->columns as $column) {
+            $reference = $column->getForeignColumn();
+
             $columns[] = [
                 'name'      => $column->getName(),
                 'type'      => $column->getDataType(),
@@ -52,6 +54,11 @@ class Main extends Table
                 'maxlength' => $column->getCharacterMaximumLength(),
                 'readonly'  => $column->readonly,
                 'notnull'   => !$column->isNullable(),
+                'reference' => !is_null($reference) ? [
+                    'schema' => $reference->getSchemaName(),
+                    'table'  => $reference->getTableName(),
+                    'column' => $reference->getName(),
+                ] : null,
             ];
         }
 

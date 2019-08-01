@@ -11,6 +11,8 @@ use Zend\Db\Metadata\Object\ConstraintObject;
 
 class Column extends ColumnObject
 {
+    const SEPARATOR = '.';
+
     /** @var Adapter */
     private $adapter;
 

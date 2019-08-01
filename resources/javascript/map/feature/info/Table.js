@@ -2,6 +2,8 @@
 
 import { toLonLat } from 'ol/proj';
 
+import app from '../../../app';
+
 import valueNull from './value/null';
 import valueBoolean from './value/boolean';
 import valueVarchar from './value/varchar';
@@ -35,6 +37,23 @@ export default class Table {
                     td.innerHTML = valueBoolean(properties[key]);
                 } else {
                     td.innerHTML = valueVarchar(properties[key]);
+                }
+
+                if (key.indexOf('.') === -1) {
+                    const column = app.cache.table.columns.find(column => column.name === key);
+
+                    if (column.reference !== null) {
+                        const aElement = document.createElement('a');
+                        aElement.innerHTML = td.innerHTML;
+                        aElement.setAttribute('href', `#info-table-${column.reference.table}`);
+                        aElement.addEventListener('click', event => {
+                            event.preventDefault();
+                            document.getElementById(`info-table-${column.reference.table}`).scrollIntoView();
+                        });
+
+                        td.innerText = '';
+                        td.appendChild(aElement);
+                    }
                 }
             } else {
                 throw new Error(`No row in table for properties "${key}".`);

@@ -32,6 +32,7 @@ export default class Form {
 
     static fill (feature) {
         const id = feature.getId();
+        const geometryName = feature.getGeometryName();
         const properties = feature.getProperties();
         const keys = Object.keys(properties);
 
@@ -42,7 +43,7 @@ export default class Form {
             .map(column => column.name);
 
         keys.filter(key => {
-            return key !== 'geometry' && readonly.indexOf(key) === -1;
+            return key.indexOf('.') === -1 && key !== geometryName && readonly.indexOf(key) === -1;
         }).map(key => {
             Input.fill(key, properties[key]);
         });

@@ -22,11 +22,30 @@
 
             {% for column in columns if column.name not in ['updateuser', 'updatetime'] %}
             <tr>
-                <th>{{ column.name == table.keyColumn.name ? '<i class="fas fa-bookmark"></i> ' }}{{ column.name }}</th>
+                <th class="text-nowrap">
+                    {{ column.name == table.keyColumn.name ? '<i class="fas fa-fw fa-bookmark"></i>' }}
+                    {{ column.isForeignKey == true ? '<i class="fas fa-fw fa-link"></i>' }}
+                    {{ column.name }}
+                </th>
                 <td data-column="{{ column.name }}" data-datatype="{{ column.datatype }}"></td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
-    <div id="info-details-geometry" class="text-info"></div>
+
+    {% for foreign in foreignTables %}
+    <div id="info-table-{{ foreign.name }}">
+        <code>{{ foreign.name }}</code>
+        <table class="table table-bordered table-striped table-sm small table-info">
+            <tbody>
+                {% for column in foreign.columns %}
+                <tr>
+                    <th class="text-nowrap">{{ column.name }}</th>
+                    <td data-column="{{ foreign.name ~ '.' ~ column.name }}" data-datatype="{{ column.datatype }}"></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endfor %}
 </div>

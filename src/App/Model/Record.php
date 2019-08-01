@@ -51,38 +51,26 @@ class Record
     public function hydrate(ArrayObject $object): self
     {
         if (is_null($this->id)) {
+            $table = $this->table->getName();
             $keyColumn = $this->table->getKeyColumn()->getName();
-            $this->id = $object->{$keyColumn};
+            $this->id = $object->{$table . Column::SEPARATOR . $keyColumn};
         }
 
         $this->properties = array_filter((array) $object, function ($key) {
-            return substr($key, 0, 1) !== '_' && $key !== $this->table->getGeometryColumn()->getName();
+            list($table, $column) = explode(Column::SEPARATOR, $key);
+
+            return substr($column, 0, 1) !== '_' && $column !== $this->table->getGeometryColumn()->getName();
         }, ARRAY_FILTER_USE_KEY);
 
-        $this->geometry = json_decode($object->_geojson);
+        $this->geometry = json_decode($object->{$table . Column::SEPARATOR . '_geojson'});
 
         return $this;
     }
 
     public function select(bool $execute = false)
     {
-        $table = $this->table->getIdentifier()->getTable();
-
         $keyColumn = $this->table->getKeyColumn()->getName();
-        $geometryColumn = $this->table->getGeometryColumn()->getName();
-
-        $columns = array_map(function ($column) {
-            return $column->getName();
-        }, $this->table->getColumns());
-
-        $columns = array_merge(
-            $columns,
-            [
-                '_geojson' => new Expression(sprintf('ST_AsGeoJSON("%s"."%s"::geometry)', $table, $geometryColumn)),
-                '_length'  => new Expression(sprintf('ST_Length("%s"."%s"::geometry::geography)', $table, $geometryColumn)),
-                '_area'    => new Expression(sprintf('ST_Area("%s"."%s"::geometry::geography)', $table, $geometryColumn)),
-            ]
-        );
+        $columns = $this->table->getSelectColumns();
 
         $select = new Select($this->table->getIdentifier());
         $select = $select->columns($columns, true);
@@ -239,10 +227,21 @@ class Record
 
     public function toGeoJSON(): array
     {
+        $properties = array_map(function ($key, $value) {
+            list($table, $column) = explode(Column::SEPARATOR, $key);
+
+            return [
+                $table === $this->table->getName() ? $column : $key,
+                $value,
+            ];
+        }, array_keys($this->properties), $this->properties);
+
+        $properties = array_column($properties, 1, 0);
+
         return [
             'type'       => 'Feature',
             'id'         => $this->id,
-            'properties' => $this->properties,
+            'properties' => $properties,
             'geometry'   => $this->geometry,
         ];
     }

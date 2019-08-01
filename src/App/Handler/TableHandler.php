@@ -6,6 +6,7 @@ namespace App\Handler;
 
 use App\Middleware\ConfigMiddleware;
 use App\Middleware\DbAdapterMiddleware;
+use App\Model\Table;
 use App\Model\Table\Main as MainTable;
 use App\Model\Thematic;
 use Blast\BaseUrl\BaseUrlMiddleware;
@@ -48,6 +49,15 @@ class TableHandler implements RequestHandlerInterface
         $total = $table->getCount();
         $count = $table->getCount($filter);
         $columns = $table->getColumns();
+
+        $foreignTables = [];
+        foreach ($columns as $column) {
+            if ($column->isForeignKey() === true) {
+                $foreign = $column->getForeignColumn();
+
+                $foreignTables[$column->getName()] = new Table($adapter, $foreign->getSchemaName(), $foreign->getTableName());
+            }
+        }
 
         $order = [
             'column' => 'id',
@@ -104,17 +114,18 @@ class TableHandler implements RequestHandlerInterface
         return new HtmlResponse($this->renderer->render(
             'app::table',
             [
-                'configId'       => $config['custom'],
-                'pages'          => floor($count / $config['config']['limit']),
-                'limit'          => $config['config']['limit'],
-                'offset'         => $offset,
-                'order'          => $order,
-                'total'          => $total,
-                'count'          => $count,
-                'table'          => $table,
-                'records'        => $records,
-                'filter'         => $filter,
-                'thematic'       => $thematic,
+                'configId'      => $config['custom'],
+                'pages'         => floor($count / $config['config']['limit']),
+                'limit'         => $config['config']['limit'],
+                'offset'        => $offset,
+                'order'         => $order,
+                'total'         => $total,
+                'count'         => $count,
+                'table'         => $table,
+                'records'       => $records,
+                'filter'        => $filter,
+                'thematic'      => $thematic,
+                'foreignTables' => $foreignTables,
             ]
         ));
     }

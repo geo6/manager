@@ -9,6 +9,7 @@ use Zend\Db\Adapter\Adapter;
 use Zend\Db\Metadata\Metadata;
 use Zend\Db\Metadata\Object\ColumnObject;
 use Zend\Db\Sql\Expression;
+use Zend\Db\Sql\Select;
 use Zend\Db\Sql\Sql;
 use Zend\Db\Sql\TableIdentifier;
 
@@ -160,6 +161,38 @@ class Table
         return $this->schema;
     }
 
+    public function getSelectColumns(): array
+    {
+        $geometryColumn = $this->getGeometryColumn();
+
+        if (!is_null($geometryColumn)) {
+            $columns = array_filter($this->getColumns(), function ($column) use ($geometryColumn) {
+                return $column->getName() !== $geometryColumn->getName();
+            });
+        } else {
+            $columns = $this->getColumns();
+        }
+
+        $columnsName = [];
+        foreach ($columns as $column) {
+            $alias = $this->name . Column::SEPARATOR . $column->getName();
+            $columnsName[$alias] = $column->getName();
+        }
+
+        if (!is_null($geometryColumn)) {
+            $columnsName = array_merge(
+                $columnsName,
+                [
+                    $this->name . Column::SEPARATOR . '_geojson' => new Expression(sprintf('ST_AsGeoJSON("%s"."%s"::geometry)', $this->name, $geometryColumn->getName())),
+                    $this->name . Column::SEPARATOR . '_length'  => new Expression(sprintf('ST_Length("%s"."%s"::geometry::geography)', $this->name, $geometryColumn->getName())),
+                    $this->name . Column::SEPARATOR . '_area'    => new Expression(sprintf('ST_Area("%s"."%s"::geometry::geography)', $this->name, $geometryColumn->getName())),
+                ]
+            );
+        }
+
+        return $columnsName;
+    }
+
     public function getRecords(
         ?string $filter = null,
         ?string $order = null,
@@ -170,6 +203,26 @@ class Table
         $sql = new Sql($this->adapter);
 
         $select = (new Record($this->adapter, $this))->select();
+
+        foreach ($this->columns as $column) {
+            if ($column->isForeignKey() === true) {
+                $foreign = $column->getForeignColumn();
+
+                $foreignTable = new self($this->adapter, $foreign->getSchemaName(), $foreign->getTableName());
+
+                $foreignColumns = $foreignTable->getSelectColumns();
+
+                $on = sprintf(
+                    '%s.%s = %s.%s',
+                    $foreign->getTableName(),
+                    $foreign->getName(),
+                    $this->name,
+                    $column->getName()
+                );
+
+                $select->join($foreignTable->getIdentifier(), $on, $foreignColumns, Select::JOIN_LEFT);
+            }
+        }
 
         if (!is_null($filter)) {
             $select = $select->where((new Filter($filter))->getPredicate());

@@ -6,6 +6,7 @@ namespace App\Handler;
 
 use App\Middleware\ConfigMiddleware;
 use App\Middleware\DbAdapterMiddleware;
+use App\Model\Table;
 use App\Model\Table\Main as MainTable;
 use App\Model\Thematic;
 use Psr\Http\Message\ResponseInterface;
@@ -34,16 +35,26 @@ class MapHandler implements RequestHandlerInterface
         $table = new MainTable($adapter, $config['config']);
         $columns = $table->getColumns();
 
+        $foreignTables = [];
+        foreach ($columns as $column) {
+            if ($column->isForeignKey() === true) {
+                $foreign = $column->getForeignColumn();
+
+                $foreignTables[$column->getName()] = new Table($adapter, $foreign->getSchemaName(), $foreign->getTableName());
+            }
+        }
+
         $thematic = new Thematic($adapter, $config['config']);
 
         return new HtmlResponse($this->renderer->render(
             'app::map',
             [
-                'config'         => $config['config'],
-                'configId'       => $config['custom'],
-                'table'          => $table,
-                'thematic'       => $thematic,
-                'baselayers'     => self::getBaselayers($config['global']['baselayers'] ?? []),
+                'config'        => $config['config'],
+                'configId'      => $config['custom'],
+                'table'         => $table,
+                'thematic'      => $thematic,
+                'baselayers'    => self::getBaselayers($config['global']['baselayers'] ?? []),
+                'foreignTables' => $foreignTables,
             ]
         ));
     }
