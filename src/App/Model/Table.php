@@ -150,6 +150,16 @@ class Table
         return $this->identifier;
     }
 
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function getSchema(): string
+    {
+        return $this->schema;
+    }
+
     public function getRecords(
         ?string $filter = null,
         ?string $order = null,
