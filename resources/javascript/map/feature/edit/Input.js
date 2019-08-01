@@ -12,14 +12,20 @@ export default class Input {
     }
 
     static fill (key, value) {
-        Input.getElement(key).value = '';
+        const input = Input.getElement(key);
 
-        if (value !== null) {
-            if (Input.getElement(key).dataset.datatype === 'boolean') {
-                Input.getElement(key).value = value === true ? 1 : 0;
-            } else {
-                Input.getElement(key).value = value;
+        if (input !== null) {
+            input.value = '';
+
+            if (value !== null) {
+                if (input.dataset.datatype === 'boolean') {
+                    input.value = value === true ? 1 : 0;
+                } else {
+                    input.value = value;
+                }
             }
+        } else {
+            throw new Error(`No input for properties "${key}".`);
         }
     }
 
