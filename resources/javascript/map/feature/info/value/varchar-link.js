@@ -7,7 +7,7 @@ export default function (value) {
     a.href = url.href;
     a.target = '_blank';
     a.style.textDecoration = 'none';
-    a.innerHTML = '<i class="fas fa-external-link-alt"></i> ' + url.hostname;
+    a.innerHTML = '<span class="text-nowrap"><i class="fas fa-external-link-alt"></i> ' + url.hostname + '</span>';
 
     return a.outerHTML;
 }
