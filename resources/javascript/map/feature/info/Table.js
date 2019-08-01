@@ -27,33 +27,17 @@ export default class Table {
             const td = Table.getElement().querySelector(
                 `table > tbody > tr > td[data-column="${key}"]`
             );
+            const column = app.cache.table.columns.find(column => column.name === key);
 
             if (td !== null) {
                 td.innerText = '';
 
-                if (properties[key] === null) {
-                    td.innerHTML = valueNull();
-                } else if (td.dataset.datatype === 'boolean') {
-                    td.innerHTML = valueBoolean(properties[key]);
+                if (key === app.thematic.column) {
+                    td.innerHTML = Table.renderThematic(properties[key], td.dataset.datatype);
+                } else if (key.indexOf('.') === -1 && column.reference !== null) {
+                    td.innerHTML = Table.renderForeignKey(properties[key], td.dataset.datatype, column.reference);
                 } else {
-                    td.innerHTML = valueVarchar(properties[key]);
-                }
-
-                if (key.indexOf('.') === -1) {
-                    const column = app.cache.table.columns.find(column => column.name === key);
-
-                    if (column.reference !== null) {
-                        const aElement = document.createElement('a');
-                        aElement.innerHTML = td.innerHTML;
-                        aElement.setAttribute('href', `#info-table-${column.reference.table}`);
-                        aElement.addEventListener('click', event => {
-                            event.preventDefault();
-                            document.getElementById(`info-table-${column.reference.table}`).scrollIntoView();
-                        });
-
-                        td.innerText = '';
-                        td.appendChild(aElement);
-                    }
+                    td.innerHTML = Table.renderValue(properties[key], td.dataset.datatype);
                 }
             } else {
                 throw new Error(`No row in table for properties "${key}".`);
@@ -127,5 +111,37 @@ export default class Table {
             timeElement.querySelector('time').innerText = time;
             timeElement.querySelector('time').dateTime = time;
         }
+    }
+
+    static renderValue (value, datatype) {
+        if (value === null) {
+            return valueNull();
+        } else if (datatype === 'boolean') {
+            return valueBoolean(value);
+        } else {
+            return valueVarchar(value);
+        }
+    }
+
+    static renderThematic (value, datatype) {
+        let color = app.thematic.default;
+
+        if (Object.keys(app.thematic.values).indexOf(value) !== -1) {
+            color = app.thematic.values[value].color;
+        }
+
+        return `<span style="color: ${color};"><i class="fas fa-circle"></i></span> ` + Table.renderValue(value, datatype);
+    }
+
+    static renderForeignKey (value, datatype, reference) {
+        const aElement = document.createElement('a');
+        aElement.innerHTML = Table.renderValue(value, datatype);
+        aElement.setAttribute('href', `#info-table-${reference.table}`);
+        aElement.addEventListener('click', event => {
+            event.preventDefault();
+            document.getElementById(`info-table-${reference.table}`).scrollIntoView();
+        });
+
+        return aElement.outerHTML;
     }
 }
