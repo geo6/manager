@@ -31,7 +31,12 @@ class RecordsHandler implements RequestHandlerInterface
         switch ($request->getMethod()) {
             case 'GET':
                 if (!is_null($id)) {
-                    $record = new Record($adapter, $table, intval($id));
+                    try {
+                        $record = new Record($adapter, $table, intval($id));
+                    } catch (Exception $e) {
+                        return new JsonResponse(['error' => $e->getMessage()], 500);
+                    }
+
                     return new JsonResponse($record->toGeoJSON());
                 }
 
@@ -48,9 +53,9 @@ class RecordsHandler implements RequestHandlerInterface
 
             case 'POST':
                 $data = $request->getParsedBody();
-                $record = new Record($adapter, $table);
 
                 try {
+                    $record = new Record($adapter, $table);
                     $insert = $record->insert($data, true);
                 } catch (Exception $e) {
                     return new JsonResponse(['error' => $e->getMessage()], 500);
@@ -60,15 +65,25 @@ class RecordsHandler implements RequestHandlerInterface
 
             case 'PUT':
                 $data = $request->getParsedBody();
-                $record = new Record($adapter, $table, intval($id));
-                $update = $record->update($data, true);
+
+                try {
+                    $record = new Record($adapter, $table, intval($id));
+                    $update = $record->update($data, true);
+                } catch (Exception $e) {
+                    return new JsonResponse(['error' => $e->getMessage()], 500);
+                }
 
                 return new JsonResponse($record->toGeoJSON());
 
             case 'DELETE':
                 $data = $request->getParsedBody();
-                $record = new Record($adapter, $table, intval($id));
-                $delete = $record->delete(true);
+
+                try {
+                    $record = new Record($adapter, $table, intval($id));
+                    $delete = $record->delete(true);
+                } catch (Exception $e) {
+                    return new JsonResponse(['error' => $e->getMessage()], 500);
+                }
 
                 return new JsonResponse((object) []);
 
