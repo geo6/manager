@@ -77,7 +77,8 @@ class Record
         $select = $select->columns($columns, true);
 
         if (!is_null($this->id)) {
-            $select = $select->where([$keyColumn => $this->id]);
+            $key = sprintf('%s.%s', $this->table->getName(), $keyColumn);
+            $select = $select->where([$key => $this->id]);
         }
 
         return $execute ? $this->execute($select) : $select;
