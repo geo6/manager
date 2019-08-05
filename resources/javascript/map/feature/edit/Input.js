@@ -60,6 +60,8 @@ export default class Input {
             const value = event.target.value;
             const valid = event.target.checkValidity();
 
+            Input.changeStatus(event.target, 'loading');
+
             document.getElementById('info-form-alert-error').hidden = true;
 
             if (valid !== true) {
@@ -73,7 +75,7 @@ export default class Input {
     }
 
     static changeStatus (element, status, text) {
-        if (['success', 'warning', 'danger'].indexOf(status) === -1) {
+        if (['loading', 'success', 'warning', 'danger'].indexOf(status) === -1) {
             throw new Error(`Invalid status "${status}".`);
         }
 
@@ -81,6 +83,9 @@ export default class Input {
             danger: element
                 .closest('.form-group')
                 .querySelector('i.fas.text-danger'),
+            loading: element
+                .closest('.form-group')
+                .querySelector('i.fas.fa-spin'),
             success: element
                 .closest('.form-group')
                 .querySelector('i.fas.text-success'),
@@ -91,6 +96,8 @@ export default class Input {
 
         statusElement.danger.hidden = true;
         statusElement.danger.removeAttribute('title');
+        statusElement.loading.hidden = true;
+        statusElement.loading.removeAttribute('title');
         statusElement.success.hidden = true;
         statusElement.success.removeAttribute('title');
         statusElement.warning.hidden = true;
