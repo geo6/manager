@@ -31,7 +31,8 @@ class RecordsHandler implements RequestHandlerInterface
         switch ($request->getMethod()) {
             case 'GET':
                 if (!is_null($id)) {
-                    return new JsonResponse($table->getRecord(intval($id))->toGeoJSON());
+                    $record = new Record($adapter, $table, intval($id));
+                    return new JsonResponse($record->toGeoJSON());
                 }
 
                 return new JsonResponse([
