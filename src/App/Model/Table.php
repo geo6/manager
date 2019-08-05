@@ -9,7 +9,6 @@ use Zend\Db\Adapter\Adapter;
 use Zend\Db\Metadata\Metadata;
 use Zend\Db\Metadata\Object\ColumnObject;
 use Zend\Db\Sql\Expression;
-use Zend\Db\Sql\Select;
 use Zend\Db\Sql\Sql;
 use Zend\Db\Sql\TableIdentifier;
 

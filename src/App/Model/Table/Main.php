@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use App\Model\Column;
 use App\Model\Table;
 use ArrayObject;
 use Zend\Db\Adapter\Adapter;
-use App\Model\Column;
 
 class Main extends Table
 {
