@@ -32,6 +32,16 @@ export default class Records {
     static async get (id) {
         const response = await fetch(`/app/manager/test/api/db/records/${id}`);
 
+        if (response.ok !== true) {
+            try {
+                const json = await response.json();
+
+                return Promise.reject(new Error(json.error));
+            } catch (e) {
+                return Promise.reject(new Error(response.statusText));
+            }
+        }
+
         return response.json();
     }
 
@@ -44,6 +54,16 @@ export default class Records {
             method: 'PUT'
         });
 
+        if (response.ok !== true) {
+            try {
+                const json = await response.json();
+
+                return Promise.reject(new Error(json.error));
+            } catch (e) {
+                return Promise.reject(new Error(response.statusText));
+            }
+        }
+
         return response.json();
     }
 
@@ -51,6 +71,16 @@ export default class Records {
         const response = await fetch(`/app/manager/test/api/db/records/${id}`, {
             method: 'DELETE'
         });
+
+        if (response.ok !== true) {
+            try {
+                const json = await response.json();
+
+                return Promise.reject(new Error(json.error));
+            } catch (e) {
+                return Promise.reject(new Error(response.statusText));
+            }
+        }
 
         return response.json();
     }
