@@ -50,9 +50,10 @@ class Record
 
     public function hydrate(ArrayObject $object): self
     {
+        $table = $this->table->getName();
+        $keyColumn = $this->table->getKeyColumn()->getName();
+
         if (is_null($this->id)) {
-            $table = $this->table->getName();
-            $keyColumn = $this->table->getKeyColumn()->getName();
             $this->id = $object->{$table . Column::SEPARATOR . $keyColumn};
         }
 
