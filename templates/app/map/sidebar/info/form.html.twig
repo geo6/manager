@@ -2,6 +2,10 @@
     <form class="small" autocomplete="off">
         <input type="text" name="{{ table.keyColumn.name }}" readonly hidden>
 
+        <div id="info-form-alert-error" class="alert alert-danger" role="alert" hidden>
+            <pre class="m-0"><code></code></pre>
+        </div>
+
         {% if table.geometryColumn is not null %}
         {% set columns = table.columns | filter(c => c.name != table.geometryColumn.name) %}
         {% else %}

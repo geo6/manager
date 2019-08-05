@@ -44,6 +44,13 @@ export default class Input {
             feature.setProperties(data.properties);
 
             Table.fill(feature);
+
+            Input.changeStatus(element, 'success');
+        }).catch(error => {
+            Input.changeStatus(element, 'danger');
+
+            document.getElementById('info-form-alert-error').removeAttribute('hidden');
+            document.getElementById('info-form-alert-error').querySelector('pre > code').innerText = error;
         });
     }
 
@@ -53,37 +60,48 @@ export default class Input {
             const value = event.target.value;
             const valid = event.target.checkValidity();
 
-            const statusElement = {
-                danger: event.target
-                    .closest('.form-group')
-                    .querySelector('i.fas.text-danger'),
-                success: event.target
-                    .closest('.form-group')
-                    .querySelector('i.fas.text-success'),
-                warning: event.target
-                    .closest('.form-group')
-                    .querySelector('i.fas.text-warning')
-            };
-
-            statusElement.danger.hidden = true;
-            statusElement.danger.removeAttribute('title');
-            statusElement.success.hidden = true;
-            statusElement.success.removeAttribute('title');
-            statusElement.warning.hidden = true;
-            statusElement.warning.removeAttribute('title');
+            document.getElementById('info-form-alert-error').hidden = true;
 
             if (valid !== true) {
-                statusElement.danger.removeAttribute('hidden');
-                statusElement.danger.title = event.target.validationMessage;
-            } else {
-                statusElement.success.removeAttribute('hidden');
-
-                if (save === true) {
-                    Input.save(key);
-                }
+                Input.changeStatus(event.target, 'warning', event.target.validationMessage);
+            } else if (save === true) {
+                Input.save(key);
             }
 
             console.log(event.type, valid, key, value);
         });
+    }
+
+    static changeStatus (element, status, text) {
+        if (['success', 'warning', 'danger'].indexOf(status) === -1) {
+            throw new Error(`Invalid status "${status}".`);
+        }
+
+        const statusElement = {
+            danger: element
+                .closest('.form-group')
+                .querySelector('i.fas.text-danger'),
+            success: element
+                .closest('.form-group')
+                .querySelector('i.fas.text-success'),
+            warning: element
+                .closest('.form-group')
+                .querySelector('i.fas.text-warning')
+        };
+
+        statusElement.danger.hidden = true;
+        statusElement.danger.removeAttribute('title');
+        statusElement.success.hidden = true;
+        statusElement.success.removeAttribute('title');
+        statusElement.warning.hidden = true;
+        statusElement.warning.removeAttribute('title');
+
+        if (typeof statusElement[status] !== 'undefined') {
+            statusElement[status].removeAttribute('hidden');
+
+            if (typeof text === 'string' && text.length > 0) {
+                statusElement[status].setAttribute('title', text);
+            }
+        }
     }
 }
