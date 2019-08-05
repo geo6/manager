@@ -204,26 +204,6 @@ class Table
 
         $select = (new Record($this->adapter, $this))->select();
 
-        foreach ($this->columns as $column) {
-            if ($column->isForeignKey() === true) {
-                $foreign = $column->getForeignColumn();
-
-                $foreignTable = new self($this->adapter, $foreign->getSchemaName(), $foreign->getTableName());
-
-                $foreignColumns = $foreignTable->getSelectColumns();
-
-                $on = sprintf(
-                    '%s.%s = %s.%s',
-                    $foreign->getTableName(),
-                    $foreign->getName(),
-                    $this->name,
-                    $column->getName()
-                );
-
-                $select->join($foreignTable->getIdentifier(), $on, $foreignColumns, Select::JOIN_LEFT);
-            }
-        }
-
         if (!is_null($filter)) {
             $select = $select->where((new Filter($filter))->getPredicate());
         }

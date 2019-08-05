@@ -76,6 +76,27 @@ class Record
         $select = new Select($this->table->getIdentifier());
         $select = $select->columns($columns, true);
 
+        $foreignColumns = array_filter($this->table->getColumns(), function (Column $column) {
+            return $column->isForeignKey();
+        });
+        foreach ($foreignColumns as $column) {
+            $foreign = $column->getForeignColumn();
+
+            $foreignTable = new Table($this->adapter, $foreign->getSchemaName(), $foreign->getTableName());
+
+            $foreignColumns = $foreignTable->getSelectColumns();
+
+            $on = sprintf(
+                '%s.%s = %s.%s',
+                $foreign->getTableName(),
+                $foreign->getName(),
+                $this->table->getName(),
+                $column->getName()
+            );
+
+            $select->join($foreignTable->getIdentifier(), $on, $foreignColumns, Select::JOIN_LEFT);
+        }
+
         if (!is_null($this->id)) {
             $key = sprintf('%s.%s', $this->table->getName(), $keyColumn);
             $select = $select->where([$key => $this->id]);

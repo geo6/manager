@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Model\Table;
 
 use App\Model\Table;
+use ArrayObject;
 use Zend\Db\Adapter\Adapter;
+use App\Model\Column;
 
 class Main extends Table
 {
@@ -20,33 +22,63 @@ class Main extends Table
         $this->config = $config;
 
         foreach ($this->columns as &$column) {
-            $name = $column->getName();
-
-            $column->readonly = $this->isColumnReadonly($name);
+            $column->readonly = $this->isColumnReadonly($column);
+            $column->reference = $this->getColumnReference($column);
         }
     }
 
-    private function isColumnReadonly(string $column): bool
+    private function isColumnReadonly(Column $column): bool
     {
+        $name = $column->getName();
+
         $keyColumn = $this->getKeyColumn()->getName();
 
-        if (in_array($column, [$keyColumn, 'updatetime', 'updateuser'])) {
+        if (in_array($name, [$keyColumn, 'updatetime', 'updateuser'])) {
             return true;
         }
 
-        if (isset($this->config['columns'], $this->config['columns'][$column], $this->config['columns'][$column]['readonly'])) {
-            return (bool) $this->config['columns'][$column]['readonly'];
+        if (isset($this->config['columns'], $this->config['columns'][$name], $this->config['columns'][$name]['readonly'])) {
+            return (bool) $this->config['columns'][$name]['readonly'];
         }
 
         return false;
+    }
+
+    private function getColumnReference(Column $column): ?ArrayObject
+    {
+        $name = $column->getName();
+        $reference = $column->getForeignColumn();
+
+        if (is_null($reference)) {
+            return null;
+        }
+
+        $mode = 'default';
+        $values = [];
+
+        if (isset($this->config['columns'], $this->config['columns'][$name], $this->config['columns'][$name]['reference'])) {
+            $config = $this->config['columns'][$name]['reference'];
+
+            $mode = isset($config['mode']) && in_array($config['mode'], ['listbox', 'datalist']) ? $config['mode'] : $mode;
+
+            if (isset($config['display'])) {
+                $values = $reference->getValues($config['display']);
+            }
+        }
+
+        return new ArrayObject([
+            'mode'   => $mode,
+            'values' => $values,
+            'schema' => $reference->getSchemaName(),
+            'table'  => $reference->getTableName(),
+            'column' => $reference->getName(),
+        ], ArrayObject::ARRAY_AS_PROPS);
     }
 
     public function toArray(): array
     {
         $columns = [];
         foreach ($this->columns as $column) {
-            $reference = $column->getForeignColumn();
-
             $columns[] = [
                 'name'      => $column->getName(),
                 'type'      => $column->getDataType(),
@@ -54,11 +86,7 @@ class Main extends Table
                 'maxlength' => $column->getCharacterMaximumLength(),
                 'readonly'  => $column->readonly,
                 'notnull'   => !$column->isNullable(),
-                'reference' => !is_null($reference) ? [
-                    'schema' => $reference->getSchemaName(),
-                    'table'  => $reference->getTableName(),
-                    'column' => $reference->getName(),
-                ] : null,
+                'reference' => $column->reference,
             ];
         }
 

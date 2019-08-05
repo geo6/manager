@@ -31,6 +31,10 @@
             </div>
             {% if column.name == thematic.column %}
             {{ include('@app/map/sidebar/form/thematic.html.twig') }}
+            {% elseif column.reference is not null and column.reference.mode == 'listbox' %}
+            {{ include('@app/map/sidebar/form/reference/listbox.html.twig') }}
+            {% elseif column.reference is not null and column.reference.mode == 'datalist' %}
+            {{ include('@app/map/sidebar/form/reference/datalist.html.twig') }}
             {% elseif column.datatype == 'boolean' %}
             {{ include('@app/map/sidebar/form/input-boolean.html.twig') }}
             {% elseif column.datatype == 'integer' %}

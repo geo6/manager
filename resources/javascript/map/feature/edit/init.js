@@ -67,5 +67,19 @@ function formInput () {
 
     form.querySelectorAll('input,select,textarea').forEach(element => {
         Input.enableOnChange(element, true);
+
+        const list = element.getAttribute('list');
+
+        if (list !== null) {
+            element.addEventListener('change', event => {
+                const key = event.target.name;
+                const value = event.target.value;
+                const optionElement = event.target.parentNode.querySelector(`datalist > option[value="${value}"]`);
+
+                if (optionElement !== null && optionElement.innerText !== value) {
+                    document.getElementById(`input-${key}-help`).innerText = value + ' = ' + optionElement.innerText;
+                }
+            });
+        }
     });
 }
