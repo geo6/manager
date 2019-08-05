@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model;
 
+use App\Model\Column\Foreign as ForeignColumn;
 use Zend\Db\Adapter\Adapter;
 use Zend\Db\Metadata\Metadata;
 use Zend\Db\Metadata\Object\ColumnObject;
@@ -14,10 +15,10 @@ class Column extends ColumnObject
     const SEPARATOR = '.';
 
     /** @var Adapter */
-    private $adapter;
+    protected $adapter;
 
     /** @var ConstraintObject[] */
-    private $constraints = [];
+    protected $constraints = [];
 
     public function __construct(Adapter $adapter, string $name, string $tableName, ?string $schemaName = null)
     {
@@ -84,7 +85,7 @@ class Column extends ColumnObject
         return $this;
     }
 
-    public function getForeignColumn(): ?self
+    public function getForeignColumn(): ?ForeignColumn
     {
         $name = $this->name;
 
@@ -96,7 +97,7 @@ class Column extends ColumnObject
             return null;
         }
 
-        return new self(
+        return new ForeignColumn(
             $this->adapter,
             current($foreign->getReferencedColumns()),
             $foreign->getReferencedTableName(),
