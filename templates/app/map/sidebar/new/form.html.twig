@@ -13,7 +13,10 @@
                 </div>
             </div>
         </div>
-        <div class="alert alert-danger" role="alert" hidden></div>
+
+        <div id="new-form-alert-error" class="alert alert-danger" role="alert" hidden>
+            <pre class="m-0"><code></code></pre>
+        </div>
 
         {% if table.geometryColumn is not null %}
         {% set columns = table.columns | filter(c => c.name != table.geometryColumn.name) %}

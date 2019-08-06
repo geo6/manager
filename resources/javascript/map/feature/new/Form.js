@@ -34,7 +34,6 @@ export default class Form {
 
     static async save (geojson) {
         const formData = new FormData(Form.getElement().querySelector('form'));
-        const alertElement = Form.getElement().querySelector('.alert-danger');
 
         const data = {
             geometry: JSON.parse(geojson),
@@ -47,11 +46,14 @@ export default class Form {
             data.properties[key] = value;
         });
 
+        document.getElementById('info-form-alert-error').hidden = true;
+        document.getElementById('info-form-alert-error').querySelector('pre > code').innerText = '';
+
         try {
             return await Records.insert(data);
         } catch (error) {
-            alertElement.innerText = error;
-            alertElement.removeAttribute('hidden');
+            document.getElementById('new-form-alert-error').removeAttribute('hidden');
+            document.getElementById('new-form-alert-error').querySelector('pre > code').innerText = error;
 
             return Promise.reject(new Error(error));
         }
