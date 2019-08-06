@@ -23,6 +23,7 @@ function editButton () {
                 InfoForm.disable();
 
                 app.interaction.modify.remove();
+                app.interaction.modify = null;
             } else {
                 event.target.classList.add('active');
 

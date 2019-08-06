@@ -21,6 +21,7 @@ export default function () {
                     buttonElement.classList.remove('active');
 
                     app.interaction.draw.remove();
+                    app.interaction.draw = null;
                 } else {
                     buttonElement.classList.add('active');
 

@@ -38,6 +38,7 @@ export default function (features, current) {
                     app.layers.highlight.getSource().clear();
 
                     app.interaction.modify.remove();
+                    app.interaction.modify = null;
 
                     displayRecord(features, current - 1);
                 },
