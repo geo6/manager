@@ -58,7 +58,7 @@ export default function (map, geojson) {
         const feature = event.feature;
         const id = feature.getId();
 
-        Records.delete(id).then(data => console.log(data));
+        Records.delete(id);
     });
 
     return layer;
