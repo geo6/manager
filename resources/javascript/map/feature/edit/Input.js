@@ -11,6 +11,10 @@ export default class Input {
         return InfoForm.getElement().querySelector(`[name="${key}"]`);
     }
 
+    static getHelpText (key) {
+        return InfoForm.getElement().querySelector(`[name="${key}"] + .form-text`);
+    }
+
     static fill (key, value) {
         const input = Input.getElement(key);
 
@@ -60,10 +64,9 @@ export default class Input {
         }
     }
 
-    static enableOnChange (element, save) {
+    static enableOnChange (element) {
         element.addEventListener('change', event => {
             const key = event.target.name;
-            const value = event.target.value;
             const valid = event.target.checkValidity();
 
             Input.changeStatus(event.target, 'loading');
@@ -73,11 +76,9 @@ export default class Input {
 
             if (valid !== true) {
                 Input.changeStatus(event.target, 'warning', event.target.validationMessage);
-            } else if (save === true) {
+            } else {
                 Input.save(key);
             }
-
-            console.log(event.type, valid, key, value);
         });
     }
 

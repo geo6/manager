@@ -66,7 +66,7 @@ function formInput () {
     const form = InfoForm.getElement().querySelector('form');
 
     form.querySelectorAll('input,select,textarea').forEach(element => {
-        Input.enableOnChange(element, true);
+        Input.enableOnChange(element);
 
         const list = element.getAttribute('list');
 
@@ -76,8 +76,10 @@ function formInput () {
                 const value = event.target.value;
                 const optionElement = event.target.parentNode.querySelector(`datalist > option[value="${value}"]`);
 
+                Input.getHelpText(key).innerText = '';
+
                 if (optionElement !== null && optionElement.innerText !== value) {
-                    document.getElementById(`input-${key}-help`).innerText = value + ' = ' + optionElement.innerText;
+                    Input.getHelpText(key).innerText = value + ' = ' + optionElement.innerText;
                 }
             });
         }

@@ -1,6 +1,6 @@
 <input type="text" class="form-control form-control-sm" id="input-{{ column.name }}" name="{{ column.name }}"
     data-datatype="{{ column.datatype }}" list="datalist-{{ column.name }}" {{ column.isnullable ? '' : ' required' }}>
-<small id="input-{{ column.name }}-help" class="form-text text-muted"></small>
+<small class="form-text text-muted"></small>
 
 <datalist id="datalist-{{ column.name }}">
     {% for key, value in column.reference.values %}

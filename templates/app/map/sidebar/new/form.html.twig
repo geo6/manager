@@ -36,6 +36,7 @@
                     {{ column.isnullable ? '' : '<i class="far fa-question-circle" style="cursor: help;" title="NOT NULL"></i>' }}
                 </label>
                 <div>
+                    <i class="fas fa-spinner fa-spin" hidden></i>
                     <i class="fas fa-check-circle text-success" hidden></i>
                     <i class="fas fa-exclamation-circle text-warning" hidden></i>
                     <i class="fas fa-times-circle text-danger" hidden></i>
@@ -43,6 +44,10 @@
             </div>
             {% if column.name == thematic.column %}
             {{ include('@app/map/sidebar/form/thematic.html.twig') }}
+            {% elseif column.reference is not null and column.reference.mode == 'listbox' %}
+            {{ include('@app/map/sidebar/form/reference/listbox.html.twig') }}
+            {% elseif column.reference is not null and column.reference.mode == 'datalist' %}
+            {{ include('@app/map/sidebar/form/reference/datalist.html.twig') }}
             {% elseif column.datatype == 'boolean' %}
             {{ include('@app/map/sidebar/form/input-boolean.html.twig') }}
             {% elseif column.datatype == 'integer' %}

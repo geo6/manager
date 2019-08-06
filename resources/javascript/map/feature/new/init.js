@@ -5,7 +5,6 @@ import GeoJSON from 'ol/format/GeoJSON';
 import app from '../../../app';
 
 import { add, remove } from '../../interaction/draw';
-// import Input from '../form/Input';
 import NewForm from './Form';
 
 export default function () {
@@ -34,12 +33,26 @@ export default function () {
             });
         });
 
-    // NewForm.getElement()
-    //     .querySelector('form')
-    //     .querySelectorAll('input,select,textarea')
-    //     .forEach(element => {
-    //         Input.enableOnChange(element, false);
-    //     });
+    NewForm.getElement()
+        .querySelector('form')
+        .querySelectorAll('input,select,textarea')
+        .forEach(element => {
+            const list = element.getAttribute('list');
+
+            if (list !== null) {
+                element.addEventListener('change', event => {
+                    const key = event.target.name;
+                    const value = event.target.value;
+                    const optionElement = event.target.parentNode.querySelector(`datalist > option[value="${value}"]`);
+
+                    NewForm.getElement().querySelector(`[name="${key}"] + .form-text`).innerText = '';
+
+                    if (optionElement !== null && optionElement.innerText !== value) {
+                        NewForm.getElement().querySelector(`[name="${key}"] + .form-text`).innerText = value + ' = ' + optionElement.innerText;
+                    }
+                });
+            }
+        });
 
     document.getElementById('new-btn-cancel').addEventListener('click', () => {
         app.layers.new.getSource().clear();
