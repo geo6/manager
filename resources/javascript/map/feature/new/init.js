@@ -4,7 +4,7 @@ import GeoJSON from 'ol/format/GeoJSON';
 
 import app from '../../../app';
 
-import { add, remove } from '../../interaction/draw';
+import DrawInteraction from '../../interaction/Draw';
 import NewForm from './Form';
 
 export default function () {
@@ -20,11 +20,11 @@ export default function () {
                 if (buttonElement.classList.contains('active') === true) {
                     buttonElement.classList.remove('active');
 
-                    remove(app.map);
+                    app.interaction.draw.remove();
                 } else {
                     buttonElement.classList.add('active');
 
-                    add(
+                    app.interaction.draw = new DrawInteraction(
                         app.map,
                         app.layers.new.getSource(),
                         type
