@@ -29,14 +29,16 @@ export default class Input {
         }
     }
 
-    static save (key) {
+    static async save (key) {
         const element = InfoForm.getElement().querySelector(`[name="${key}"]`);
         const id = InfoForm.getElement().dataset.id;
 
         const properties = {};
         properties[key] = element.value;
 
-        Records.update(id, { properties }).then(data => {
+        try {
+            const data = await Records.update(id, { properties });
+
             const feature = app.layers.highlight
                 .getSource()
                 .getFeatureById(id);
@@ -46,12 +48,16 @@ export default class Input {
             Table.fill(feature);
 
             Input.changeStatus(element, 'success');
-        }).catch(error => {
+
+            return data;
+        } catch (error) {
             Input.changeStatus(element, 'danger');
 
             document.getElementById('info-form-alert-error').removeAttribute('hidden');
             document.getElementById('info-form-alert-error').querySelector('pre > code').innerText = error;
-        });
+
+            return Promise.reject(new Error(error));
+        }
     }
 
     static enableOnChange (element, save) {
@@ -63,6 +69,7 @@ export default class Input {
             Input.changeStatus(event.target, 'loading');
 
             document.getElementById('info-form-alert-error').hidden = true;
+            document.getElementById('info-form-alert-error').querySelector('pre > code').innerText = '';
 
             if (valid !== true) {
                 Input.changeStatus(event.target, 'warning', event.target.validationMessage);
