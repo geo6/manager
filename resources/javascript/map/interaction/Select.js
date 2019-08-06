@@ -5,6 +5,7 @@ import Select from 'ol/interaction/Select';
 
 import styleFunction from '../style/style';
 import displayRecord from '../feature/display';
+import NewForm from '../feature/new/Form';
 
 export default class extends Select {
     constructor (map, layer, hightlightLayer, sidebar) {
@@ -49,6 +50,10 @@ export default class extends Select {
     }
 
     onselect (event, features) {
+        if (NewForm.isActive() === true) {
+            return;
+        }
+
         this.hightlightLayer.getSource().clear();
 
         const collection = new Collection();
