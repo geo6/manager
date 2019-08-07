@@ -53,16 +53,19 @@ export default function () {
 }
 
 export function updateListButtons () {
+    const cursor = app.selection.cursor;
     const count = app.selection.getFeatures().length;
+
+    document.getElementById('info-list').innerText = `${cursor + 1}/${count}`;
 
     enableButton('prev');
     enableButton('next');
 
-    if (app.selection.cursor <= 0) {
+    if (cursor <= 0) {
         disableButton('prev');
     }
 
-    if (app.selection.cursor >= (count - 1)) {
+    if (cursor >= (count - 1)) {
         disableButton('next');
     }
 }

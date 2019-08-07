@@ -64,8 +64,6 @@ export default class extends Select {
 
         const count = app.selection.getFeatures().length;
         if (count > 0) {
-            document.getElementById('info-list').innerText = `${app.selection.cursor + 1}/${count}`;
-
             InfoTable.fill(app.selection.current());
             EditForm.fill(app.selection.current());
 
