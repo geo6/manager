@@ -20,10 +20,18 @@ class DbAdapterMiddleware implements MiddlewareInterface
     {
         $config = $request->getAttribute(ConfigMiddleware::CONFIG_ATTRIBUTE);
 
-        if (!isset($config['config']['database'])) {
+        if (!isset($config['global']['database'])) {
             throw new Exception(sprintf(
-                'Cannot create %s; could not locate PostgreSQL parameters in application configuration.',
+                'Cannot create %s; could not locate global PostgreSQL parameters.',
                 self::class
+            ));
+        }
+
+        if (!is_null($config['custom']) && !isset($config['config']['database'])) {
+            throw new Exception(sprintf(
+                'Cannot create %s; could not locate PostgreSQL parameters in application configuration (%s).',
+                self::class,
+                $config['custom']
             ));
         }
 
@@ -33,7 +41,7 @@ class DbAdapterMiddleware implements MiddlewareInterface
                 'driver_options' => [
                     PDO::ATTR_STRINGIFY_FETCHES => false,
                 ],
-            ], $config['config']['database'])
+            ], is_null($config['custom']) ? $config['global']['database'] : $config['config']['database'])
         );
 
         return $handler->handle($request->withAttribute(self::DBADAPTER_ATTRIBUTE, $adapter));

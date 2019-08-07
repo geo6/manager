@@ -38,18 +38,15 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     $app->get('/', App\Handler\HomePageHandler::class, 'home');
     $app->get('/api/ping', App\Handler\PingHandler::class, 'api.ping');
 
-    $app->get('/{config:\w+}[/map]', [App\Middleware\DbAdapterMiddleware::class, App\Handler\MapHandler::class], 'map');
-    $app->get('/{config:\w+}/table[/{offset:\d+}]', [App\Middleware\DbAdapterMiddleware::class, App\Handler\TableHandler::class], 'table');
+    $app->get('/{config:\w+}[/map]', App\Handler\MapHandler::class, 'map');
+    $app->get('/{config:\w+}/table[/{offset:\d+}]', App\Handler\TableHandler::class, 'table');
 
-    $app->get('/{config:\w+}/export/{format:\w+}', [App\Middleware\DbAdapterMiddleware::class, App\Handler\ExportHandler::class], 'export');
+    $app->get('/{config:\w+}/export/{format:\w+}', App\Handler\ExportHandler::class, 'export');
 
-    $app->get('/{config:\w+}/api/db/table', [App\Middleware\DbAdapterMiddleware::class, App\Handler\API\Database\TableHandler::class], 'api.db.table');
+    $app->get('/{config:\w+}/api/db/table', App\Handler\API\Database\TableHandler::class, 'api.db.table');
     $app->route(
         '/{config:\w+}/api/db/records',
-        [
-            App\Middleware\DbAdapterMiddleware::class,
-            App\Handler\API\Database\RecordsHandler::class,
-        ],
+        App\Handler\API\Database\RecordsHandler::class,
         ['GET', 'POST'],
         'api.db.records'
     );
@@ -57,7 +54,6 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
         '/{config:\w+}/api/db/records/{id:\d+}',
         [
             BodyParamsMiddleware::class,
-            App\Middleware\DbAdapterMiddleware::class,
             App\Handler\API\Database\RecordsHandler::class,
         ],
         ['GET', 'PUT', 'DELETE'],
