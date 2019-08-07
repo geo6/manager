@@ -16,7 +16,7 @@ function addLayer (app) {
         .then(data => {
             app.layers.layer = initLayer(app.map, data);
 
-            app.interaction.select = new SelectInteraction(app.map, app.layers.layer, app.sidebar);
+            app.interaction.select = new SelectInteraction(app.map);
         });
 }
 

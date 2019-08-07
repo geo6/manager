@@ -11,16 +11,14 @@ import InfoTable from '../feature/info/Table';
 import { updateListButtons } from '../feature/info/init';
 
 export default class extends Select {
-    constructor (map, layer) {
+    constructor (map) {
         super({
-            layers: [layer],
+            layers: [app.layers.layer],
             multi: true,
             wrapX: false
         });
 
         this.map = map;
-
-        this.layer = layer;
 
         this.on('select', event => this.onselect(event, this.getFeatures()));
 
@@ -62,24 +60,11 @@ export default class extends Select {
             liElement => liElement.querySelector('a[href="#info"]') !== null
         )[0];
 
-        document
-            .getElementById('infos-list-btn-prev')
-            .classList.add('disabled');
-        document
-            .getElementById('infos-list-btn-prev')
-            .disabled = true;
-        document
-            .getElementById('infos-list-btn-next')
-            .classList.add('disabled');
-        document
-            .getElementById('infos-list-btn-next')
-            .disabled = true;
+        updateListButtons();
 
         const count = app.selection.getFeatures().length;
         if (count > 0) {
             document.getElementById('info-list').innerText = `${app.selection.cursor + 1}/${count}`;
-
-            updateListButtons();
 
             InfoTable.fill(app.selection.current());
             EditForm.fill(app.selection.current());

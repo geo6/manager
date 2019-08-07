@@ -52,7 +52,7 @@ export function init (custom, baselayers, thematic) {
         app.cache.setTable(data[0]);
         app.layers.layer = initLayer(app.map, data[1]);
 
-        app.interaction.select = new SelectInteraction(app.map, app.layers.layer);
+        app.interaction.select = new SelectInteraction(app.map);
         app.selection = new Selection(app.map);
 
         initEdit();
