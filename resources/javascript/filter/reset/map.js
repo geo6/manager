@@ -1,7 +1,7 @@
 'use strict';
 
 import initLayer from '../../map/layer/layer';
-import ModifyInteraction from '../../map/interaction/Modify';
+import SelectInteraction from '../../map/interaction/Select';
 import Records from '../../Records';
 
 function removeLayer (app) {
@@ -16,7 +16,7 @@ function addLayer (app) {
         .then(data => {
             app.layers.layer = initLayer(app.map, data);
 
-            app.interaction.select = new ModifyInteraction(app.map, app.layers.layer, app.layers.highlight, app.sidebar);
+            app.interaction.select = new SelectInteraction(app.map, app.layers.layer, app.sidebar);
         });
 }
 
