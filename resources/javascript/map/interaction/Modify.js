@@ -1,32 +1,36 @@
 'use strict';
 
+import Collection from 'ol/Collection';
 import Modify from 'ol/interaction/Modify';
 import GeoJSON from 'ol/format/GeoJSON';
+
+import app from '../../app';
 
 import Table from '../feature/info/Table';
 import Records from '../../Records';
 
-export default class {
-    constructor (map, source, features) {
+export default class extends Modify {
+    constructor (map) {
+        super({
+            features: new Collection([
+                app.selection.current()
+            ])
+        });
+
         this.map = map;
 
-        this.source = source;
-        this.features = features;
+        this.on('modifyend', event => this.onmodifyend(event));
     }
 
     add () {
-        const modify = new Modify({
-            features: this.features
-        });
+        app.interaction.select.remove();
 
-        modify.on('modifyend', event => this.onmodifyend(event));
-
-        this.map.addInteraction(modify);
-
-        return modify;
+        this.map.addInteraction(this);
     }
 
     remove () {
+        app.interaction.select.add();
+
         this.map.getInteractions().forEach(interaction => {
             if (interaction instanceof Modify) {
                 this.map.removeInteraction(interaction);
@@ -35,6 +39,7 @@ export default class {
     }
 
     onmodifyend (event) {
+        console.log(event.features);
         event.features.forEach(feature => {
             const id = feature.getId();
             const geometry = feature.getGeometry();
@@ -43,8 +48,10 @@ export default class {
                 featureProjection: this.map.getView().getProjection()
             });
 
+            this.setActive(false);
+
             Records.update(id, { geometry: JSON.parse(geojson) }).then(data => {
-                const feature = this.source.getFeatureById(id);
+                const feature = app.source.getFeatureById(id);
 
                 const geometry = new GeoJSON().readGeometry(data.geometry, {
                     featureProjection: this.map.getView().getProjection()
@@ -54,6 +61,8 @@ export default class {
                 feature.setGeometry(geometry);
 
                 Table.fill(feature);
+
+                this.setActive(true);
             });
         });
     }

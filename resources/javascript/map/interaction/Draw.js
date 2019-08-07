@@ -2,6 +2,8 @@
 
 import Draw from 'ol/interaction/Draw';
 
+import app from '../../app';
+
 import NewForm from '../feature/new/Form';
 
 export default class extends Draw {
@@ -16,10 +18,18 @@ export default class extends Draw {
 
         this.on('drawend', event => this.ondrawend(event));
 
+        this.add();
+    }
+
+    add () {
+        app.interaction.select.remove();
+
         this.map.addInteraction(this);
     }
 
     remove () {
+        app.interaction.select.add();
+
         this.map.getInteractions().forEach(interaction => {
             if (interaction instanceof Draw) {
                 this.map.removeInteraction(interaction);

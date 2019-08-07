@@ -11,11 +11,11 @@ import Cache from './cache';
 import initMap from './map/init';
 import SelectInteraction from './map/interaction/Select';
 import initLayer from './map/layer/layer';
-import initHighlightLayer from './map/layer/highlight';
 import initNewLayer from './map/layer/new';
 import initInfo from './map/feature/info/init';
 import initEdit from './map/feature/edit/init';
 import initNew from './map/feature/new/init';
+import Selection from './map/selection';
 import initFilter from './filter/init';
 import Records from './Records';
 
@@ -52,12 +52,12 @@ export function init (custom, baselayers, thematic) {
         app.cache.setTable(data[0]);
         app.layers.layer = initLayer(app.map, data[1]);
 
-        app.interaction.select = new SelectInteraction(app.map, app.layers.layer, app.layers.highlight, app.sidebar);
+        app.interaction.select = new SelectInteraction(app.map, app.layers.layer);
+        app.selection = new Selection(app.map);
 
         initEdit();
     });
 
-    app.layers.highlight = initHighlightLayer(app.map);
     app.layers.new = initNewLayer(app.map);
 
     initFilter();

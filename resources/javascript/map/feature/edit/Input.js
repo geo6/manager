@@ -43,9 +43,7 @@ export default class Input {
         try {
             const data = await Records.update(id, { properties });
 
-            const feature = app.layers.highlight
-                .getSource()
-                .getFeatureById(id);
+            const feature = app.selection.current();
 
             feature.setProperties(data.properties);
 

@@ -22,14 +22,16 @@ function editButton () {
 
                 InfoForm.disable();
 
-                app.interaction.modify.remove();
-                app.interaction.modify = null;
+                if (app.interaction.modify !== null) {
+                    app.interaction.modify.remove();
+                    app.interaction.modify = null;
+                }
             } else {
                 event.target.classList.add('active');
 
                 InfoForm.enable();
 
-                app.interaction.modify = new ModifyInteraction(app.map, app.source, app.interaction.select.getFeatures());
+                app.interaction.modify = new ModifyInteraction(app.map);
                 app.interaction.modify.add();
             }
         });
@@ -49,7 +51,6 @@ function deleteButton () {
                 const feature = app.source.getFeatureById(id);
 
                 app.source.removeFeature(feature);
-                app.layers.highlight.getSource().clear();
 
                 const liElement = Array.prototype.filter.call(
                     document.querySelectorAll('.sidebar-tabs > ul > li'),

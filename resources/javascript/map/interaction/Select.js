@@ -2,42 +2,32 @@
 
 import Collection from 'ol/Collection';
 import Select from 'ol/interaction/Select';
+import Cluster from 'ol/source/Cluster';
 
-import styleFunction from '../style/style';
-import displayRecord from '../feature/display';
-import NewForm from '../feature/new/Form';
+import app from '../../app';
+
+import EditForm from '../feature/edit/Form';
+import InfoTable from '../feature/info/Table';
+import { updateListButtons } from '../feature/info/init';
 
 export default class extends Select {
-    constructor (map, layer, hightlightLayer, sidebar) {
+    constructor (map, layer) {
         super({
             layers: [layer],
-            multi: false,
-            style: (feature, resolution) => {
-                const properties = feature.getProperties();
-
-                if (typeof properties.features !== 'undefined') {
-                    // Cluster
-                    if (properties.features.length > 1) {
-                        return false;
-                    } else {
-                        return styleFunction(properties.features[0], 'label', resolution);
-                    }
-                } else {
-                    // Feature
-                    return styleFunction(feature, 'label', resolution);
-                }
-            },
+            multi: true,
             wrapX: false
         });
 
         this.map = map;
-        this.sidebar = sidebar;
 
         this.layer = layer;
-        this.hightlightLayer = hightlightLayer;
 
         this.on('select', event => this.onselect(event, this.getFeatures()));
 
+        this.add();
+    }
+
+    add () {
         this.map.addInteraction(this);
     }
 
@@ -50,47 +40,57 @@ export default class extends Select {
     }
 
     onselect (event, features) {
-        if (NewForm.isActive() === true) {
-            return;
+        const cluster = (app.layers.layer.getSource() instanceof Cluster);
+
+        const selection = new Collection();
+
+        if (cluster === true) {
+            features.forEach(feature => {
+                selection.extend(feature.get('features'));
+            });
+        } else {
+            features.forEach(feature => {
+                // ToDo: "hide" feature from initial layer and Select features
+
+                selection.push(feature.clone());
+            });
         }
+        app.selection.setFeatures(selection);
 
-        this.hightlightLayer.getSource().clear();
-
-        const collection = new Collection();
-
-        features.forEach(feature => {
-            const properties = feature.getProperties();
-
-            if (typeof properties.features !== 'undefined') {
-                // Cluster
-                collection.extend(properties.features);
-            } else {
-                // Feature
-                collection.push(feature);
-            }
-        });
-
-        const liElement = Array.prototype.filter.call(
+        const sidebarIconElement = Array.prototype.filter.call(
             document.querySelectorAll('.sidebar-tabs > ul > li'),
             liElement => liElement.querySelector('a[href="#info"]') !== null
         )[0];
 
-        if (collection.getLength() > 0) {
-            if (collection.getLength() > 1) {
-                this.map.getView().fit(collection.item(0).getGeometry(), {
-                    maxZoom: 18
-                });
-            }
+        document
+            .getElementById('infos-list-btn-prev')
+            .classList.add('disabled');
+        document
+            .getElementById('infos-list-btn-prev')
+            .disabled = true;
+        document
+            .getElementById('infos-list-btn-next')
+            .classList.add('disabled');
+        document
+            .getElementById('infos-list-btn-next')
+            .disabled = true;
 
-            liElement.classList.remove('disabled');
+        const count = app.selection.getFeatures().length;
+        if (count > 0) {
+            document.getElementById('info-list').innerText = `${app.selection.cursor + 1}/${count}`;
 
-            displayRecord(collection, 0);
+            updateListButtons();
 
-            this.sidebar.open('info');
+            InfoTable.fill(app.selection.current());
+            EditForm.fill(app.selection.current());
+
+            sidebarIconElement.classList.remove('disabled');
+            app.sidebar.open('info');
         } else {
-            liElement.classList.add('disabled');
+            document.getElementById('info-list').innerText = '';
 
-            this.sidebar.close();
+            sidebarIconElement.classList.add('disabled');
+            app.sidebar.close();
         }
     }
 }
