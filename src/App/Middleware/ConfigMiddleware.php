@@ -12,16 +12,13 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Zend\ConfigAggregator\ConfigAggregator;
 use Zend\ConfigAggregator\PhpFileProvider;
 use Zend\ConfigAggregator\ZendConfigProvider;
-use Zend\Expressive\Session\SessionMiddleware;
 
 class ConfigMiddleware implements MiddlewareInterface
 {
     public const CONFIG_ATTRIBUTE = 'config';
 
-    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler) : ResponseInterface
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $session = $request->getAttribute(SessionMiddleware::SESSION_ATTRIBUTE);
-
         $config = $request->getAttribute('config');
 
         $projects = [
@@ -38,11 +35,11 @@ class ConfigMiddleware implements MiddlewareInterface
 
         $data = [
             'global'   => self::getGlobalConfig(),
-            'custom'   => null,
+            'custom'   => $config,
             'config'   => null,
         ];
 
-        if (isset($config) && strlen($config) > 0) {
+        if (isset($config) && strlen($config) > 0 && $config !== 'new') {
             $public = in_array($config, $projects['public'], true);
             $roles = in_array($config, $projects['roles'], true);
             $users = in_array($config, $projects['users'], true);
@@ -62,7 +59,7 @@ class ConfigMiddleware implements MiddlewareInterface
         return $handler->handle($request->withAttribute(self::CONFIG_ATTRIBUTE, $data));
     }
 
-    private static function getGlobalConfig() : array
+    private static function getGlobalConfig(): array
     {
         return (new ConfigAggregator([
             new PhpFileProvider('config/config.php'),
@@ -70,7 +67,7 @@ class ConfigMiddleware implements MiddlewareInterface
         ]))->getMergedConfig();
     }
 
-    private static function getCustomConfig(string $custom) : array
+    private static function getCustomConfig(string $custom): array
     {
         $glob = array_merge(
             glob('config/application/public/*'),

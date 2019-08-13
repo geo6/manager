@@ -39,8 +39,7 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     $app->get('/', App\Handler\HomePageHandler::class, 'home');
     $app->get('/api/ping', App\Handler\PingHandler::class, 'api.ping');
 
-    $app->get('/{config:\w+}[/map]', App\Handler\MapHandler::class, 'map');
-    $app->get('/{config:\w+}/table[/{offset:\d+}]', App\Handler\TableHandler::class, 'table');
+    $app->get('/new', App\Handler\NewHandler::class, 'new');
 
     $app->get('/{config:\w+}[/map]', [TableMiddleware::class, App\Handler\MapHandler::class], 'map');
     $app->get('/{config:\w+}/table[/{offset:\d+}]', [TableMiddleware::class, App\Handler\TableHandler::class], 'table');
@@ -52,7 +51,7 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
         '/{config:\w+}/api/db/records',
         [
             TableMiddleware::class,
-        App\Handler\API\Database\RecordsHandler::class,
+            App\Handler\API\Database\RecordsHandler::class,
         ],
         ['GET', 'POST'],
         'api.db.records'

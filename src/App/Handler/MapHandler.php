@@ -57,7 +57,7 @@ class MapHandler implements RequestHandlerInterface
             }
         }
 
-        $thematic = new Thematic($adapter, $config['config']);
+        $thematic = new Thematic($adapter, $config['config'] ?? null);
 
         return new HtmlResponse($this->renderer->render(
             'app::map',

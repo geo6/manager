@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 use App\Middleware\ConfigMiddleware;
 use App\Middleware\DbAdapterMiddleware;
@@ -17,6 +17,7 @@ use Zend\Expressive\Router\Middleware\ImplicitHeadMiddleware;
 use Zend\Expressive\Router\Middleware\ImplicitOptionsMiddleware;
 use Zend\Expressive\Router\Middleware\MethodNotAllowedMiddleware;
 use Zend\Expressive\Router\Middleware\RouteMiddleware;
+use Zend\Expressive\Session\SessionMiddleware;
 use Zend\Stratigility\Middleware\ErrorHandler;
 
 /*
@@ -46,6 +47,7 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     // - $app->pipe('/api', $apiMiddleware);
     // - $app->pipe('/docs', $apiDocMiddleware);
     // - $app->pipe('/files', $filesMiddleware);
+    $app->pipe(SessionMiddleware::class);
 
     // Register the routing middleware in the middleware pipeline.
     // This middleware registers the Zend\Expressive\Router\RouteResult request attribute.

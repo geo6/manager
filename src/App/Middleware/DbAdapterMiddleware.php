@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Middleware;
 
@@ -27,7 +27,7 @@ class DbAdapterMiddleware implements MiddlewareInterface
             ));
         }
 
-        if (!is_null($config['custom']) && !isset($config['config']['database'])) {
+        if (!is_null($config['config']) && !isset($config['config']['database'])) {
             throw new Exception(sprintf(
                 'Cannot create %s; could not locate PostgreSQL parameters in application configuration (%s).',
                 self::class,
@@ -41,7 +41,7 @@ class DbAdapterMiddleware implements MiddlewareInterface
                 'driver_options' => [
                     PDO::ATTR_STRINGIFY_FETCHES => false,
                 ],
-            ], is_null($config['custom']) ? $config['global']['database'] : $config['config']['database'])
+            ], is_null($config['config']) ? $config['global']['database'] : $config['config']['database'])
         );
 
         return $handler->handle($request->withAttribute(self::DBADAPTER_ATTRIBUTE, $adapter));

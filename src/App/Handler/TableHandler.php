@@ -122,6 +122,8 @@ class TableHandler implements RequestHandlerInterface
             $offset
         );
 
+        $thematic = new Thematic($adapter, $config['config'] ?? null);
+
         return new HtmlResponse($this->renderer->render(
             'app::table',
             [
