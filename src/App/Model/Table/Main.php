@@ -15,10 +15,10 @@ class Main extends Table
     private $configColumns;
 
     /**
-     * @param Adapter $adapter
-     * @param string  $schema
-     * @param string  $table
-     * @param array   $config
+     * @param Adapter    $adapter
+     * @param string     $schema
+     * @param string     $table
+     * @param array|null $config
      */
     public function __construct(Adapter $adapter, string $schema, string $table, ?array $config = null)
     {

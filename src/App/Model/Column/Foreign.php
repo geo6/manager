@@ -10,6 +10,11 @@ use Zend\Db\Sql\TableIdentifier;
 
 class Foreign extends Column
 {
+    /**
+     * @var string $colum
+     *
+     * @return array Return reference values.
+     */
     public function getValues(string $column): array
     {
         $table = new TableIdentifier($this->tableName, $this->schemaName);

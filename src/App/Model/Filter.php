@@ -31,6 +31,9 @@ class Filter
     /** @var Predicate */
     private $predicate;
 
+    /**
+     * @param string $filter
+     */
     public function __construct(string $filter)
     {
         $this->filter = $filter;
@@ -40,11 +43,17 @@ class Filter
         $this->buildPredicate();
     }
 
+    /**
+     * @return TableIdentifier
+     */
     public function getTable(): TableIdentifier
     {
         return $this->table;
     }
 
+    /**
+     * @return Predicate
+     */
     public function getPredicate(): Predicate
     {
         return $this->predicate;

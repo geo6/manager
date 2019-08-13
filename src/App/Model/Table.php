@@ -29,6 +29,11 @@ class Table
     /** @var string */
     protected $schema;
 
+    /**
+     * @param Adapter $adapter
+     * @param string $schema
+     * @param string $table
+     */
     public function __construct(Adapter $adapter, string $schema, string $table)
     {
         $this->adapter = $adapter;
@@ -52,6 +57,11 @@ class Table
         }
     }
 
+    /**
+     * @param string|null $filter
+     *
+     * @return int
+     */
     public function getCount(?string $filter = null): int
     {
         $sql = new Sql($this->adapter);
@@ -70,6 +80,9 @@ class Table
         return $count;
     }
 
+    /**
+     * @return ColumnObject
+     */
     public function getKeyColumn(): ColumnObject
     {
         $primaryKey = current(array_filter($this->constraints, function ($constraint) {
@@ -98,6 +111,9 @@ class Table
         return $column;
     }
 
+    /**
+     * @return string
+     */
     public function getKeySequence(): string
     {
         $default = $this->getKeyColumn()->getColumnDefault();
@@ -117,6 +133,9 @@ class Table
         return $matches[1];
     }
 
+    /**
+     * @return ColumnObject|null
+     */
     public function getGeometryColumn(): ?ColumnObject
     {
         $columns = array_filter($this->columns, function ($column) {
@@ -135,31 +154,49 @@ class Table
         return count($columns) > 0 ? current($columns) : null;
     }
 
+    /**
+     * @return Adapter
+     */
     public function getAdapter(): Adapter
     {
         return $this->adapter;
     }
 
+    /**
+     * @return array
+     */
     public function getColumns(): array
     {
         return $this->columns;
     }
 
+    /**
+     * @return TableIdentifier
+     */
     public function getIdentifier(): TableIdentifier
     {
         return $this->identifier;
     }
 
+    /**
+     * @return string
+     */
     public function getName(): string
     {
         return $this->name;
     }
 
+    /**
+     * @return string
+     */
     public function getSchema(): string
     {
         return $this->schema;
     }
 
+    /**
+     * @return array
+     */
     public function getSelectColumns(): array
     {
         $geometryColumn = $this->getGeometryColumn();
@@ -192,6 +229,15 @@ class Table
         return $columnsName;
     }
 
+    /**
+     * @param string|null $filter
+     * @param string|null $order
+     * @param int|null $limit
+     * @param int|null $start
+     * @param bool $geojson
+     *
+     * @return array
+     */
     public function getRecords(
         ?string $filter = null,
         ?string $order = null,

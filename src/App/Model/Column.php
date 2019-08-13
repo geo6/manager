@@ -20,6 +20,12 @@ class Column extends ColumnObject
     /** @var ConstraintObject[] */
     protected $constraints = [];
 
+    /**
+     * @param Adapter $adapter
+     * @param string $name
+     * @param string $tableName
+     * @param string|null $schemaName
+     */
     public function __construct(Adapter $adapter, string $name, string $tableName, ?string $schemaName = null)
     {
         parent::__construct($name, $tableName, $schemaName);
@@ -32,6 +38,12 @@ class Column extends ColumnObject
         });
     }
 
+    /**
+     * @param Adapter $adapter
+     * @param ColumnObject $columObject
+     *
+     * @return self
+     */
     public static function fromColumnObject(Adapter $adapter, ColumnObject $columnObject): self
     {
         $column = new self(
@@ -54,6 +66,11 @@ class Column extends ColumnObject
         return $column;
     }
 
+    /**
+     * @param Adapter $adapter
+     *
+     * @return self
+     */
     public function setAdapter(Adapter $adapter)
     {
         $this->adapter = $adapter;
@@ -61,6 +78,11 @@ class Column extends ColumnObject
         return $this;
     }
 
+    /**
+     * @param mixed $dataType
+     *
+     * @return self
+     */
     public function setDataType(/*string*/$dataType)
     {
         $driver = $this->adapter->getDriver()->getConnection()->getDriverName();
@@ -74,6 +96,11 @@ class Column extends ColumnObject
         return $this;
     }
 
+    /**
+     * @param array $constraints
+     *
+     * @return self
+     */
     public function setConstraints(array $constraints)
     {
         $name = $this->name;
@@ -85,6 +112,9 @@ class Column extends ColumnObject
         return $this;
     }
 
+    /**
+     * @return ForeignColumn|null
+     */
     public function getForeignColumn(): ?ForeignColumn
     {
         $name = $this->name;
@@ -105,6 +135,9 @@ class Column extends ColumnObject
         );
     }
 
+    /**
+     * @return bool
+     */
     public function isForeignKey(): bool
     {
         return !is_null($this->getForeignColumn());
@@ -121,6 +154,9 @@ class Column extends ColumnObject
     //     return count($unique) > 0;
     // }
 
+    /**
+     * @return string
+     */
     private function getPostgreSQLDataType(): string
     {
         $connection = $this->adapter->getDriver()->getConnection()->getConnectionParameters();

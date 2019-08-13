@@ -8,8 +8,6 @@ use Zend\Db\Sql\Ddl\Column\Column;
 
 class Geography extends Column
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $type = 'GEOGRAPHY';
 }

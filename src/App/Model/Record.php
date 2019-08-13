@@ -16,17 +16,26 @@ use Zend\Db\Sql\Update;
 
 class Record
 {
+    /** @var Adapter */
     private $adapter;
 
+    /** @var Table */
     private $table;
+    /** @var string[] */
     private $keys;
-    private $geometryName;
-    private $geometryType;
 
+    /** @var int|null */
     public $id;
+    /** @var array|null */
     public $properties;
+    /** @var array|null */
     public $geometry;
 
+    /**
+     * @param Adapter $adapter
+     * @param Table $table
+     * @param int|null $id
+     */
     public function __construct(Adapter $adapter, Table $table, ?int $id = null)
     {
         $this->adapter = $adapter;
@@ -48,6 +57,11 @@ class Record
         }
     }
 
+    /**
+     * @param ArrayObject $object
+     *
+     * @return self
+     */
     public function hydrate(ArrayObject $object): self
     {
         $table = $this->table->getName();
@@ -68,6 +82,9 @@ class Record
         return $this;
     }
 
+    /**
+     * @param bool $execute
+     */
     public function select(bool $execute = false)
     {
         $keyColumn = $this->table->getKeyColumn()->getName();
@@ -105,6 +122,11 @@ class Record
         return $execute ? $this->execute($select) : $select;
     }
 
+    /**
+     * @param array $data
+     * @param bool $execute
+     * @param string|null $user
+     */
     public function insert(array $data, bool $execute, ?string $user = null)
     {
         if (!isset($data['properties'], $data['geometry'])) {
@@ -154,6 +176,11 @@ class Record
         return $insert;
     }
 
+    /**
+     * @param array $data
+     * @param bool $execute
+     * @param string|null $user
+     */
     public function update(array $data, bool $execute, ?string $user = null)
     {
         if (!isset($data['properties']) && !isset($data['geometry'])) {
@@ -216,6 +243,9 @@ class Record
         return $update;
     }
 
+    /**
+     * @param bool $execute
+     */
     public function delete(bool $execute)
     {
         $keyColumn = $this->table->getKeyColumn()->getName();
@@ -226,6 +256,9 @@ class Record
         return $execute ? $this->execute($delete) : $delete;
     }
 
+    /**
+     * @param mixed $query
+     */
     private function execute($query)
     {
         $sql = new Sql($this->adapter);
@@ -250,6 +283,9 @@ class Record
         }
     }
 
+    /**
+     * @return array
+     */
     public function toGeoJSON(): array
     {
         $properties = array_map(function ($key, $value) {
