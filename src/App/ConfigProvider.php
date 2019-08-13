@@ -36,6 +36,8 @@ class ConfigProvider
             ],
             'factories'  => [
                 Handler\HomePageHandler::class => Handler\HomePageHandlerFactory::class,
+                Handler\MapHandler::class      => Handler\MapHandlerFactory::class,
+                Handler\TableHandler::class    => Handler\TableHandlerFactory::class,
             ],
         ];
     }
