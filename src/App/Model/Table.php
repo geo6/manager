@@ -108,7 +108,7 @@ class Table
             );
         }
 
-        if (preg_match('/^nextval\(\'(\w +) \'(?:\:\:regclass)?\)$/', $default, $matches) === 0) {
+        if (preg_match('/^nextval\(\'((?:\w+)|(?:\w+\."\w+"))\'(?:\:\:regclass)?\)$/', $default, $matches) === 0) {
             throw new Exception(
                 sprintf('The PRIMARY KEY for table "%s" is currently not auto-incremented.', $this->name)
             );

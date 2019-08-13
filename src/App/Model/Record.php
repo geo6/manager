@@ -143,7 +143,9 @@ class Record
         if ($execute === true) {
             $result = $this->execute($insert);
 
-            $this->id = $this->adapter->getDriver()->getLastGeneratedValue('eve_point_id_seq');
+            $sequence = $this->table->getKeySequence();
+
+            $this->id = $this->adapter->getDriver()->getLastGeneratedValue($sequence);
             $this->refresh();
 
             return $result;
