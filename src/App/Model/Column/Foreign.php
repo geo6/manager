@@ -11,7 +11,7 @@ use Zend\Db\Sql\TableIdentifier;
 class Foreign extends Column
 {
     /**
-     * @var string $colum
+     * @var string
      *
      * @return array Return reference values.
      */

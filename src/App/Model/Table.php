@@ -31,8 +31,8 @@ class Table
 
     /**
      * @param Adapter $adapter
-     * @param string $schema
-     * @param string $table
+     * @param string  $schema
+     * @param string  $table
      */
     public function __construct(Adapter $adapter, string $schema, string $table)
     {
@@ -232,9 +232,9 @@ class Table
     /**
      * @param string|null $filter
      * @param string|null $order
-     * @param int|null $limit
-     * @param int|null $start
-     * @param bool $geojson
+     * @param int|null    $limit
+     * @param int|null    $start
+     * @param bool        $geojson
      *
      * @return array
      */

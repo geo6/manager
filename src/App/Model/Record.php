@@ -32,8 +32,8 @@ class Record
     public $geometry;
 
     /**
-     * @param Adapter $adapter
-     * @param Table $table
+     * @param Adapter  $adapter
+     * @param Table    $table
      * @param int|null $id
      */
     public function __construct(Adapter $adapter, Table $table, ?int $id = null)
@@ -123,8 +123,8 @@ class Record
     }
 
     /**
-     * @param array $data
-     * @param bool $execute
+     * @param array       $data
+     * @param bool        $execute
      * @param string|null $user
      */
     public function insert(array $data, bool $execute, ?string $user = null)
@@ -177,8 +177,8 @@ class Record
     }
 
     /**
-     * @param array $data
-     * @param bool $execute
+     * @param array       $data
+     * @param bool        $execute
      * @param string|null $user
      */
     public function update(array $data, bool $execute, ?string $user = null)

@@ -21,9 +21,9 @@ class Column extends ColumnObject
     protected $constraints = [];
 
     /**
-     * @param Adapter $adapter
-     * @param string $name
-     * @param string $tableName
+     * @param Adapter     $adapter
+     * @param string      $name
+     * @param string      $tableName
      * @param string|null $schemaName
      */
     public function __construct(Adapter $adapter, string $name, string $tableName, ?string $schemaName = null)
@@ -39,7 +39,7 @@ class Column extends ColumnObject
     }
 
     /**
-     * @param Adapter $adapter
+     * @param Adapter      $adapter
      * @param ColumnObject $columObject
      *
      * @return self
