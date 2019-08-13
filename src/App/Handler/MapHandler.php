@@ -8,7 +8,6 @@ use App\Middleware\ConfigMiddleware;
 use App\Middleware\DbAdapterMiddleware;
 use App\Middleware\TableMiddleware;
 use App\Model\Table;
-use App\Model\Table\Main as MainTable;
 use App\Model\Thematic;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -26,7 +25,7 @@ class MapHandler implements RequestHandlerInterface
     private $renderer;
 
     /**
-     * @param RouterInterface $router
+     * @param RouterInterface           $router
      * @param TemplateRendererInterface $renderer
      */
     public function __construct(RouterInterface $router, TemplateRendererInterface $renderer)

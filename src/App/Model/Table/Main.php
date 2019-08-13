@@ -16,9 +16,9 @@ class Main extends Table
 
     /**
      * @param Adapter $adapter
-     * @param string $schema
-     * @param string $table
-     * @param array $config
+     * @param string  $schema
+     * @param string  $table
+     * @param array   $config
      */
     public function __construct(Adapter $adapter, string $schema, string $table, ?array $config = null)
     {

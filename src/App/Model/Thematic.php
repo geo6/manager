@@ -24,7 +24,7 @@ class Thematic
     public $values = [];
 
     /**
-     * @param Adapter $adapter
+     * @param Adapter    $adapter
      * @param array|null $config
      */
     public function __construct(Adapter $adapter, ?array $config = null)

@@ -9,18 +9,18 @@ use App\Middleware\DbAdapterMiddleware;
 use App\Model\Ddl\Column\Geography;
 use App\Model\Ddl\Column\Serial;
 use Blast\BaseUrl\BaseUrlMiddleware;
+use DateTime;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Zend\Db\Adapter\Adapter;
 use Zend\Db\Metadata\Metadata;
-use Zend\Db\Sql\Sql;
 use Zend\Db\Sql\Ddl;
+use Zend\Db\Sql\Sql;
 use Zend\Db\Sql\TableIdentifier;
 use Zend\Diactoros\Response\RedirectResponse;
 use Zend\Expressive\Router\RouterInterface;
 use Zend\Expressive\Session\SessionMiddleware;
-use DateTime;
 
 class NewHandler implements RequestHandlerInterface
 {
@@ -88,8 +88,8 @@ class NewHandler implements RequestHandlerInterface
      * Create a new (temporary) table (and schema if necessary).
      * Clean outdated tables.
      *
-     * @param Adapter $adapter
-     * @param string $schema
+     * @param Adapter  $adapter
+     * @param string   $schema
      * @param string[] $columns
      *
      * @return TableIdentifier TableIdentifier with the new table table and schema.
@@ -143,8 +143,8 @@ class NewHandler implements RequestHandlerInterface
      * Drop a table.
      *
      * @param Adapter $adapter
-     * @param string $schema
-     * @param string $table
+     * @param string  $schema
+     * @param string  $table
      */
     private static function dropTable(Adapter $adapter, string $schema, string $table): void
     {
@@ -162,7 +162,7 @@ class NewHandler implements RequestHandlerInterface
      * Drop outdated tables (in specified schema).
      *
      * @param Adapter $adapter
-     * @param string $schema
+     * @param string  $schema
      */
     private static function cleanOldTables(Adapter $adapter, string $schema): void
     {

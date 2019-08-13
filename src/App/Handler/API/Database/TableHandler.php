@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 namespace App\Handler\API\Database;
 
-use App\Middleware\ConfigMiddleware;
-use App\Middleware\DbAdapterMiddleware;
 use App\Middleware\TableMiddleware;
-use App\Model\Table\Main as MainTable;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
