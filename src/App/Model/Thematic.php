@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Model;
 
@@ -11,19 +11,28 @@ use Zend\Db\Sql\TableIdentifier;
 
 class Thematic
 {
+    /** @var Adapter */
     private $adapter;
+    /** @var array|null */
     private $config;
 
+    /** @var string|null */
     public $column;
+    /** @var string */
     public $default = '#3399cc';
+    /** @var string[] */
     public $values = [];
 
-    public function __construct(Adapter $adapter, array $config)
+    /**
+     * @param Adapter $adapter
+     * @param array|null $config
+     */
+    public function __construct(Adapter $adapter, ?array $config = null)
     {
         $this->adapter = $adapter;
         $this->config = $config;
 
-        if (isset($config['thematic'])) {
+        if (!is_null($config) && isset($config['thematic'])) {
             if (isset($config['thematic']['default'])) {
                 $this->default = $config['thematic']['default'];
             }
