@@ -6,6 +6,7 @@ namespace App\Handler;
 
 use App\Middleware\ConfigMiddleware;
 use App\Middleware\DbAdapterMiddleware;
+use App\Middleware\TableMiddleware;
 use App\Model\Table;
 use App\Model\Table\Main as MainTable;
 use App\Model\Thematic;
@@ -35,8 +36,9 @@ class TableHandler implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $adapter = $request->getAttribute(DbAdapterMiddleware::DBADAPTER_ATTRIBUTE);
-        $config = $request->getAttribute(ConfigMiddleware::CONFIG_ATTRIBUTE);
         $basePath = $request->getAttribute(BaseUrlMiddleware::BASE_PATH);
+        $config = $request->getAttribute(ConfigMiddleware::CONFIG_ATTRIBUTE);
+        $table = $request->getAttribute(TableMiddleware::TABLE_ATTRIBUTE);
 
         $params = $request->getQueryParams();
 
@@ -45,7 +47,6 @@ class TableHandler implements RequestHandlerInterface
 
         $filter = isset($params['filter']) && strlen($params['filter']) > 0 ? $params['filter'] : null;
 
-        $table = new MainTable($adapter, $config['config']);
         $total = $table->getCount();
         $count = $table->getCount($filter);
         $columns = $table->getColumns();

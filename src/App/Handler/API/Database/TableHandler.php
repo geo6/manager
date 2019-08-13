@@ -6,6 +6,7 @@ namespace App\Handler\API\Database;
 
 use App\Middleware\ConfigMiddleware;
 use App\Middleware\DbAdapterMiddleware;
+use App\Middleware\TableMiddleware;
 use App\Model\Table\Main as MainTable;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -16,10 +17,8 @@ class TableHandler implements RequestHandlerInterface
 {
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $adapter = $request->getAttribute(DbAdapterMiddleware::DBADAPTER_ATTRIBUTE);
-        $config = $request->getAttribute(ConfigMiddleware::CONFIG_ATTRIBUTE);
+        $table = $request->getAttribute(TableMiddleware::TABLE_ATTRIBUTE);
 
-        $table = new MainTable($adapter, $config['config']);
         $count = $table->getCount();
 
         $result = array_merge(

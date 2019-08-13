@@ -11,15 +11,20 @@ use Zend\Db\Adapter\Adapter;
 
 class Main extends Table
 {
-    private $config;
+    /** @var array */
+    private $configColumns;
 
-    public function __construct(Adapter $adapter, array $config)
+    /**
+     * @param Adapter $adapter
+     * @param string $schema
+     * @param string $table
+     * @param array $config
+     */
+    public function __construct(Adapter $adapter, string $schema, string $table, ?array $config = null)
     {
-        $connection = $adapter->getDriver()->getConnection()->getConnectionParameters();
+        parent::__construct($adapter, $schema, $table);
 
-        parent::__construct($adapter, $connection['schema'], $connection['table']);
-
-        $this->config = $config;
+        $this->configColumns = $config['columns'] ?? null;
 
         foreach ($this->columns as &$column) {
             $column->readonly = $this->isColumnReadonly($column);
@@ -27,6 +32,11 @@ class Main extends Table
         }
     }
 
+    /**
+     * @param Column $column
+     *
+     * @return bool Is the column readonly ?
+     */
     private function isColumnReadonly(Column $column): bool
     {
         $name = $column->getName();
@@ -37,13 +47,18 @@ class Main extends Table
             return true;
         }
 
-        if (isset($this->config['columns'], $this->config['columns'][$name], $this->config['columns'][$name]['readonly'])) {
-            return (bool) $this->config['columns'][$name]['readonly'];
+        if (isset($this->configColumns[$name], $this->configColumns[$name]['readonly'])) {
+            return (bool) $this->configColumns[$name]['readonly'];
         }
 
         return false;
     }
 
+    /**
+     * @param Column $column
+     *
+     * @return ArrayObject|null Information (name, mode, values) about reference.
+     */
     private function getColumnReference(Column $column): ?ArrayObject
     {
         $name = $column->getName();
@@ -54,17 +69,21 @@ class Main extends Table
         }
 
         $mode = 'default';
-        $values = [];
+        $display = $reference->getName();
 
-        if (isset($this->config['columns'], $this->config['columns'][$name], $this->config['columns'][$name]['reference'])) {
-            $config = $this->config['columns'][$name]['reference'];
+        if (isset($this->configColumns[$name], $this->configColumns[$name]['reference'])) {
+            $configReference = $this->configColumns[$name]['reference'];
 
-            $mode = isset($config['mode']) && in_array($config['mode'], ['listbox', 'datalist']) ? $config['mode'] : $mode;
+            if (isset($configReference['mode']) && in_array($configReference['mode'], ['listbox', 'datalist'])) {
+                $mode = $configReference['mode'];
+            }
 
-            if (isset($config['display'])) {
-                $values = $reference->getValues($config['display']);
+            if (isset($configReference['display']) && strlen($configReference['display']) > 0) {
+                $display = $configReference['display'];
             }
         }
+
+        $values = $reference->getValues($display);
 
         return new ArrayObject([
             'mode'   => $mode,
@@ -75,6 +94,9 @@ class Main extends Table
         ], ArrayObject::ARRAY_AS_PROPS);
     }
 
+    /**
+     * @return array
+     */
     public function toArray(): array
     {
         $columns = [];

@@ -6,6 +6,7 @@ namespace App\Handler\API\Database;
 
 use App\Middleware\ConfigMiddleware;
 use App\Middleware\DbAdapterMiddleware;
+use App\Middleware\TableMiddleware;
 use App\Model\Record;
 use App\Model\Table\Main as MainTable;
 use Exception;
@@ -20,13 +21,11 @@ class RecordsHandler implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $adapter = $request->getAttribute(DbAdapterMiddleware::DBADAPTER_ATTRIBUTE);
-        $config = $request->getAttribute(ConfigMiddleware::CONFIG_ATTRIBUTE);
+        $table = $request->getAttribute(TableMiddleware::TABLE_ATTRIBUTE);
 
         $id = $request->getAttribute('id');
 
         $params = $request->getQueryParams();
-
-        $table = new MainTable($adapter, $config['config']);
 
         switch ($request->getMethod()) {
             case 'GET':

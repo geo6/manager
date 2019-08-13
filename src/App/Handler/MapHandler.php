@@ -6,6 +6,7 @@ namespace App\Handler;
 
 use App\Middleware\ConfigMiddleware;
 use App\Middleware\DbAdapterMiddleware;
+use App\Middleware\TableMiddleware;
 use App\Model\Table;
 use App\Model\Table\Main as MainTable;
 use App\Model\Thematic;
@@ -31,8 +32,8 @@ class MapHandler implements RequestHandlerInterface
     {
         $adapter = $request->getAttribute(DbAdapterMiddleware::DBADAPTER_ATTRIBUTE);
         $config = $request->getAttribute(ConfigMiddleware::CONFIG_ATTRIBUTE);
+        $table = $request->getAttribute(TableMiddleware::TABLE_ATTRIBUTE);
 
-        $table = new MainTable($adapter, $config['config']);
         $columns = $table->getColumns();
 
         $foreignTables = [];
