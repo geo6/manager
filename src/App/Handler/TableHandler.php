@@ -17,6 +17,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Zend\Diactoros\Response\HtmlResponse;
 use Zend\Diactoros\Response\RedirectResponse;
 use Zend\Expressive\Router\RouterInterface;
+use Zend\Expressive\Session\SessionMiddleware;
 use Zend\Expressive\Template\TemplateRendererInterface;
 
 class TableHandler implements RequestHandlerInterface
@@ -27,12 +28,21 @@ class TableHandler implements RequestHandlerInterface
     /** @var TemplateRendererInterface */
     private $renderer;
 
+    /**
+     * @param RouterInterface $router
+     * @param TemplateRendererInterface $renderer
+     */
     public function __construct(RouterInterface $router, TemplateRendererInterface $renderer)
     {
         $this->router = $router;
         $this->renderer = $renderer;
     }
 
+    /**
+     * @param ServerRequestInterface $request
+     *
+     * @return ResponseInterface
+     */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $adapter = $request->getAttribute(DbAdapterMiddleware::DBADAPTER_ATTRIBUTE);
@@ -42,8 +52,10 @@ class TableHandler implements RequestHandlerInterface
 
         $params = $request->getQueryParams();
 
+        $limit = isset($config['config']['limit']) ? intval($config['config']['limit']) : 100;
+
         $offset = $request->getAttribute('offset', 0);
-        $offset = intval(floor(intval($offset) / $config['config']['limit']) * $config['config']['limit']);
+        $offset = intval(floor(intval($offset) / $limit) * $limit);
 
         $filter = isset($params['filter']) && strlen($params['filter']) > 0 ? $params['filter'] : null;
 
@@ -88,7 +100,7 @@ class TableHandler implements RequestHandlerInterface
         }
 
         if ($offset > $count) {
-            $offset = intval(floor($count / $config['config']['limit']) * $config['config']['limit']);
+            $offset = intval(floor($count / $limit) * $limit);
 
             $redirect = ($basePath !== '/' ? $basePath : '');
             $redirect .= $this->router->generateUri('table', [
@@ -103,12 +115,10 @@ class TableHandler implements RequestHandlerInterface
             ]));
         }
 
-        $thematic = new Thematic($adapter, $config['config']);
-
         $records = $table->getRecords(
             $filter,
             $order['column'] . ' ' . $order['order'],
-            $config['config']['limit'],
+            $limit,
             $offset
         );
 
@@ -116,8 +126,8 @@ class TableHandler implements RequestHandlerInterface
             'app::table',
             [
                 'configId'      => $config['custom'],
-                'pages'         => floor($count / $config['config']['limit']),
-                'limit'         => $config['config']['limit'],
+                'pages'         => floor($count / $limit),
+                'limit'         => $limit,
                 'offset'        => $offset,
                 'order'         => $order,
                 'total'         => $total,
