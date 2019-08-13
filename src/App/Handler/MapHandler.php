@@ -14,20 +14,32 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Zend\Diactoros\Response\HtmlResponse;
+use Zend\Expressive\Router\RouterInterface;
 use Zend\Expressive\Template\TemplateRendererInterface;
 
 class MapHandler implements RequestHandlerInterface
 {
-    /**
-     * @var TemplateRendererInterface
-     */
+    /** @var RouterInterface */
+    private $router;
+
+    /** @var TemplateRendererInterface */
     private $renderer;
 
-    public function __construct(TemplateRendererInterface $renderer)
+    /**
+     * @param RouterInterface $router
+     * @param TemplateRendererInterface $renderer
+     */
+    public function __construct(RouterInterface $router, TemplateRendererInterface $renderer)
     {
+        $this->router = $router;
         $this->renderer = $renderer;
     }
 
+    /**
+     * @param ServerRequestInterface $request
+     *
+     * @return ResponseInterface
+     */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $adapter = $request->getAttribute(DbAdapterMiddleware::DBADAPTER_ATTRIBUTE);
@@ -60,6 +72,11 @@ class MapHandler implements RequestHandlerInterface
         ));
     }
 
+    /**
+     * @param array $configBaselayers
+     *
+     * @return array
+     */
     private static function getBaselayers(array $configBaselayers): array
     {
         $baselayers = $configBaselayers;
