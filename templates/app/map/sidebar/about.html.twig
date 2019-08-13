@@ -4,9 +4,9 @@
         <span class="sidebar-close"><i class="fas fa-caret-left"></i></span>
     </h1>
     <h2 class="h3 mt-3">
-        Manager <strong>{{ config.title ?? config.id }}</strong>
+        Manager <strong>{{ config.title ?? config.id ?? '' }}</strong>
     </h2>
-    {% if config.description is not null %}
+    {% if config is not null and config.description is not null %}
     <p class="mb-0 text-info">{{ config.description | nl2br }}</p>
     {% endif %}
 </div>
