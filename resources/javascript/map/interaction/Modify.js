@@ -12,9 +12,7 @@ import Records from '../../Records';
 export default class extends Modify {
     constructor (map) {
         super({
-            features: new Collection([
-                app.selection.current()
-            ])
+            features: new Collection([app.selection.current()])
         });
 
         this.map = map;
@@ -39,7 +37,6 @@ export default class extends Modify {
     }
 
     onmodifyend (event) {
-        console.log(event.features);
         event.features.forEach(feature => {
             const id = feature.getId();
             const geometry = feature.getGeometry();
@@ -50,7 +47,9 @@ export default class extends Modify {
 
             this.setActive(false);
 
-            Records.update(id, { geometry: JSON.parse(geojson) }).then(data => {
+            Records.update(app.custom, id, {
+                geometry: JSON.parse(geojson)
+            }).then(data => {
                 const feature = app.source.getFeatureById(id);
 
                 const geometry = new GeoJSON().readGeometry(data.geometry, {

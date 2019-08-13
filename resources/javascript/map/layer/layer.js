@@ -18,7 +18,9 @@ export default function (map, geojson) {
     });
 
     const count = app.source.getFeatures().length;
-    const geometryColumn = app.cache.table.columns.find(column => column.name === app.cache.table.geometry);
+    const geometryColumn = app.cache.table.columns.find(
+        column => column.name === app.cache.table.geometry
+    );
     const labelColumn = 'label';
 
     const layer = new VectorLayer({
@@ -58,7 +60,7 @@ export default function (map, geojson) {
         const feature = event.feature;
         const id = feature.getId();
 
-        Records.delete(id).then(() => {
+        Records.delete(app.custom, id).then(() => {
             app.selection.clear();
         });
     });

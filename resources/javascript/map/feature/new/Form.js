@@ -1,5 +1,7 @@
 'use strict';
 
+import app from '../../../app';
+
 import Records from '../../../Records';
 
 export default class Form {
@@ -47,13 +49,19 @@ export default class Form {
         });
 
         document.getElementById('info-form-alert-error').hidden = true;
-        document.getElementById('info-form-alert-error').querySelector('pre > code').innerText = '';
+        document
+            .getElementById('info-form-alert-error')
+            .querySelector('pre > code').innerText = '';
 
         try {
-            return await Records.insert(data);
+            return await Records.insert(app.custom, data);
         } catch (error) {
-            document.getElementById('new-form-alert-error').removeAttribute('hidden');
-            document.getElementById('new-form-alert-error').querySelector('pre > code').innerText = error;
+            document
+                .getElementById('new-form-alert-error')
+                .removeAttribute('hidden');
+            document
+                .getElementById('new-form-alert-error')
+                .querySelector('pre > code').innerText = error;
 
             return Promise.reject(new Error(error));
         }

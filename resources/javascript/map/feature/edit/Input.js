@@ -12,7 +12,9 @@ export default class Input {
     }
 
     static getHelpText (key) {
-        return InfoForm.getElement().querySelector(`[name="${key}"] + .form-text`);
+        return InfoForm.getElement().querySelector(
+            `[name="${key}"] + .form-text`
+        );
     }
 
     static fill (key, value) {
@@ -41,7 +43,7 @@ export default class Input {
         properties[key] = element.value;
 
         try {
-            const data = await Records.update(id, { properties });
+            const data = await Records.update(app.custom, id, { properties });
 
             const feature = app.selection.current();
 
@@ -55,8 +57,12 @@ export default class Input {
         } catch (error) {
             Input.changeStatus(element, 'danger');
 
-            document.getElementById('info-form-alert-error').removeAttribute('hidden');
-            document.getElementById('info-form-alert-error').querySelector('pre > code').innerText = error;
+            document
+                .getElementById('info-form-alert-error')
+                .removeAttribute('hidden');
+            document
+                .getElementById('info-form-alert-error')
+                .querySelector('pre > code').innerText = error;
 
             return Promise.reject(new Error(error));
         }
@@ -70,10 +76,16 @@ export default class Input {
             Input.changeStatus(event.target, 'loading');
 
             document.getElementById('info-form-alert-error').hidden = true;
-            document.getElementById('info-form-alert-error').querySelector('pre > code').innerText = '';
+            document
+                .getElementById('info-form-alert-error')
+                .querySelector('pre > code').innerText = '';
 
             if (valid !== true) {
-                Input.changeStatus(event.target, 'warning', event.target.validationMessage);
+                Input.changeStatus(
+                    event.target,
+                    'warning',
+                    event.target.validationMessage
+                );
             } else {
                 Input.save(key);
             }
@@ -81,7 +93,9 @@ export default class Input {
     }
 
     static changeStatus (element, status, text) {
-        if (['loading', 'success', 'warning', 'danger'].indexOf(status) === -1) {
+        if (
+            ['loading', 'success', 'warning', 'danger'].indexOf(status) === -1
+        ) {
             throw new Error(`Invalid status "${status}".`);
         }
 

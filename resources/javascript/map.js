@@ -44,10 +44,10 @@ export function init (custom, baselayers, thematic) {
     app.map = initMap();
 
     Promise.all([
-        fetch(`/app/manager/test/api/db/table`).then(response =>
+        fetch(`/app/manager/${app.custom}/api/db/table`).then(response =>
             response.json()
         ),
-        Records.getAll()
+        Records.getAll(app.custom)
     ]).then(data => {
         app.cache.setTable(data[0]);
         app.layers.layer = initLayer(app.map, data[1]);

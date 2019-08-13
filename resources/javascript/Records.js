@@ -1,14 +1,18 @@
 'use strict';
 
 export default class Records {
-    static async getAll (filter) {
-        const response = await fetch(typeof filter === 'undefined' ? '/app/manager/test/api/db/records' : `/app/manager/test/api/db/records?filter=${filter}`);
+    static async getAll (config, filter) {
+        const response = await fetch(
+            typeof filter === 'undefined'
+                ? `/app/manager/${config}/api/db/records`
+                : `/app/manager/${config}/api/db/records?filter=${filter}`
+        );
 
         return response.json();
     }
 
-    static async insert (data) {
-        const response = await fetch('/app/manager/test/api/db/records', {
+    static async insert (config, data) {
+        const response = await fetch(`/app/manager/${config}/api/db/records`, {
             body: JSON.stringify(data),
             headers: {
                 'Content-Type': 'application/json'
@@ -29,8 +33,10 @@ export default class Records {
         return response.json();
     }
 
-    static async get (id) {
-        const response = await fetch(`/app/manager/test/api/db/records/${id}`);
+    static async get (config, id) {
+        const response = await fetch(
+            `/app/manager/${config}/api/db/records/${id}`
+        );
 
         if (response.ok !== true) {
             try {
@@ -45,14 +51,17 @@ export default class Records {
         return response.json();
     }
 
-    static async update (id, data) {
-        const response = await fetch(`/app/manager/test/api/db/records/${id}`, {
-            body: JSON.stringify(data),
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            method: 'PUT'
-        });
+    static async update (config, id, data) {
+        const response = await fetch(
+            `/app/manager/${config}/api/db/records/${id}`,
+            {
+                body: JSON.stringify(data),
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                method: 'PUT'
+            }
+        );
 
         if (response.ok !== true) {
             try {
@@ -67,10 +76,13 @@ export default class Records {
         return response.json();
     }
 
-    static async delete (id) {
-        const response = await fetch(`/app/manager/test/api/db/records/${id}`, {
-            method: 'DELETE'
-        });
+    static async delete (config, id) {
+        const response = await fetch(
+            `/app/manager/${config}/api/db/records/${id}`,
+            {
+                method: 'DELETE'
+            }
+        );
 
         if (response.ok !== true) {
             try {

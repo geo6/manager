@@ -12,12 +12,11 @@ function removeLayer (app) {
 }
 
 function addLayer (app) {
-    Records.getAll()
-        .then(data => {
-            app.layers.layer = initLayer(app.map, data);
+    Records.getAll(app.custom).then(data => {
+        app.layers.layer = initLayer(app.map, data);
 
-            app.interaction.select = new SelectInteraction(app.map);
-        });
+        app.interaction.select = new SelectInteraction(app.map);
+    });
 }
 
 export default function (app) {
