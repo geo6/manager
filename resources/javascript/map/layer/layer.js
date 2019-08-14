@@ -52,7 +52,9 @@ export default function (map, geojson) {
 
     if (window.location.hash === '') {
         layer.once('render', () => {
-            app.map.getView().fit(layer.getSource().getExtent());
+            app.map.getView().fit(layer.getSource().getExtent(), {
+                maxZoom: 20
+            });
         });
     }
 
