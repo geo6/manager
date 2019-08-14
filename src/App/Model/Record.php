@@ -64,20 +64,25 @@ class Record
      */
     public function hydrate(ArrayObject $object): self
     {
-        $table = $this->table->getName();
         $keyColumn = $this->table->getKeyColumn()->getName();
 
         if (is_null($this->id)) {
-            $this->id = $object->{$table . Column::SEPARATOR . $keyColumn};
+            $this->id = $object->{$keyColumn};
         }
 
-        $this->properties = array_filter((array) $object, function ($key) {
-            list($table, $column) = explode(Column::SEPARATOR, $key);
+        $pattern = sprintf('/^(\w+)%s(\w+)$/', preg_quote(Column::SEPARATOR));
 
-            return substr($column, 0, 1) !== '_' && $column !== $this->table->getGeometryColumn()->getName();
+        $this->properties = array_filter((array) $object, function ($key) use ($pattern) {
+            if (preg_match($pattern, $key, $matches) === 1) {
+                $column = $matches[2];
+            } else {
+                $column = $key;
+            }
+
+            return substr($column, 0, 1) !== '_';
         }, ARRAY_FILTER_USE_KEY);
 
-        $this->geometry = json_decode($object->{$table . Column::SEPARATOR . '_geojson'});
+        $this->geometry = json_decode($object->_geojson);
 
         return $this;
     }
@@ -88,7 +93,7 @@ class Record
     public function select(bool $execute = false)
     {
         $keyColumn = $this->table->getKeyColumn()->getName();
-        $columns = $this->table->getSelectColumns();
+        $columns = $this->table->getSelectColumns(true, false);
 
         $select = new Select($this->table->getIdentifier());
         $select = $select->columns($columns, true);
@@ -101,7 +106,7 @@ class Record
 
             $foreignTable = new Table($this->adapter, $foreign->getSchemaName(), $foreign->getTableName());
 
-            $foreignColumns = $foreignTable->getSelectColumns();
+            $foreignColumns = $foreignTable->getSelectColumns(false, true);
 
             $on = sprintf(
                 '%s.%s = %s.%s',

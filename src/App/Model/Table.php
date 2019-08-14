@@ -197,7 +197,7 @@ class Table
     /**
      * @return array
      */
-    public function getSelectColumns(): array
+    public function getSelectColumns(bool $geometry = true, bool $prefix = false): array
     {
         $geometryColumn = $this->getGeometryColumn();
 
@@ -211,19 +211,33 @@ class Table
 
         $columnsName = [];
         foreach ($columns as $column) {
-            $alias = $this->name . Column::SEPARATOR . $column->getName();
-            $columnsName[$alias] = $column->getName();
+            if ($prefix === true) {
+                $alias = $this->name . Column::SEPARATOR . $column->getName();
+                $columnsName[$alias] = $column->getName();
+            } else {
+                $columnsName[] = $column->getName();
+            }
         }
 
-        if (!is_null($geometryColumn)) {
-            $columnsName = array_merge(
-                $columnsName,
-                [
-                    $this->name . Column::SEPARATOR . '_geojson' => new Expression(sprintf('ST_AsGeoJSON("%s"."%s"::geometry)', $this->name, $geometryColumn->getName())),
-                    $this->name . Column::SEPARATOR . '_length'  => new Expression(sprintf('ST_Length("%s"."%s"::geometry::geography)', $this->name, $geometryColumn->getName())),
-                    $this->name . Column::SEPARATOR . '_area'    => new Expression(sprintf('ST_Area("%s"."%s"::geometry::geography)', $this->name, $geometryColumn->getName())),
-                ]
-            );
+        if ($geometry === true && !is_null($geometryColumn)) {
+            if ($prefix === true) {
+                $geometryColumnsName = [
+                    $this->name . Column::SEPARATOR . '_geojson' =>
+                    new Expression(sprintf('ST_AsGeoJSON("%s"."%s"::geometry, 6)', $this->name, $geometryColumn->getName())),
+                    $this->name . Column::SEPARATOR . '_length'  =>
+                    new Expression(sprintf('ST_Length("%s"."%s"::geometry::geography)', $this->name, $geometryColumn->getName())),
+                    $this->name . Column::SEPARATOR . '_area'    =>
+                    new Expression(sprintf('ST_Area("%s"."%s"::geometry::geography)', $this->name, $geometryColumn->getName())),
+                ];
+            } else {
+                $geometryColumnsName = [
+                    '_geojson' => new Expression(sprintf('ST_AsGeoJSON("%s"."%s"::geometry, 6)', $this->name, $geometryColumn->getName())),
+                    '_length'  => new Expression(sprintf('ST_Length("%s"."%s"::geometry::geography)', $this->name, $geometryColumn->getName())),
+                    '_area'    => new Expression(sprintf('ST_Area("%s"."%s"::geometry::geography)', $this->name, $geometryColumn->getName())),
+                ];
+            }
+
+            $columnsName = array_merge($columnsName, $geometryColumnsName);
         }
 
         return $columnsName;

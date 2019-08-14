@@ -123,11 +123,8 @@
                     {% endfor %}
                 </tr>
                 <tr>
-                    {% if table.geometryColumn is not null %}
-                    {% set columns = table.columns | filter(c => c.name != table.geometryColumn.name) %}
-                    {% else %}
-                    {% set columns = table.columns %}
-                    {% endif %}
+                    {% set selectColumns = table.getSelectColumns() %}
+                    {% set columns = table.columns | filter(c => c.name in selectColumns) %}
 
                     {% for column in columns %}
                     <th scope="col" {{ thematic.column == column.name ? ' colspan="2"'}}>
@@ -151,11 +148,8 @@
 
                     {% for foreign in foreignTables %}
 
-                    {% if foreign.geometryColumn is not null %}
-                    {% set fcolumns = foreign.columns | filter(c => c.name != foreign.geometryColumn.name) %}
-                    {% else %}
-                    {% set fcolumns = foreign.columns %}
-                    {% endif %}
+                    {% set fselectColumns = foreign.getSelectColumns() %}
+                    {% set fcolumns = foreign.columns | filter(c => c.name in fselectColumns) %}
 
                     {% for fcolumn in fcolumns %}
                     <th scope="col">
@@ -183,9 +177,12 @@
                 {% for record in records %}
                 <tr>
                     <th class="text-right" scope="row">{{ record.id }}</th>
-                    {% for column in columns if column.name != table.keyColumn.name %}
 
-                    {% set value = attribute(record.properties, table.name ~ '.' ~ column.name) %}
+                    {% set keyColumn = table.keyColumn.name %}
+
+                    {% for column in columns if column.name != keyColumn %}
+
+                    {% set value = attribute(record.properties, column.name) %}
 
                     {% if thematic.column == column.name %}
                     {% set symbol = attribute(thematic.values, value) %}
@@ -203,11 +200,8 @@
 
                     {% for foreign in foreignTables %}
 
-                    {% if foreign.geometryColumn is not null %}
-                    {% set fcolumns = foreign.columns | filter(c => c.name != foreign.geometryColumn.name) %}
-                    {% else %}
-                    {% set fcolumns = foreign.columns %}
-                    {% endif %}
+                    {% set fselectColumns = foreign.getSelectColumns() %}
+                    {% set fcolumns = foreign.columns | filter(c => c.name in fselectColumns) %}
 
                     {% for fcolumn in fcolumns %}
                     <td
