@@ -40,32 +40,7 @@
     </a>
 </li>
 {% endif %}
-<li class="nav-item dropdown">
-    <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"
-        role="button">
-        <i class="fas fa-file-download"></i>
-        Export
-    </a>
-    <div class="dropdown-menu">
-        <a class="dropdown-item disabled" href="{{ path('export', {'config': configId, 'format':'geojson'}) }}">
-            <i class="far fa-file-code"></i>
-            GeoJSON
-        </a>
-        <a class="dropdown-item disabled" href="{{ path('export', {'config': configId, 'format':'kml'}) }}">
-            <i class="far fa-file-code"></i>
-            KML
-        </a>
-        <div class="dropdown-divider"></div>
-        <a class="dropdown-item disabled" href="{{ path('export', {'config': configId, 'format':'csv'}) }}">
-            <i class="fas fa-file-csv"></i>
-            CSV
-        </a>
-        <a class="dropdown-item disabled" href="{{ path('export', {'config': configId, 'format':'csv'}) }}">
-            <i class="far fa-file-excel"></i>
-            Excel
-        </a>
-    </div>
-</li>
+{{ include('@app/navbar/export.html.twig') }}
 {% endblock %}
 
 {% block content %}
