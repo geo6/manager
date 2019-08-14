@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Handler\API\Database;
 
+use App\Formatter\GeoJSON;
 use App\Middleware\DbAdapterMiddleware;
 use App\Middleware\TableMiddleware;
 use App\Model\Record;
@@ -34,7 +35,7 @@ class RecordsHandler implements RequestHandlerInterface
                         return new JsonResponse(['error' => $e->getMessage()], 500);
                     }
 
-                    return new JsonResponse($record->toGeoJSON());
+                    return new JsonResponse(GeoJSON::format($record));
                 }
 
                 return new JsonResponse([
@@ -58,7 +59,7 @@ class RecordsHandler implements RequestHandlerInterface
                     return new JsonResponse(['error' => $e->getMessage()], 500);
                 }
 
-                return new JsonResponse($record->toGeoJSON());
+                return new JsonResponse(GeoJSON::format($record));
 
             case 'PUT':
                 $data = $request->getParsedBody();
@@ -70,7 +71,7 @@ class RecordsHandler implements RequestHandlerInterface
                     return new JsonResponse(['error' => $e->getMessage()], 500);
                 }
 
-                return new JsonResponse($record->toGeoJSON());
+                return new JsonResponse(GeoJSON::format($record));
 
             case 'DELETE':
                 $data = $request->getParsedBody();

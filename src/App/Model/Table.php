@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model;
 
+use App\Formatter\GeoJSON;
 use Exception;
 use Zend\Db\Adapter\Adapter;
 use Zend\Db\Metadata\Metadata;
@@ -222,8 +223,10 @@ class Table
         if ($geometry === true && !is_null($geometryColumn)) {
             if ($prefix === true) {
                 $geometryColumnsName = [
-                    $this->name . Column::SEPARATOR . '_geojson' =>
-                    new Expression(sprintf('ST_AsGeoJSON("%s"."%s"::geometry, 6)', $this->name, $geometryColumn->getName())),
+                    $this->name . Column::SEPARATOR . '_srid' =>
+                    new Expression(sprintf('ST_SRID("%s"."%s"::geometry)', $this->name, $geometryColumn->getName())),
+                    $this->name . Column::SEPARATOR . '_ewkt' =>
+                    new Expression(sprintf('ST_AsEWKT("%s"."%s"::geometry)', $this->name, $geometryColumn->getName())),
                     $this->name . Column::SEPARATOR . '_length'  =>
                     new Expression(sprintf('ST_Length("%s"."%s"::geometry::geography)', $this->name, $geometryColumn->getName())),
                     $this->name . Column::SEPARATOR . '_area'    =>
@@ -231,9 +234,10 @@ class Table
                 ];
             } else {
                 $geometryColumnsName = [
-                    '_geojson' => new Expression(sprintf('ST_AsGeoJSON("%s"."%s"::geometry, 6)', $this->name, $geometryColumn->getName())),
-                    '_length'  => new Expression(sprintf('ST_Length("%s"."%s"::geometry::geography)', $this->name, $geometryColumn->getName())),
-                    '_area'    => new Expression(sprintf('ST_Area("%s"."%s"::geometry::geography)', $this->name, $geometryColumn->getName())),
+                    '_srid'   => new Expression(sprintf('ST_SRID("%s"."%s"::geometry)', $this->name, $geometryColumn->getName())),
+                    '_ewkt'   => new Expression(sprintf('ST_AsEWKT("%s"."%s"::geometry)', $this->name, $geometryColumn->getName())),
+                    '_length' => new Expression(sprintf('ST_Length("%s"."%s"::geometry::geography)', $this->name, $geometryColumn->getName())),
+                    '_area'   => new Expression(sprintf('ST_Area("%s"."%s"::geometry::geography)', $this->name, $geometryColumn->getName())),
                 ];
             }
 
@@ -285,7 +289,7 @@ class Table
 
         foreach ($query as $result) {
             $record = (new Record($this->adapter, $this))->hydrate($result);
-            $records[] = $geojson ? $record->toGeoJSON() : $record;
+            $records[] = $geojson ? json_decode(GeoJSON::format($record)) : $record;
         }
 
         return $records;

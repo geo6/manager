@@ -6,6 +6,7 @@ namespace App\Model;
 
 use ArrayObject;
 use ErrorException;
+use geoPHP;
 use Zend\Db\Adapter\Adapter;
 use Zend\Db\Sql\Delete;
 use Zend\Db\Sql\Expression;
@@ -82,7 +83,7 @@ class Record
             return substr($column, 0, 1) !== '_';
         }, ARRAY_FILTER_USE_KEY);
 
-        $this->geometry = json_decode($object->_geojson);
+        $this->geometry = geoPHP::load($object->_ewkt, 'ewkt');
 
         return $this;
     }
@@ -286,29 +287,5 @@ class Record
 
             $this->hydrate($result);
         }
-    }
-
-    /**
-     * @return array
-     */
-    public function toGeoJSON(): array
-    {
-        $properties = array_map(function ($key, $value) {
-            list($table, $column) = explode(Column::SEPARATOR, $key);
-
-            return [
-                $table === $this->table->getName() ? $column : $key,
-                $value,
-            ];
-        }, array_keys($this->properties), $this->properties);
-
-        $properties = array_column($properties, 1, 0);
-
-        return [
-            'type'       => 'Feature',
-            'id'         => $this->id,
-            'properties' => $properties,
-            'geometry'   => $this->geometry,
-        ];
     }
 }
