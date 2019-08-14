@@ -93,7 +93,7 @@ class Filter
         list($i, $schema, $table, $column) = $matches;
 
         $this->table = new TableIdentifier($table, $schema);
-        $this->key = $column;
+        $this->key = sprintf('%s.%s', $table, $column);
     }
 
     private function buildPredicate(): void
