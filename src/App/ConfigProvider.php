@@ -35,6 +35,7 @@ class ConfigProvider
                 Handler\PingHandler::class => Handler\PingHandler::class,
             ],
             'factories'  => [
+                Handler\ExportHandler::class   => Handler\ExportHandlerFactory::class,
                 Handler\HomePageHandler::class => Handler\HomePageHandlerFactory::class,
                 Handler\MapHandler::class      => Handler\MapHandlerFactory::class,
                 Handler\NewHandler::class      => Handler\NewHandlerFactory::class,
