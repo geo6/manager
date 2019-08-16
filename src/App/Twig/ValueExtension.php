@@ -9,7 +9,7 @@ use Twig\TwigFunction;
 
 class ValueExtension extends AbstractExtension
 {
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('value', [$this, 'value'], ['is_safe' => ['html']]),
