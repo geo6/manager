@@ -267,7 +267,7 @@ class Table
             $select = $select->where((new Filter($filter))->getPredicate());
         }
         if (!is_null($order)) {
-            $select = $select->order($this->name . '.' . $order);
+            $select = $select->order($order);
         } else {
             $select = $select->order($this->name . '.' . $this->getKeyColumn()->getName());
         }

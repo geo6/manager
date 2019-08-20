@@ -73,7 +73,7 @@
                 {% if offset > 0 %}
                 <li class="page-item">
                     <a aria-disabled="true" class="page-link"
-                        href="{{ path('table', {'config': configId, 'offset': (offset - limit) })}}?sort={{ order.column }}&amp;order={{ order.order }}"
+                        href="{{ path('table', {'config': configId, 'offset': (offset - limit) })}}?sort={{ sort }}&amp;order={{ order }}"
                         tabindex="-1">
                         <i class="far fa-caret-square-left"></i>
                     </a>
@@ -85,16 +85,16 @@
                     </a>
                 </li>
                 {% endif %}
-                {% for p in 0..pages %}
+                {% for p in 0..(count // limit) %}
                 <li class="page-item {{ offset == (limit * p) ? 'active' }}">
                     <a class="page-link"
-                        href="{{ path('table', {'config': configId, 'offset': (limit * p) })}}?filter={{ filter }}&amp;sort={{ order.column }}&amp;order={{ order.order }}">{{ p + 1 }}</a>
+                        href="{{ path('table', {'config': configId, 'offset': (limit * p) })}}?filter={{ filter }}&amp;sort={{ sort }}&amp;order={{ order }}">{{ p + 1 }}</a>
                 </li>
                 {% endfor %}
-                {% if offset < (limit * pages) %}
+                {% if offset < (limit * (count // limit)) %}
                 <li class="page-item">
                     <a aria-disabled="true" class="page-link"
-                        href="{{ path('table', {'config': configId, 'offset': (offset + limit) })}}?sort={{ order.column }}&amp;order={{ order.order }}"
+                        href="{{ path('table', {'config': configId, 'offset': (offset + limit) })}}?sort={{ sort }}&amp;order={{ order }}"
                         tabindex="-1">
                         <i class="far fa-caret-square-right"></i>
                     </a>
