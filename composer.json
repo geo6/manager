@@ -5,8 +5,10 @@
     "license": "GPL-3.0-or-later",
     "require": {
         "php": "^7.1",
+        "geo6/zend-expressive-monolog": "dev-master",
         "mtymek/blast-base-url": "^1.0",
         "phayes/geophp": "^1.2",
+        "sentry/sdk": "^2.0",
         "zendframework/zend-component-installer": "^2.1.1",
         "zendframework/zend-config": "^3.2",
         "zendframework/zend-config-aggregator": "^1.0",
@@ -42,6 +44,8 @@
             "AppTest\\": "test/AppTest/"
         }
     },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "scripts": {
         "post-create-project-cmd": [
             "@development-enable"

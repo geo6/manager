@@ -13,11 +13,13 @@ $cacheConfig = [
 ];
 
 $aggregator = new ConfigAggregator([
-    \Zend\Db\ConfigProvider::class,
+    Geo6\Expressive\Monolog\ConfigProvider::class,
+
     // Include cache configuration
     new ArrayProvider($cacheConfig),
 
     \Blast\BaseUrl\ConfigProvider::class,
+    \Zend\Db\ConfigProvider::class,
     \Zend\Expressive\Helper\ConfigProvider::class,
     \Zend\Expressive\ConfigProvider::class,
     \Zend\Expressive\Router\ConfigProvider::class,
