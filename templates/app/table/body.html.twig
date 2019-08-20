@@ -1,0 +1,41 @@
+<tbody>
+    {% for record in records %}
+    <tr>
+        <th class="text-right" scope="row">{{ record.id }}</th>
+
+        {% set keyColumn = table.keyColumn.name %}
+
+        {% for column in columns if column.name != keyColumn %}
+
+        {% set value = attribute(record.properties, column.name) %}
+
+        {% if thematic.column == column.name %}
+        {% set symbol = attribute(thematic.values, value) %}
+        <td class="text-center" style="color: {{ symbol.color }};">
+            <i class="fas fa-circle"></i>
+        </td>
+        {% endif %}
+
+        <td class="text-nowrap{{ column.datatype == 'integer' ? ' text-right' : column.datatype == 'boolean' ? ' text-center' }}"
+            data-datatype="{{ column.datatype }}">
+            {{ value(value, column.datatype) }}
+        </td>
+
+        {% endfor %}
+
+        {% for foreign in foreignTables %}
+
+        {% set fselectColumns = foreign.getSelectColumns() %}
+        {% set fcolumns = foreign.columns | filter(c => c.name in fselectColumns) %}
+
+        {% for fcolumn in fcolumns %}
+        <td
+            class="table-info text-nowrap{{ fcolumn.datatype == 'integer' ? ' text-right' : fcolumn.datatype == 'boolean' ? ' text-center' }}">
+            {{ value(attribute(record.properties, foreign.name ~ '.' ~ fcolumn.name), fcolumn.datatype) }}
+        </td>
+        {% endfor %}
+
+        {% endfor %}
+    </tr>
+    {% endfor %}
+</tbody>
