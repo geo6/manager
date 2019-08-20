@@ -199,12 +199,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/geo6/zend-expressive-monolog.git",
-                "reference": "bc91be6e181e929ea6573ff1e5f6cd743db641ea"
+                "reference": "a7861bc71ec9e5e6b4e9f8927de002392a4af8ee"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/geo6/zend-expressive-monolog/zipball/bc91be6e181e929ea6573ff1e5f6cd743db641ea",
-                "reference": "bc91be6e181e929ea6573ff1e5f6cd743db641ea",
+                "url": "https://api.github.com/repos/geo6/zend-expressive-monolog/zipball/a7861bc71ec9e5e6b4e9f8927de002392a4af8ee",
+                "reference": "a7861bc71ec9e5e6b4e9f8927de002392a4af8ee",
                 "shasum": ""
             },
             "require": {
@@ -232,7 +232,7 @@
                 "GPL-3.0-or-later"
             ],
             "description": "Zend Expressive Monolog ErrorHandler",
-            "time": "2019-08-20T07:23:26+00:00"
+            "time": "2019-08-20T11:58:54+00:00"
         },
         {
             "name": "guzzlehttp/psr7",
