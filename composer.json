@@ -1,42 +1,8 @@
 {
-    "name": "zendframework/zend-expressive-skeleton",
-    "description": "Zend expressive skeleton. Begin developing PSR-15 middleware applications in seconds!",
+    "name": "geo6/manager",
     "type": "project",
-    "homepage": "https://github.com/zendframework/zend-expressive-skeleton",
-    "license": "BSD-3-Clause",
-    "keywords": [
-        "skeleton",
-        "middleware",
-        "psr",
-        "psr-7",
-        "psr-11",
-        "psr-15",
-        "zf",
-        "zendframework",
-        "zend-expressive"
-    ],
-    "config": {
-        "sort-packages": true
-    },
-    "extra": {
-        "zf": {
-            "component-whitelist": [
-                "zendframework/zend-expressive",
-                "zendframework/zend-expressive-helpers",
-                "zendframework/zend-expressive-router",
-                "zendframework/zend-httphandlerrunner",
-                "zendframework/zend-expressive-fastroute",
-                "zendframework/zend-expressive-twigrenderer"
-            ]
-        }
-    },
-    "support": {
-        "issues": "https://github.com/zendframework/zend-expressive-skeleton/issues",
-        "source": "https://github.com/zendframework/zend-expressive-skeleton",
-        "rss": "https://github.com/zendframework/zend-expressive-skeleton/releases.atom",
-        "slack": "https://zendframework-slack.herokuapp.com",
-        "forum": "https://discourse.zendframework.com/c/questions/expressive"
-    },
+    "description": "",
+    "license": "GPL-3.0-or-later",
     "require": {
         "php": "^7.1",
         "mtymek/blast-base-url": "^1.0",
@@ -56,12 +22,15 @@
         "zendframework/zend-stdlib": "^3.1"
     },
     "require-dev": {
+        "filp/whoops": "^2.1.12",
         "phpunit/phpunit": "^8.2.1",
         "roave/security-advisories": "dev-master",
         "squizlabs/php_codesniffer": "^3.4.2",
         "zendframework/zend-expressive-tooling": "^1.0",
-        "zfcampus/zf-development-mode": "^3.1",
-        "filp/whoops": "^2.1.12"
+        "zfcampus/zf-development-mode": "^3.1"
+    },
+    "config": {
+        "sort-packages": true
     },
     "autoload": {
         "psr-4": {
@@ -77,10 +46,6 @@
         "post-create-project-cmd": [
             "@development-enable"
         ],
-        "development-disable": "zf-development-mode disable",
-        "development-enable": "zf-development-mode enable",
-        "development-status": "zf-development-mode status",
-        "expressive": "expressive --ansi",
         "check": [
             "@cs-check",
             "@test"
@@ -88,6 +53,10 @@
         "clear-config-cache": "php bin/clear-config-cache.php",
         "cs-check": "phpcs",
         "cs-fix": "phpcbf",
+        "development-disable": "zf-development-mode disable",
+        "development-enable": "zf-development-mode enable",
+        "development-status": "zf-development-mode status",
+        "expressive": "expressive --ansi",
         "serve": "php -S 0.0.0.0:8080 -t public/",
         "test": "phpunit --colors=always",
         "test-coverage": "phpunit --colors=always --coverage-clover clover.xml"
