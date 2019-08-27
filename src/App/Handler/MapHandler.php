@@ -50,9 +50,9 @@ class MapHandler implements RequestHandlerInterface
         $foreignTables = [];
         foreach ($columns as $column) {
             if ($column->isForeignKey() === true) {
-                $foreign = $column->getForeignColumn();
+                $reference = $column->getReferenceColumn();
 
-                $foreignTables[$column->getName()] = new Table($adapter, $foreign->getSchemaName(), $foreign->getTableName());
+                $foreignTables[$column->getName()] = new Table($adapter, $reference->getSchemaName(), $reference->getTableName());
             }
         }
 

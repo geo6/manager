@@ -4,24 +4,17 @@ declare(strict_types=1);
 
 namespace App\Model\Column;
 
-use App\Model\Column;
-use Zend\Db\Sql\Sql;
-use Zend\Db\Sql\TableIdentifier;
+use Zend\Db\Metadata\Object\ColumnObject;
 
-class Foreign extends Column
+class ReferenceColumn extends Column
 {
-    /**
-     * @param string $column
-     *
-     * @return array Return reference values.
-     */
-    public function getValues(string $column): array
+    public function getValues() : array
     {
-        $table = new TableIdentifier($this->tableName, $this->schemaName);
+        $column = $this->reference['display'] ?? $this->table->getKeyColumn();
 
         $sql = new Sql($this->adapter);
 
-        $select = $sql->select()->from($table)
+        $select = $sql->select()->from($this->table->getIdentifier())
             ->columns([$this->name, $column])
             ->group([$this->name, $column])
             ->order($column);

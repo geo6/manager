@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Middleware;
 
-use App\Model\Table\Main as MainTable;
+use App\Model\Table;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -34,7 +34,7 @@ class TableMiddleware implements MiddlewareInterface
         return $handler->handle(
             $request->withAttribute(
                 self::TABLE_ATTRIBUTE,
-                new MainTable($adapter, $schema, $table, $config['config'])
+                new Table($adapter, $schema, $table, $config['config'])
             )
         );
     }

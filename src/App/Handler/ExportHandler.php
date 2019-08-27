@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Handler;
 
 use App\Middleware\TableMiddleware;
-use App\Model\Table\Main as MainTable;
+use App\Model\Table;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -68,7 +68,7 @@ class ExportHandler implements RequestHandlerInterface
         );
     }
 
-    private static function geojson(MainTable $table): JsonResponse
+    private static function geojson(Table $table): JsonResponse
     {
         return new JsonResponse([
             'type'     => 'FeatureCollection',

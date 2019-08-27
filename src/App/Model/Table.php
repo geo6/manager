@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Model;
 
 use App\Formatter\GeoJSON;
+use App\Model\Column\Column;
 use Exception;
 use Zend\Db\Adapter\Adapter;
 use Zend\Db\Metadata\Metadata;
@@ -17,25 +18,25 @@ class Table
 {
     /** @var Adapter */
     protected $adapter;
-    /** @var \App\Model\Column[] */
-    protected $columns = [];
+    /** @var \Zend\Db\Metadata\Object\ColumnObject[] */
+    protected $columns;
     /** @var \Zend\Db\Metadata\Object\ConstraintObject[] */
     protected $constraints;
-    /** @var int */
-    protected $count;
     /** @var \Zend\Db\Sql\TableIdentifier */
     protected $identifier;
     /** @var string */
     protected $name;
     /** @var string */
     protected $schema;
+    /** @var \App\Model\Column\Column[] */
+    protected $columnsWithConfig = [];
 
     /**
      * @param Adapter $adapter
      * @param string  $schema
      * @param string  $table
      */
-    public function __construct(Adapter $adapter, string $schema, string $table)
+    public function __construct(Adapter $adapter, string $schema, string $table, ?array $config = null)
     {
         $this->adapter = $adapter;
 
@@ -44,17 +45,20 @@ class Table
 
         $this->identifier = new TableIdentifier($this->name, $this->schema);
 
-        $this->count = $this->getCount();
-
         $metadata = new Metadata($this->adapter);
 
+        $this->columns = $metadata->getColumns($this->name, $this->schema);
         $this->constraints = $metadata->getConstraints($this->name, $this->schema);
 
-        $columns = $metadata->getColumns($this->name, $this->schema);
-        foreach ($columns as $column) {
-            $col = Column::fromColumnObject($adapter, $column);
+        foreach ($this->columns as $column) {
+            $name = $column->getName();
 
-            $this->columns[] = $col;
+            $c = Column::fromColumnObject($this, $column);
+            if (isset($config[$name])) {
+                $c->applyConfig($config[$name]);
+            }
+
+            $this->columnsWithConfig[] = $c;
         }
     }
 
@@ -86,21 +90,35 @@ class Table
      */
     public function getKeyColumn(): ColumnObject
     {
-        $primaryKey = current(array_filter($this->constraints, function ($constraint) {
+        $constraints = array_filter($this->constraints, function ($constraint) {
             return $constraint->isPrimaryKey();
-        }));
+        });
 
+        if (count($constraints) === 0) {
+            throw new Exception(sprintf('Table "%s" is missing a PRIMARY KEY.', $this->name));
+        }
+
+        $primaryKey = current($constraints);
         $keys = $primaryKey->getColumns();
 
         if (count($keys) === 0) {
             throw new Exception(sprintf('Table "%s" is missing a PRIMARY KEY.', $this->name));
         }
+        if (count($keys) > 1) {
+            throw new Exception(
+                sprintf(
+                    'The PRIMARY KEY for table "%s" should be only one single column.',
+                    $this->name
+                )
+            );
+        }
 
-        $column = current(array_filter($this->columns, function ($column) use ($keys) {
+        $columns = array_filter($this->columns, function (ColumnObject $column) use ($keys) {
             return $column->getName() === $keys[0];
-        }));
+        });
 
-        if (count($keys) > 1 || $column->getDataType() !== 'integer') {
+        $column = current($columns);
+        if ($column->getDataType() !== 'integer') {
             throw new Exception(
                 sprintf(
                     'The PRIMARY KEY for table "%s" should be only one single auto-incremented INTEGER column.',
@@ -139,7 +157,7 @@ class Table
      */
     public function getGeometryColumn(): ?ColumnObject
     {
-        $columns = array_filter($this->columns, function ($column) {
+        $columns = array_filter($this->getColumns(), function (ColumnObject $column) {
             return in_array(
                 $column->getDataType(),
                 [
@@ -168,7 +186,15 @@ class Table
      */
     public function getColumns(): array
     {
-        return $this->columns;
+        return $this->columnsWithConfig;
+    }
+
+    /**
+     * @return array
+     */
+    public function getConstraints(): array
+    {
+        return $this->constraints;
     }
 
     /**
@@ -203,11 +229,11 @@ class Table
         $geometryColumn = $this->getGeometryColumn();
 
         if (!is_null($geometryColumn)) {
-            $columns = array_filter($this->getColumns(), function ($column) use ($geometryColumn) {
+            $columns = array_filter($this->columns, function (ColumnObject $column) use ($geometryColumn) {
                 return $column->getName() !== $geometryColumn->getName();
             });
         } else {
-            $columns = $this->getColumns();
+            $columns = $this->columns;
         }
 
         $columnsName = [];
@@ -289,5 +315,63 @@ class Table
         }
 
         return $records;
+    }
+
+    private function hasColumn(string $name) : bool
+    {
+        $has = false;
+
+        foreach ($this->columns as $column) {
+            if ($column->getName() === $name) {
+                $has = true;
+                break;
+            }
+        }
+
+        return $has;
+    }
+
+    /**
+     * @return array
+     */
+    public function toArray(): array
+    {
+        $columns = [];
+        foreach ($this->columns as $column) {
+            $columns[] = [
+                'name'      => $column->getName(),
+                'type'      => $column->getDataType(),
+                'default'   => $column->getColumnDefault(),
+                'maxlength' => $column->getCharacterMaximumLength(),
+                'readonly'  => $column->readonly,
+                'notnull'   => !$column->isNullable(),
+                'reference' => $column->getReference(),
+            ];
+        }
+
+        $constraints = [];
+        foreach ($this->constraints as $constraint) {
+            $constraints[] = [
+                'name'      => $constraint->getName(),
+                'type'      => $constraint->getType(),
+                'columns'   => $constraint->hasColumns() ? $constraint->getColumns() : null,
+                'check'     => $constraint->isCheck() ? $constraint->getCheckClause() : null,
+                'reference' => $constraint->isForeignKey() ? [
+                    'schema'  => $constraint->getReferencedTableSchema(),
+                    'table'   => $constraint->getReferencedTableName(),
+                    'columns' => $constraint->getReferencedColumns(),
+                ] : null,
+            ];
+        }
+
+        return [
+            'schema' => $this->schema,
+            'table'  => $this->name,
+            // 'count' => $count,
+            'key'         => $this->getKeyColumn()->getName(),
+            'geometry'    => $this->getGeometryColumn()->getName(),
+            'columns'     => $columns,
+            'constraints' => $constraints,
+        ];
     }
 }

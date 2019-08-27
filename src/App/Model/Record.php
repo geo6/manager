@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model;
 
+use App\Model\Column\Column;
 use ArrayObject;
 use ErrorException;
 use geoPHP;
@@ -103,16 +104,16 @@ class Record
             return $column->isForeignKey();
         });
         foreach ($foreignColumns as $column) {
-            $foreign = $column->getForeignColumn();
+            $reference = $column->getReferenceColumn();
 
-            $foreignTable = new Table($this->adapter, $foreign->getSchemaName(), $foreign->getTableName());
+            $foreignTable = new Table($this->adapter, $reference->getSchemaName(), $reference->getTableName());
 
             $foreignColumns = $foreignTable->getSelectColumns(false, true);
 
             $on = sprintf(
                 '%s.%s = %s.%s',
-                $foreign->getTableName(),
-                $foreign->getName(),
+                $reference->getTableName(),
+                $reference->getName(),
                 $this->table->getName(),
                 $column->getName()
             );

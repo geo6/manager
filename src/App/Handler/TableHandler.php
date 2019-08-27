@@ -7,7 +7,7 @@ namespace App\Handler;
 use App\Middleware\ConfigMiddleware;
 use App\Middleware\DbAdapterMiddleware;
 use App\Middleware\TableMiddleware;
-use App\Model\Column;
+use App\Model\Column\Column;
 use App\Model\Table;
 use App\Model\Thematic;
 use Blast\BaseUrl\BaseUrlMiddleware;
@@ -56,15 +56,16 @@ class TableHandler implements RequestHandlerInterface
         $params = $request->getQueryParams();
 
         $total = $table->getCount();
+
         $columns = $table->getColumns();
 
         // Get foreign tables information
         $foreignTables = [];
         foreach ($columns as $column) {
             if ($column->isForeignKey() === true) {
-                $foreign = $column->getForeignColumn();
+                $reference = $column->getReferenceColumn();
 
-                $foreignTables[$column->getName()] = new Table($adapter, $foreign->getSchemaName(), $foreign->getTableName());
+                $foreignTables[$column->getName()] = new Table($adapter, $reference->getSchemaName(), $reference->getTableName());
             }
         }
 
