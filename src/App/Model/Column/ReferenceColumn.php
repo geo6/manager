@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Model\Column;
 
-use Zend\Db\Metadata\Object\ColumnObject;
-
 class ReferenceColumn extends Column
 {
     public function getValues() : array

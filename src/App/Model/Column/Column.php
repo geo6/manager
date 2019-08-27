@@ -7,7 +7,6 @@ namespace App\Model\Column;
 use App\Model\Table;
 use Exception;
 use Zend\Db\Adapter\Adapter;
-use Zend\Db\Metadata\Metadata;
 use Zend\Db\Metadata\Object\ColumnObject;
 use Zend\Db\Metadata\Object\ConstraintObject;
 
@@ -87,9 +86,6 @@ class Column extends ColumnObject
         return $column;
     }
 
-    /**
-     *
-     */
     public function applyConfig(array $config)
     {
         if (isset($config['readonly'])) {
@@ -128,7 +124,7 @@ class Column extends ColumnObject
      */
     public function setReference(array $config) : void
     {
-        if (isset($config['reference']['mode']) && in_array($config['reference']['mode'], ['default','datalist','listbox'])) {
+        if (isset($config['reference']['mode']) && in_array($config['reference']['mode'], ['default', 'datalist', 'listbox'])) {
             $mode = $config['reference']['mode'];
         } else {
             $mode = 'default';
@@ -141,8 +137,8 @@ class Column extends ColumnObject
             $display = $referenceTable->getKeyColumn()->getName();
         }
 
-            $this->reference = [
-                'mode' => $mode,
+        $this->reference = [
+                'mode'    => $mode,
                 'display' => $display,
             ];
     }
