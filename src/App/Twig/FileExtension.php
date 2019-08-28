@@ -65,24 +65,24 @@ class FileExtension extends AbstractExtension
     private function notexists($path) : string
     {
         return '<span class="text-muted" title="File does not exists." style="cursor: help; font-style: italic;">'
-            .'<i class="fas fa-fw fa-exclamation-circle"></i>'
-            .' '.basename($path)
-            .'</span>';
+            . '<i class="fas fa-fw fa-exclamation-circle"></i>'
+            . ' ' . basename($path)
+            . '</span>';
     }
 
     private function preview($path, bool $displayFilename) : string
     {
         return '<a href="#" style="text-decoration: none;">'
-            .'<i class="far fa-fw fa-eye"></i> '
-            .($displayFilename ? ' '.basename($path) : '')
-            .'</a>';
+            . '<i class="far fa-fw fa-eye"></i> '
+            . ($displayFilename ? ' ' . basename($path) : '')
+            . '</a>';
     }
 
     private function download($path, bool $displayFilename) : string
     {
         return '<a href="#" style="text-decoration: none;">'
-            .'<i class="fas fa-fw fa-file-download"></i> '
-            .($displayFilename ? ' '.basename($path) : '')
-            .'</a>';
+            . '<i class="fas fa-fw fa-file-download"></i> '
+            . ($displayFilename ? ' ' . basename($path) : '')
+            . '</a>';
     }
 }

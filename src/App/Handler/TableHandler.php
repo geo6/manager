@@ -68,8 +68,9 @@ class TableHandler implements RequestHandlerInterface
                 $tableName = $reference->getTableName();
                 $configColumns = array_filter($config['config']['columns'] ?? [], function ($key) use ($tableName) {
                     if (preg_match('/^(\w+)\.(\w+)$/', $key, $matches) === 1) {
-                        return ($matches[1] === $tableName);
+                        return $matches[1] === $tableName;
                     }
+
                     return false;
                 }, ARRAY_FILTER_USE_KEY);
 

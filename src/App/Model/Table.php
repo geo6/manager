@@ -56,7 +56,7 @@ class Table
 
             $c = Column::fromColumnObject($this, $column);
             if (isset($config['columns'])) {
-                $longName = $tableName.'.'.$name;
+                $longName = $tableName . '.' . $name;
 
                 if (isset($config['columns'][$longName])) {
                     $c->applyConfig($config['columns'][$longName]);
