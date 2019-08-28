@@ -8,7 +8,7 @@ use App\Model\Record;
 
 class GeoJSON
 {
-    public static function format(Record $record)
+    public static function format(Record $record, bool $encode = true)
     {
         $id = $record->id;
         $properties = $record->properties;
@@ -21,6 +21,6 @@ class GeoJSON
             'geometry'   => $geometry,
         ];
 
-        return json_encode($feature);
+        return $encode ? json_encode($feature) : $feature;
     }
 }

@@ -311,7 +311,7 @@ class Table
 
         foreach ($query as $result) {
             $record = (new Record($this->adapter, $this))->hydrate($result);
-            $records[] = $geojson ? json_decode(GeoJSON::format($record)) : $record;
+            $records[] = $geojson ? GeoJSON::format($record, false) : $record;
         }
 
         return $records;

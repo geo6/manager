@@ -35,7 +35,7 @@ class RecordsHandler implements RequestHandlerInterface
                         return new JsonResponse(['error' => $e->getMessage()], 500);
                     }
 
-                    return new JsonResponse(GeoJSON::format($record));
+                    return new JsonResponse(GeoJSON::format($record, false));
                 }
 
                 return new JsonResponse([
@@ -59,7 +59,7 @@ class RecordsHandler implements RequestHandlerInterface
                     return new JsonResponse(['error' => $e->getMessage()], 500);
                 }
 
-                return new JsonResponse(GeoJSON::format($record));
+                return new JsonResponse(GeoJSON::format($record, false));
 
             case 'PUT':
                 $data = $request->getParsedBody();
@@ -71,7 +71,7 @@ class RecordsHandler implements RequestHandlerInterface
                     return new JsonResponse(['error' => $e->getMessage()], 500);
                 }
 
-                return new JsonResponse(GeoJSON::format($record));
+                return new JsonResponse(GeoJSON::format($record, false));
 
             case 'DELETE':
                 $data = $request->getParsedBody();
