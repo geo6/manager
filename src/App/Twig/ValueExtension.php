@@ -18,22 +18,34 @@ class ValueExtension extends AbstractExtension
 
     public function value($value, ?string $datatype = null): string
     {
+        $textAlign = 'left';
+        if ($datatype === 'integer') {
+            $textAlign = 'right';
+        } elseif ($datatype === 'boolean') {
+            $textAlign = 'center';
+        }
+
+        $output = '<td';
+        $output .= sprintf(' class="text-nowrap text-%s"', $textAlign);
+        $output .= sprintf(' data-datatype="%s"', (string) $datatype);
+        $output .= '>';
+
         if (is_null($value)) {
-            return self::null();
+            $output .= self::null();
+        } elseif ($datatype === 'boolean') {
+            $output .= self::boolean($value);
+        } elseif (is_string($value) && filter_var($value, FILTER_VALIDATE_URL) !== false) {
+            $output .= self::varcharLink($value);
+        } else {
+            $output .= (string) $value;
         }
 
-        if ($datatype === 'boolean') {
-            return self::boolean($value);
-        }
+        $output .= '</td>';
 
-        if (is_string($value) && filter_var($value, FILTER_VALIDATE_URL) !== false) {
-            return self::varcharLink($value);
-        }
-
-        return (string) $value;
+        return $output;
     }
 
-    private static function null(): string
+    public static function null(): string
     {
         return '<span class="text-muted font-italic">NULL</span>';
     }
