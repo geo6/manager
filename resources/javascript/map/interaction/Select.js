@@ -49,8 +49,12 @@ export default class extends Select {
         } else {
             features.forEach(feature => {
                 // ToDo: "hide" feature from initial layer and Select features
+                const id = feature.getId();
 
-                selection.push(feature.clone());
+                const clone = feature.clone();
+                clone.setId(id);
+
+                selection.push(clone);
             });
         }
         app.selection.setFeatures(selection);
