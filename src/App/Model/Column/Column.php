@@ -27,10 +27,10 @@ class Column extends ColumnObject
     public $readonly = false;
 
     /** @var bool */
-    public $preview = true;
+    public $preview = false;
 
     /** @var bool */
-    public $download = true;
+    public $download = false;
 
     /** @var array */
     private $reference;
@@ -98,11 +98,25 @@ class Column extends ColumnObject
             $this->download = (bool) $config['download'];
         }
 
-        $foreign = $this->getForeignColumn();
-
-        if (!is_null($foreign) && isset($config['reference'])) {
-            $this->setReference($config['reference']);
+        if (isset($config['reference'])) {
+            $reference = $this->getReferenceColumn($config['reference']);
+            if (!is_null($reference)) {
+                $this->setReference($config['reference']);
+            }
         }
+    }
+
+    /**
+     * @return array
+     */
+    public function getConfig() : array
+    {
+        return [
+            'readonly'  => $this->readonly,
+            'preview'   => $this->preview,
+            'download'  => $this->download,
+            'reference' => $this->reference,
+        ];
     }
 
     /**
@@ -124,23 +138,25 @@ class Column extends ColumnObject
      */
     public function setReference(array $config) : void
     {
-        if (isset($config['reference']['mode']) && in_array($config['reference']['mode'], ['default', 'datalist', 'listbox'])) {
-            $mode = $config['reference']['mode'];
+        if (isset($config['mode']) && in_array($config['mode'], ['default', 'datalist', 'listbox'])) {
+            $mode = $config['mode'];
         } else {
             $mode = 'default';
         }
 
-        $referenceTable = new Table($this->adapter, $foreign->getSchemaName(), $foreign->getTableName());
-        if (isset($config['reference']['display']) && $referenceTable->hasColumn($config['reference']['display'])) {
-            $display = $config['reference']['display'];
+        $reference = $this->getReferenceColumn();
+
+        $referenceTable = new Table($this->adapter, $reference->getSchemaName(), $reference->getTableName());
+        if (isset($config['display']) && $referenceTable->hasColumn($config['display'])) {
+            $display = $config['display'];
         } else {
             $display = $referenceTable->getKeyColumn()->getName();
         }
 
         $this->reference = [
-                'mode'    => $mode,
-                'display' => $display,
-            ];
+            'mode'    => $mode,
+            'values'  => $reference->getValues($display),
+        ];
     }
 
     /**

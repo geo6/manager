@@ -54,8 +54,8 @@ class Table
             $name = $column->getName();
 
             $c = Column::fromColumnObject($this, $column);
-            if (isset($config[$name])) {
-                $c->applyConfig($config[$name]);
+            if (isset($config['columns'], $config['columns'][$name])) {
+                $c->applyConfig($config['columns'][$name]);
             }
 
             $this->columnsWithConfig[] = $c;
@@ -317,7 +317,7 @@ class Table
         return $records;
     }
 
-    private function hasColumn(string $name) : bool
+    public function hasColumn(string $name) : bool
     {
         $has = false;
 
@@ -337,7 +337,8 @@ class Table
     public function toArray(): array
     {
         $columns = [];
-        foreach ($this->columns as $column) {
+        $c = $this->getColumns();
+        foreach ($c as $column) {
             $columns[] = [
                 'name'      => $column->getName(),
                 'type'      => $column->getDataType(),

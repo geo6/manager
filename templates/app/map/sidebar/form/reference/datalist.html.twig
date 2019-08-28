@@ -3,7 +3,7 @@
 <small class="form-text text-muted"></small>
 
 <datalist id="datalist-{{ column.name }}">
-    {% for key, value in column.reference.values %}
+    {% for key, value in column.config.reference.values %}
     <option value="{{ key }}">{{ value }}</option>
     {% endfor %}
 </datalist>

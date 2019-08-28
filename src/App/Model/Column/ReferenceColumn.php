@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Model\Column;
 
+use Zend\Db\Sql\Sql;
+
 class ReferenceColumn extends Column
 {
-    public function getValues() : array
+    public function getValues(string $column) : array
     {
-        $column = $this->reference['display'] ?? $this->table->getKeyColumn();
-
         $sql = new Sql($this->adapter);
 
         $select = $sql->select()->from($this->table->getIdentifier())
