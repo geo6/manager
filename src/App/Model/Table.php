@@ -51,11 +51,18 @@ class Table
         $this->constraints = $metadata->getConstraints($this->name, $this->schema);
 
         foreach ($this->columns as $column) {
+            $tableName = $column->getTableName();
             $name = $column->getName();
 
             $c = Column::fromColumnObject($this, $column);
-            if (isset($config['columns'], $config['columns'][$name])) {
-                $c->applyConfig($config['columns'][$name]);
+            if (isset($config['columns'])) {
+                $longName = $tableName.'.'.$name;
+
+                if (isset($config['columns'][$longName])) {
+                    $c->applyConfig($config['columns'][$longName]);
+                } elseif (isset($config['columns'][$name])) {
+                    $c->applyConfig($config['columns'][$name]);
+                }
             }
 
             $this->columnsWithConfig[] = $c;
