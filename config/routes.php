@@ -44,6 +44,9 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     $app->get('/{config:\w+}[/map]', [TableMiddleware::class, App\Handler\MapHandler::class], 'map');
     $app->get('/{config:\w+}/table[/{offset:\d+}]', [TableMiddleware::class, App\Handler\TableHandler::class], 'table');
 
+    $app->get('/{config:\w+}/file/{id:\d+}/view/{column:\w+}', [TableMiddleware::class, App\Handler\FileHandler::class], 'file.view');
+    $app->get('/{config:\w+}/file/{id:\d+}/download/{column:\w+}', [TableMiddleware::class, App\Handler\FileHandler::class], 'file.download');
+
     $app->get('/{config:\w+}/export/{format:\w+}', [TableMiddleware::class, App\Handler\ExportHandler::class], 'export');
 
     $app->get('/{config:\w+}/api/db/table', [TableMiddleware::class, App\Handler\API\Database\TableHandler::class], 'api.db.table');

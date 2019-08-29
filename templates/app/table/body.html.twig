@@ -17,7 +17,7 @@
         {% endif %}
 
         {% if column.config.preview == true or column.config.download == true %}
-        {{ file(value, column.config.preview, column.config.download) }}
+        {{ file(adapter, value, {config: configId, id: record.id, column: column.name}, column.config.preview, column.config.download) }}
         {% else %}
         {{ value(value, column.datatype) }}
         {% endif %}
@@ -34,7 +34,7 @@
         {% set value = attribute(record.properties, foreign.name ~ '.' ~ fcolumn.name) %}
 
         {% if fcolumn.config.preview == true or fcolumn.config.download == true %}
-        {{ file(value, fcolumn.config.preview, fcolumn.config.download) }}
+        {{ file(adapter, value, {config: configId, id: record.id, column: foreign.name ~ '.' ~ fcolumn.name}, fcolumn.config.preview, fcolumn.config.download) }}
         {% else %}
         {{ value(value, fcolumn.datatype) }}
         {% endif %}

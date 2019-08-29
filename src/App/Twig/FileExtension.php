@@ -4,25 +4,48 @@ declare(strict_types=1);
 
 namespace App\Twig;
 
+use App\Model\Filesystem;
+use Exception;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
+use Zend\Expressive\Helper\UrlHelper;
 
 class FileExtension extends AbstractExtension
 {
+    /** @var AbstractAdapter */
+    private $adapter;
+
+    /** @var Filesystem */
+    private $filesystem;
+
+    /** @var array */
+    private $routeParams;
+
+    /** @var UrlHelper */
+    private $urlHelper;
+
+    public function __construct(UrlHelper $urlHelper)
+    {
+        $this->urlHelper = $urlHelper;
+    }
+
     public function getFunctions(): array
     {
         return [
-        new TwigFunction('file', [$this, 'file'], ['is_safe' => ['html']]),
+            new TwigFunction('file', [$this, 'file'], ['is_safe' => ['html']]),
         ];
     }
 
-    public function file($path, bool $preview, bool $download): string
+    public function file($adapter, $path, array $routeParams, bool $preview, bool $download): string
     {
+        $this->filesystem = new Filesystem($adapter);
+        $this->routeParams = $routeParams;
+
         if (!is_null($path)) {
             $path = trim($path);
         }
 
-        if (is_null($path) || strlen($path) === 0 || !file_exists($path)) {
+        if (is_null($path) || strlen($path) === 0 || $this->filesystem->has($path) !== true) {
             $output = '<td';
             $output .= ' class="text-nowrap"';
             $output .= ' colspan="2"';
@@ -32,8 +55,10 @@ class FileExtension extends AbstractExtension
                 $output .= ValueExtension::null();
             } elseif (strlen($path) === 0) {
                 $output .= '';
-            } elseif (!file_exists($path)) {
+            } elseif ($this->filesystem->has($path) !== true) {
                 $output .= self::notexists($path);
+            } else {
+                $output .= '123';
             }
 
             $output .= '</td>';
@@ -72,15 +97,27 @@ class FileExtension extends AbstractExtension
 
     private function preview($path, bool $displayFilename) : string
     {
-        return '<a href="#" style="text-decoration: none;">'
+        $mime = $this->filesystem->getMimetype($path);
+        $href = $this->urlHelper->generate('file.view', $this->routeParams);
+
+        if ($mime === 'image/jpeg' || $mime === 'image/png') {
+            return '<a href="'.$href.'" style="text-decoration: none;">'
             . '<i class="far fa-fw fa-eye"></i> '
             . ($displayFilename ? ' ' . basename($path) : '')
             . '</a>';
+        } else {
+            return '<a href="'.$href.'" style="text-decoration: none;" target="_blank">'
+            . '<i class="far fa-fw fa-file"></i> '
+            . ($displayFilename ? ' ' . basename($path) : '')
+            . '</a>';
+        }
     }
 
     private function download($path, bool $displayFilename) : string
     {
-        return '<a href="#" style="text-decoration: none;">'
+        $href = $this->urlHelper->generate('file.download', $this->routeParams);
+
+        return '<a href="'.$href.'" style="text-decoration: none;">'
             . '<i class="fas fa-fw fa-file-download"></i> '
             . ($displayFilename ? ' ' . basename($path) : '')
             . '</a>';

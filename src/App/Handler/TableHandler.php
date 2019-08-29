@@ -181,6 +181,7 @@ class TableHandler implements RequestHandlerInterface
                 'filter'        => $filter,
                 'thematic'      => new Thematic($adapter, $config['config'] ?? null),
                 'foreignTables' => $foreignTables,
+                'adapter'       => $config['config']['adapter'],
                 ]
             )
         );
