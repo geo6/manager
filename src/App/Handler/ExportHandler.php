@@ -16,22 +16,6 @@ use Zend\Expressive\Template\TemplateRendererInterface;
 
 class ExportHandler implements RequestHandlerInterface
 {
-    /** @var RouterInterface */
-    private $router;
-
-    /** @var TemplateRendererInterface */
-    private $renderer;
-
-    /**
-     * @param RouterInterface           $router
-     * @param TemplateRendererInterface $renderer
-     */
-    public function __construct(RouterInterface $router, TemplateRendererInterface $renderer)
-    {
-        $this->router = $router;
-        $this->renderer = $renderer;
-    }
-
     /**
      * @param ServerRequestInterface $request
      *
