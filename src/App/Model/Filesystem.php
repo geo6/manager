@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Model;
 
-use League\Flysystem\Adapter\AbstractAdapter;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem as FlysystemFilesystem;
 

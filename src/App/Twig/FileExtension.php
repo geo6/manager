@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Twig;
 
 use App\Model\Filesystem;
-use Exception;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 use Zend\Expressive\Helper\UrlHelper;
@@ -101,12 +100,12 @@ class FileExtension extends AbstractExtension
         $href = $this->urlHelper->generate('file.view', $this->routeParams);
 
         if ($mime === 'image/jpeg' || $mime === 'image/png') {
-            return '<a href="'.$href.'" style="text-decoration: none;">'
+            return '<a href="' . $href . '" style="text-decoration: none;">'
             . '<i class="far fa-fw fa-eye"></i> '
             . ($displayFilename ? ' ' . basename($path) : '')
             . '</a>';
         } else {
-            return '<a href="'.$href.'" style="text-decoration: none;" target="_blank">'
+            return '<a href="' . $href . '" style="text-decoration: none;" target="_blank">'
             . '<i class="far fa-fw fa-file"></i> '
             . ($displayFilename ? ' ' . basename($path) : '')
             . '</a>';
@@ -117,7 +116,7 @@ class FileExtension extends AbstractExtension
     {
         $href = $this->urlHelper->generate('file.download', $this->routeParams);
 
-        return '<a href="'.$href.'" style="text-decoration: none;">'
+        return '<a href="' . $href . '" style="text-decoration: none;">'
             . '<i class="fas fa-fw fa-file-download"></i> '
             . ($displayFilename ? ' ' . basename($path) : '')
             . '</a>';
