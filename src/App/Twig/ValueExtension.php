@@ -34,7 +34,7 @@ class ValueExtension extends AbstractExtension
             $output .= self::null();
         } elseif ($datatype === 'boolean') {
             $output .= self::boolean($value);
-        } elseif (is_string($value) && filter_var($value, FILTER_VALIDATE_URL) !== false) {
+        } elseif (is_string($value) && self::checkURL($value) === true) {
             $output .= self::varcharLink($value);
         } else {
             $output .= (string) $value;
@@ -67,5 +67,16 @@ class ValueExtension extends AbstractExtension
             . '<i class="fas fa-external-link-alt"></i> '
             . $host
             . '</a>';
+    }
+
+    private static function checkURL(string $value): bool
+    {
+        $url = parse_url($value, PHP_URL_PATH);
+
+        $encoded = array_map('urlencode', explode('/', $url));
+
+        $url = str_replace($url, implode('/', $encoded), $value);
+
+        return filter_var($url, FILTER_VALIDATE_URL) !== false;
     }
 }
