@@ -6,6 +6,7 @@ import app from './app';
 
 import Cache from './cache';
 import initFilter from './filter/init';
+import initOverlay from './overlay/init';
 
 export function init (custom, thematic) {
     app.mode = 'table';
@@ -23,4 +24,5 @@ export function init (custom, thematic) {
         });
 
     initFilter();
+    initOverlay();
 }

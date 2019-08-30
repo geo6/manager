@@ -100,7 +100,7 @@ class FileExtension extends AbstractExtension
         $href = $this->urlHelper->generate('file.view', $this->routeParams);
 
         if ($mime === 'image/jpeg' || $mime === 'image/png') {
-            return '<a href="' . $href . '" style="text-decoration: none;">'
+            return '<a href="' . $href . '" style="text-decoration: none;" data-toggle="overlay">'
             . '<i class="far fa-fw fa-eye"></i> '
             . ($displayFilename ? ' ' . basename($path) : '')
             . '</a>';

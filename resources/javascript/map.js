@@ -17,6 +17,7 @@ import initEdit from './map/feature/edit/init';
 import initNew from './map/feature/new/init';
 import Selection from './map/selection';
 import initFilter from './filter/init';
+import initOverlay from './overlay/init';
 import Records from './Records';
 
 require('sidebar-v2/js/jquery-sidebar.js');
@@ -61,6 +62,7 @@ export function init (custom, baselayers, thematic) {
     app.layers.new = initNewLayer(app.map);
 
     initFilter();
+    initOverlay();
     initInfo();
     initNew();
 }
