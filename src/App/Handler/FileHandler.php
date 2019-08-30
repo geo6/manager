@@ -12,7 +12,9 @@ use App\Model\Record;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Zend\Diactoros\Response;
 use Zend\Diactoros\Response\EmptyResponse;
+use Zend\Diactoros\Stream;
 use Zend\Expressive\Router\RouteResult;
 
 class FileHandler implements RequestHandlerInterface
@@ -46,7 +48,22 @@ class FileHandler implements RequestHandlerInterface
             return new EmptyResponse(404);
         }
 
-        var_dump($route, $path, $filesystem->getMimetype($path));
-        exit();
+        $stream = new Stream($filesystem->readStream($path));
+        $mime = $filesystem->getMimetype($path);
+
+        $response = (new Response())
+            ->withBody($stream)
+            ->withStatus(200)
+            ->withHeader('Content-Length', (string) $stream->getSize())
+            ->withHeader('Content-Type', $mime);
+
+        if ($route === 'file.download') {
+            $response = $response->withHeader(
+                'Content-Disposition',
+                'attachment;' . sprintf('filename="%s"', basename($path))
+            );
+        }
+
+        return $response;
     }
 }

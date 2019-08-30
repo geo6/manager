@@ -20,3 +20,4 @@ RewriteRule ^(.*)$ %{ENV:BASE}index.php [NC,L]
 
 AddOutputFilterByType DEFLATE text/css text/javascript application/javascript
 AddOutputFilterByType DEFLATE application/json
+AddOutputFilterByType DEFLATE image/jpeg image/png
