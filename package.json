@@ -1,43 +1,47 @@
 {
-    "dependencies": {
-        "@babel/runtime": "^7.7.4",
-        "ol": "^5.3.3",
-        "sidebar-v2": "^0.4.0"
-    },
-    "devDependencies": {
-        "@babel/core": "^7.7.4",
-        "@babel/plugin-transform-runtime": "^7.7.4",
-        "concurrently": "^5.0.0",
-        "eslint": "^6.7.2",
-        "eslint-config-standard": "^14.1.0",
-        "eslint-plugin-import": "^2.18.2",
-        "eslint-plugin-node": "^10.0.0",
-        "eslint-plugin-promise": "^4.2.1",
-        "eslint-plugin-standard": "^4.0.1",
-        "parcel-bundler": "^1.12.4",
-        "sass": "^1.23.7"
-    },
-    "scripts": {
-        "postinstall": "npm run build",
-        "test": "eslint resources/javascript/",
-        "fix": "eslint resources/javascript/ --fix",
-        "watch": "concurrently --raw \"npm:watch:*\"",
-        "watch:map": "parcel watch --out-dir=public/ --out-file=map.js --global map resources/javascript/map.js --no-cache --no-hmr",
-        "watch:table": "parcel watch --out-dir=public/ --out-file=table.js --global table resources/javascript/table.js --no-cache --no-hmr",
-        "build": "concurrently --raw \"npm:build:*\"",
-        "build:map": "parcel build --out-dir=public/ --out-file=map.js --global map resources/javascript/map.js --no-cache --no-source-maps",
-        "build:table": "parcel build --out-dir=public/ --out-file=table.js --global table resources/javascript/table.js --no-cache --no-source-maps"
-    },
-    "browserslist": {
-        "production": [
-            ">0.2%",
-            "not dead",
-            "not op_mini all"
-        ],
-        "development": [
-            "last 1 chrome version",
-            "last 1 firefox version",
-            "last 1 safari version"
-        ]
-    }
+  "dependencies": {
+    "@babel/runtime": "^7.7.4",
+    "ol": "^5.3.3",
+    "sidebar-v2": "^0.4.0",
+    "snyk": "^1.258.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.7.4",
+    "@babel/plugin-transform-runtime": "^7.7.4",
+    "concurrently": "^5.0.0",
+    "eslint": "^6.7.2",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-node": "^10.0.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "parcel-bundler": "^1.12.4",
+    "sass": "^1.23.7"
+  },
+  "scripts": {
+    "postinstall": "npm run build",
+    "test": "eslint resources/javascript/",
+    "fix": "eslint resources/javascript/ --fix",
+    "watch": "concurrently --raw \"npm:watch:*\"",
+    "watch:map": "parcel watch --out-dir=public/ --out-file=map.js --global map resources/javascript/map.js --no-cache --no-hmr",
+    "watch:table": "parcel watch --out-dir=public/ --out-file=table.js --global table resources/javascript/table.js --no-cache --no-hmr",
+    "build": "concurrently --raw \"npm:build:*\"",
+    "build:map": "parcel build --out-dir=public/ --out-file=map.js --global map resources/javascript/map.js --no-cache --no-source-maps",
+    "build:table": "parcel build --out-dir=public/ --out-file=table.js --global table resources/javascript/table.js --no-cache --no-source-maps",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "snyk": true
 }
