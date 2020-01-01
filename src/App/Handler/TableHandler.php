@@ -141,17 +141,17 @@ class TableHandler implements RequestHandlerInterface
             $redirect .= $this->router->generateUri(
                 'table',
                 [
-                'config' => $config['custom'],
-                'offset' => $offset,
+                    'config' => $config['custom'],
+                    'offset' => $offset,
                 ]
             );
 
             return new RedirectResponse(
                 $redirect . '?' . http_build_query(
                     [
-                    'filter' => $filter,
-                    'sort'   => $params['sort'],
-                    'order'  => $params['order'],
+                        'filter' => $filter,
+                        'sort'   => $params['sort'],
+                        'order'  => $params['order'],
                     ]
                 )
             );
@@ -169,19 +169,19 @@ class TableHandler implements RequestHandlerInterface
             $this->renderer->render(
                 'app::table',
                 [
-                'configId'      => $config['custom'],
-                'limit'         => $limit,
-                'offset'        => $offset,
-                'sort'          => $sort,
-                'order'         => $order,
-                'total'         => $total,
-                'count'         => $count,
-                'table'         => $table,
-                'records'       => $records,
-                'filter'        => $filter,
-                'thematic'      => new Thematic($adapter, $config['config'] ?? null),
-                'foreignTables' => $foreignTables,
-                'adapter'       => $config['config']['adapter'],
+                    'configId'      => $config['custom'],
+                    'limit'         => $limit,
+                    'offset'        => $offset,
+                    'sort'          => $sort,
+                    'order'         => $order,
+                    'total'         => $total,
+                    'count'         => $count,
+                    'table'         => $table,
+                    'records'       => $records,
+                    'filter'        => $filter,
+                    'thematic'      => new Thematic($adapter, $config['config'] ?? null),
+                    'foreignTables' => $foreignTables,
+                    'adapter'       => $config['config']['adapter'],
                 ]
             )
         );
