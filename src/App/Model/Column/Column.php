@@ -109,7 +109,7 @@ class Column extends ColumnObject
     /**
      * @return array
      */
-    public function getConfig() : array
+    public function getConfig(): array
     {
         return [
             'readonly'  => $this->readonly,
@@ -122,7 +122,7 @@ class Column extends ColumnObject
     /**
      * @param mixed $dataType
      */
-    public function setDataType(/*string*/$dataType) : void
+    public function setDataType(/*string*/$dataType): void
     {
         $driver = $this->adapter->getDriver()->getConnection()->getDriverName();
 
@@ -136,7 +136,7 @@ class Column extends ColumnObject
     /**
      * @param array $config
      */
-    public function setReference(array $config) : void
+    public function setReference(array $config): void
     {
         if (isset($config['mode']) && in_array($config['mode'], ['default', 'datalist', 'listbox'])) {
             $mode = $config['mode'];
@@ -162,7 +162,7 @@ class Column extends ColumnObject
     /**
      * @return array|null
      */
-    public function getReference() : ?array
+    public function getReference(): ?array
     {
         return $this->reference;
     }
