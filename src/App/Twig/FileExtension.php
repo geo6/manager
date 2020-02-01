@@ -86,7 +86,7 @@ class FileExtension extends AbstractExtension
         return $output;
     }
 
-    private function notexists($path) : string
+    private function notexists($path): string
     {
         return '<span class="text-muted" title="File does not exists." style="cursor: help; font-style: italic;">'
             . '<i class="fas fa-fw fa-exclamation-circle"></i>'
@@ -94,7 +94,7 @@ class FileExtension extends AbstractExtension
             . '</span>';
     }
 
-    private function preview($path, bool $displayFilename) : string
+    private function preview($path, bool $displayFilename): string
     {
         $mime = $this->filesystem->getMimetype($path);
         $href = $this->urlHelper->generate('file.view', $this->routeParams);
@@ -112,7 +112,7 @@ class FileExtension extends AbstractExtension
         }
     }
 
-    private function download($path, bool $displayFilename) : string
+    private function download($path, bool $displayFilename): string
     {
         $href = $this->urlHelper->generate('file.download', $this->routeParams);
 
