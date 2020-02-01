@@ -9,7 +9,7 @@ use Zend\Expressive\Helper\UrlHelper;
 
 class FileExtensionFactory
 {
-    public function __invoke(ContainerInterface $container) : FileExtension
+    public function __invoke(ContainerInterface $container): FileExtension
     {
         return new FileExtension(
             $container->get(UrlHelper::class)

@@ -8,7 +8,7 @@ use Zend\Db\Sql\Sql;
 
 class ReferenceColumn extends Column
 {
-    public function getValues(string $column) : array
+    public function getValues(string $column): array
     {
         $sql = new Sql($this->adapter);
 
