@@ -324,7 +324,7 @@ class Table
         return $records;
     }
 
-    public function hasColumn(string $name) : bool
+    public function hasColumn(string $name): bool
     {
         $has = false;
 
