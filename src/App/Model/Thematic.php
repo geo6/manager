@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Model;
 
-use Zend\Db\Adapter\Adapter;
-use Zend\Db\Sql\Select;
-use Zend\Db\Sql\Sql;
-use Zend\Db\Sql\TableIdentifier;
+use Laminas\Db\Adapter\Adapter;
+use Laminas\Db\Sql\Select;
+use Laminas\Db\Sql\Sql;
+use Laminas\Db\Sql\TableIdentifier;
 
 class Thematic
 {

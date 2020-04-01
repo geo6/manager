@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Column;
 
-use Zend\Db\Sql\Sql;
+use Laminas\Db\Sql\Sql;
 
 class ReferenceColumn extends Column
 {

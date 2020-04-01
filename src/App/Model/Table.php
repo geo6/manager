@@ -7,22 +7,22 @@ namespace App\Model;
 use App\Formatter\GeoJSON;
 use App\Model\Column\Column;
 use Exception;
-use Zend\Db\Adapter\Adapter;
-use Zend\Db\Metadata\Metadata;
-use Zend\Db\Metadata\Object\ColumnObject;
-use Zend\Db\Sql\Expression;
-use Zend\Db\Sql\Sql;
-use Zend\Db\Sql\TableIdentifier;
+use Laminas\Db\Adapter\Adapter;
+use Laminas\Db\Metadata\Metadata;
+use Laminas\Db\Metadata\Object\ColumnObject;
+use Laminas\Db\Sql\Expression;
+use Laminas\Db\Sql\Sql;
+use Laminas\Db\Sql\TableIdentifier;
 
 class Table
 {
     /** @var Adapter */
     protected $adapter;
-    /** @var \Zend\Db\Metadata\Object\ColumnObject[] */
+    /** @var \Laminas\Db\Metadata\Object\ColumnObject[] */
     protected $columns;
-    /** @var \Zend\Db\Metadata\Object\ConstraintObject[] */
+    /** @var \Laminas\Db\Metadata\Object\ConstraintObject[] */
     protected $constraints;
-    /** @var \Zend\Db\Sql\TableIdentifier */
+    /** @var \Laminas\Db\Sql\TableIdentifier */
     protected $identifier;
     /** @var string */
     protected $name;

@@ -7,7 +7,7 @@ namespace App\Twig;
 use App\Model\Filesystem;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
-use Zend\Expressive\Helper\UrlHelper;
+use Mezzio\Helper\UrlHelper;
 
 class FileExtension extends AbstractExtension
 {

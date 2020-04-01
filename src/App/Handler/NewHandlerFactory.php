@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Handler;
 
 use Psr\Container\ContainerInterface;
-use Zend\Expressive\Router\RouterInterface;
+use Mezzio\Router\RouterInterface;
 
 class NewHandlerFactory
 {

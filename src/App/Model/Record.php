@@ -8,13 +8,13 @@ use App\Model\Column\Column;
 use ArrayObject;
 use ErrorException;
 use geoPHP;
-use Zend\Db\Adapter\Adapter;
-use Zend\Db\Sql\Delete;
-use Zend\Db\Sql\Expression;
-use Zend\Db\Sql\Insert;
-use Zend\Db\Sql\Select;
-use Zend\Db\Sql\Sql;
-use Zend\Db\Sql\Update;
+use Laminas\Db\Adapter\Adapter;
+use Laminas\Db\Sql\Delete;
+use Laminas\Db\Sql\Expression;
+use Laminas\Db\Sql\Insert;
+use Laminas\Db\Sql\Select;
+use Laminas\Db\Sql\Sql;
+use Laminas\Db\Sql\Update;
 
 class Record
 {

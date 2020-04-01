@@ -6,9 +6,9 @@ namespace App\Model\Column;
 
 use App\Model\Table;
 use Exception;
-use Zend\Db\Adapter\Adapter;
-use Zend\Db\Metadata\Object\ColumnObject;
-use Zend\Db\Metadata\Object\ConstraintObject;
+use Laminas\Db\Adapter\Adapter;
+use Laminas\Db\Metadata\Object\ColumnObject;
+use Laminas\Db\Metadata\Object\ConstraintObject;
 
 class Column extends ColumnObject
 {

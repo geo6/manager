@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Twig;
 
 use Psr\Container\ContainerInterface;
-use Zend\Expressive\Helper\UrlHelper;
+use Mezzio\Helper\UrlHelper;
 
 class FileExtensionFactory
 {

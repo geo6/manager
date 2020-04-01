@@ -7,10 +7,10 @@ namespace App\Handler;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Zend\ConfigAggregator\ConfigAggregator;
-use Zend\ConfigAggregator\ZendConfigProvider;
-use Zend\Diactoros\Response\HtmlResponse;
-use Zend\Expressive\Template\TemplateRendererInterface;
+use Laminas\ConfigAggregator\ConfigAggregator;
+use Laminas\ConfigAggregator\LaminasConfigProvider;
+use Laminas\Diactoros\Response\HtmlResponse;
+use Mezzio\Template\TemplateRendererInterface;
 
 class HomePageHandler implements RequestHandlerInterface
 {
@@ -58,7 +58,7 @@ class HomePageHandler implements RequestHandlerInterface
     {
         $config = (new ConfigAggregator(
             [
-                new ZendConfigProvider($path . '/*.{php,ini,xml,json,yaml}'),
+                new LaminasConfigProvider($path . '/*.{php,ini,xml,json,yaml}'),
                 function () use ($path) {
                     return ['id' => basename($path)];
                 },
