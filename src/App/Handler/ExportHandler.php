@@ -6,11 +6,11 @@ namespace App\Handler;
 
 use App\Middleware\TableMiddleware;
 use App\Model\Table;
+use Laminas\Diactoros\Response\EmptyResponse;
+use Laminas\Diactoros\Response\JsonResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Laminas\Diactoros\Response\EmptyResponse;
-use Laminas\Diactoros\Response\JsonResponse;
 
 class ExportHandler implements RequestHandlerInterface
 {

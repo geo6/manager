@@ -9,13 +9,13 @@ use App\Middleware\DbAdapterMiddleware;
 use App\Middleware\TableMiddleware;
 use App\Model\Filesystem;
 use App\Model\Record;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\RequestHandlerInterface;
 use Laminas\Diactoros\Response;
 use Laminas\Diactoros\Response\EmptyResponse;
 use Laminas\Diactoros\Stream;
 use Mezzio\Router\RouteResult;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
 class FileHandler implements RequestHandlerInterface
 {

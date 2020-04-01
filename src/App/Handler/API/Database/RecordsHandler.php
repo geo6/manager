@@ -9,11 +9,11 @@ use App\Middleware\DbAdapterMiddleware;
 use App\Middleware\TableMiddleware;
 use App\Model\Record;
 use Exception;
+use Laminas\Diactoros\Response\EmptyResponse;
+use Laminas\Diactoros\Response\JsonResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Laminas\Diactoros\Response\EmptyResponse;
-use Laminas\Diactoros\Response\JsonResponse;
 
 class RecordsHandler implements RequestHandlerInterface
 {

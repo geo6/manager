@@ -9,12 +9,12 @@ use App\Middleware\DbAdapterMiddleware;
 use App\Middleware\TableMiddleware;
 use App\Model\Table;
 use App\Model\Thematic;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\RequestHandlerInterface;
 use Laminas\Diactoros\Response\HtmlResponse;
 use Mezzio\Router\RouterInterface;
 use Mezzio\Template\TemplateRendererInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
 class MapHandler implements RequestHandlerInterface
 {

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Twig;
 
 use App\Model\Filesystem;
+use Mezzio\Helper\UrlHelper;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
-use Mezzio\Helper\UrlHelper;
 
 class FileExtension extends AbstractExtension
 {

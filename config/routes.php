@@ -3,10 +3,10 @@
 declare(strict_types=1);
 
 use App\Middleware\TableMiddleware;
-use Psr\Container\ContainerInterface;
 use Mezzio\Application;
 use Mezzio\Helper\BodyParams\BodyParamsMiddleware;
 use Mezzio\MiddlewareFactory;
+use Psr\Container\ContainerInterface;
 
 /*
  * Setup routes with a single request method:
