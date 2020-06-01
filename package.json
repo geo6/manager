@@ -1,6 +1,6 @@
 {
     "dependencies": {
-        "@babel/runtime": "^7.9.6",
+        "@babel/runtime": "^7.10.2",
         "ol": "^5.3.3",
         "sidebar-v2": "^0.4.0"
     },
