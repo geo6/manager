@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace AppTest\Handler;
+namespace APITest\Handler;
 
-use App\Handler\PingHandler;
+use API\Handler\PingHandler;
 use function json_decode;
 use Laminas\Diactoros\Response\JsonResponse;
 use PHPUnit\Framework\TestCase;

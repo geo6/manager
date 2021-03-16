@@ -9,5 +9,8 @@
     <testsuite name="App\\Tests">
       <directory>./test</directory>
     </testsuite>
+    <testsuite name="API\\Tests">
+      <directory>./test</directory>
+    </testsuite>
   </testsuites>
 </phpunit>
