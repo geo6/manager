@@ -39,6 +39,7 @@ use Psr\Container\ContainerInterface;
 return static function (Application $app, MiddlewareFactory $factory, ContainerInterface $container): void {
     $app->get('/', App\Handler\HomePageHandler::class, 'home');
     $app->get('/map', App\Handler\MapHandler::class, 'map');
+    $app->get('/table', App\Handler\TableHandler::class, 'table');
 
     $app->get('/api/ping', App\Handler\PingHandler::class, 'api.ping');
 };
