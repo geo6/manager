@@ -7,7 +7,7 @@ use Mezzio\MiddlewareFactory;
 use Psr\Container\ContainerInterface;
 
 /**
- * FastRoute route configuration
+ * FastRoute route configuration.
  *
  * @see https://github.com/nikic/FastRoute
  *

@@ -23,7 +23,7 @@ class HomePageHandlerFactoryTest extends TestCase
     protected function setUp(): void
     {
         $this->container = $this->prophesize(ContainerInterface::class);
-        $router          = $this->prophesize(RouterInterface::class);
+        $router = $this->prophesize(RouterInterface::class);
 
         $this->container->get(RouterInterface::class)->willReturn($router);
     }
