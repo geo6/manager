@@ -9,7 +9,7 @@ use Psr\Container\ContainerInterface;
 
 class MapHandlerFactory
 {
-    public function __invoke(ContainerInterface $container) : MapHandler
+    public function __invoke(ContainerInterface $container): MapHandler
     {
         return new MapHandler($container->get(TemplateRendererInterface::class));
     }

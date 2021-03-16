@@ -9,7 +9,7 @@ use Psr\Container\ContainerInterface;
 
 class TableHandlerFactory
 {
-    public function __invoke(ContainerInterface $container) : TableHandler
+    public function __invoke(ContainerInterface $container): TableHandler
     {
         return new TableHandler($container->get(TemplateRendererInterface::class));
     }
