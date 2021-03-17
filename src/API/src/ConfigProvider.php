@@ -35,6 +35,7 @@ class ConfigProvider
                 Handler\PingHandler::class => Handler\PingHandler::class,
             ],
             'factories'  => [
+                Middleware\DatabaseMiddleware::class => Middleware\DatabaseMiddlewareFactory::class,
             ],
         ];
     }
