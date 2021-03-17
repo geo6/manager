@@ -15,23 +15,24 @@ use Psr\Http\Server\RequestHandlerInterface;
 class TableMiddleware implements MiddlewareInterface
 {
     public const TABLE_ATTRIBUTE = 'table';
-    public const LIMIT_ATTRIBUTE = 'table.limit';
-    public const COUNT_ATTRIBUTE = 'table.count';
-    public const FOREIGNKEYS_ATTRIBUTE = 'table.fk';
     public const ISVIEW_ATTRIBUTE = 'table.isview';
     public const PRIMARYKEY_ATTRIBUTE = 'table.pk';
+    public const FOREIGNKEYS_ATTRIBUTE = 'table.fk';
+    public const COUNT_ATTRIBUTE = 'table.count';
+    public const LIMIT_ATTRIBUTE = 'table.limit';
 
     private string $table;
     private ?string $primaryKeyColumn;
+    private array $readonlyColumns;
     private array $relations;
     private int $limit;
 
-    public function __construct(string $table, ?string $primaryKeyColumn, array $relations, int $limit)
+    public function __construct(string $table, ?string $primaryKeyColumn, array $readonlyColumns, array $relations, int $limit)
     {
         $this->table = $table;
-        $this->limit = $limit;
-        $this->relations = $relations;
         $this->primaryKeyColumn = $primaryKeyColumn;
+        $this->relations = $relations;
+        $this->limit = $limit;
     }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
@@ -57,9 +58,17 @@ class TableMiddleware implements MiddlewareInterface
         ) === 1;
 
         // Get primary key column from database structure or configuration
-        $primaryKey = !is_null($table->getPrimaryKey()) ? $table->getPrimaryKey()->getName() : $table->getName().'_'.$this->primaryKeyColumn;
-        if (is_null($primaryKey)) {
-            throw new Exception('You need to configure the primary key.');
+        if (!is_null($table->getPrimaryKey())) {
+            $primaryKeyColumns = $table->getPrimaryKeyColumns();
+            if (count($primaryKeyColumns) > 1) {
+                throw new Exception('This application doesn\'t support multiple columns primary key.');
+            }
+            $primaryKey = current($primaryKeyColumns)->getName();
+        } else {
+            $primaryKey = $this->primaryKeyColumn;
+            if (is_null($primaryKey)) {
+                throw new Exception('You need to configure the primary key.');
+            }
         }
 
         // Count number of records
@@ -84,11 +93,12 @@ class TableMiddleware implements MiddlewareInterface
         }
 
         $request = $request->withAttribute(self::TABLE_ATTRIBUTE, $table);
-        $request = $request->withAttribute(self::LIMIT_ATTRIBUTE, $this->limit);
         $request = $request->withAttribute(self::COUNT_ATTRIBUTE, $count);
         $request = $request->withAttribute(self::FOREIGNKEYS_ATTRIBUTE, $foreignKeys);
         $request = $request->withAttribute(self::ISVIEW_ATTRIBUTE, $isView);
         $request = $request->withAttribute(self::PRIMARYKEY_ATTRIBUTE, $primaryKey);
+
+        $request = $request->withAttribute(self::LIMIT_ATTRIBUTE, $this->limit);
 
         return $handler->handle($request);
     }

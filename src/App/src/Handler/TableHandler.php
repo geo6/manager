@@ -30,19 +30,21 @@ class TableHandler implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         /** @var Connection */ $connection = $request->getAttribute(DatabaseMiddleware::CONNECTION_ATTRIBUTE);
+
         /** @var Table */ $table = $request->getAttribute(TableMiddleware::TABLE_ATTRIBUTE);
-        /** @var int */ $limit = $request->getAttribute(TableMiddleware::LIMIT_ATTRIBUTE);
-        /** @var int */ $count = $request->getAttribute(TableMiddleware::COUNT_ATTRIBUTE);
-        /** @var array */ $foreignKeys = $request->getAttribute(TableMiddleware::FOREIGNKEYS_ATTRIBUTE);
         /** @var bool */ $isView = $request->getAttribute(TableMiddleware::ISVIEW_ATTRIBUTE);
         /** @var string */ $primaryKey = $request->getAttribute(TableMiddleware::PRIMARYKEY_ATTRIBUTE);
+        /** @var array */ $foreignKeys = $request->getAttribute(TableMiddleware::FOREIGNKEYS_ATTRIBUTE);
+        /** @var int */ $count = $request->getAttribute(TableMiddleware::COUNT_ATTRIBUTE);
+
+        /** @var int */ $limit = $request->getAttribute(TableMiddleware::LIMIT_ATTRIBUTE);
 
         /** @var int */ $offset = $request->getAttribute('offset', 0);
         $offset = intval(floor(intval($offset) / $limit) * $limit);
 
         $params = $request->getQueryParams();
 
-        $sort = isset($params['sort']) ? $params['sort'] : $primaryKey;
+        $sort = isset($params['sort']) ? $params['sort'] : $table->getName().'_'.$primaryKey;
         $order = isset($params['order']) && in_array(strtolower($params['order']), ['asc', 'desc']) ? strtolower($params['order']) : 'asc';
 
         $columns = $table->getColumns();
@@ -96,14 +98,15 @@ class TableHandler implements RequestHandlerInterface
             [
                 'table'       => $table,
                 'isView'      => $isView,
-                'foreignKeys' => $foreignKeys,
                 'primaryKey'  => $primaryKey,
+                'foreignKeys' => $foreignKeys,
                 'count'       => $count,
                 'sort'        => $sort,
                 'order'       => $order,
                 'offset'      => $offset,
                 'limit'       => $limit,
                 'records'     => $records,
+                'readonly'    => [$primaryKey, ...$readonlyColumns],
             ]
         ));
     }
