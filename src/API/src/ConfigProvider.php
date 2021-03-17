@@ -36,6 +36,7 @@ class ConfigProvider
             ],
             'factories'  => [
                 Middleware\DatabaseMiddleware::class => Middleware\DatabaseMiddlewareFactory::class,
+                Middleware\TableMiddleware::class    => Middleware\TableMiddlewareFactory::class,
             ],
         ];
     }
