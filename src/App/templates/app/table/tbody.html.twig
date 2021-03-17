@@ -1,0 +1,14 @@
+<tbody>
+    {% for record in records %}
+    <tr>
+        {% for column in table.columns %}
+        {{ value(record[table.name ~ '_' ~ column.name], column.type) }}
+        {% endfor %}
+        {% for fk in foreignKeys %}
+        {% for id, column in fk.foreignTable.columns %}
+        {{ value(record[fk.foreignTable.name ~ '_' ~ column.name], column.type) }}
+        {% endfor %}
+        {% endfor %}
+    </tr>
+    {% endfor %}
+</tbody>

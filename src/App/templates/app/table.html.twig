@@ -1,1 +1,26 @@
-Template for App\Handler\TableHandler
+{% extends '@layout/default.html.twig' %}
+
+{% block title %}Table{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between pb-3">
+    <div>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-form">
+            <i class="fas fa-edit"></i> Edit
+        </button>
+    </div>
+
+    {{ include('@app/table/pagination.html.twig') }}
+</div>
+
+<div class="table-responsive">
+
+    <table class="table table-bordered table-striped table-sm mb-0">
+        {{ include('@app/table/thead.html.twig') }}
+        {{ include('@app/table/tbody.html.twig') }}
+    </table>
+
+</div>
+
+{% endblock %}
