@@ -20,6 +20,7 @@ class TableMiddleware implements MiddlewareInterface
     public const FOREIGNKEYS_ATTRIBUTE = 'table.fk';
     public const COUNT_ATTRIBUTE = 'table.count';
     public const LIMIT_ATTRIBUTE = 'table.limit';
+    public const READONLY_ATTRIBUTE = 'table.readonly';
 
     private string $table;
     private ?string $primaryKeyColumn;
@@ -31,6 +32,7 @@ class TableMiddleware implements MiddlewareInterface
     {
         $this->table = $table;
         $this->primaryKeyColumn = $primaryKeyColumn;
+        $this->readonlyColumns = $readonlyColumns;
         $this->relations = $relations;
         $this->limit = $limit;
     }
@@ -99,6 +101,7 @@ class TableMiddleware implements MiddlewareInterface
         $request = $request->withAttribute(self::PRIMARYKEY_ATTRIBUTE, $primaryKey);
 
         $request = $request->withAttribute(self::LIMIT_ATTRIBUTE, $this->limit);
+        $request = $request->withAttribute(self::READONLY_ATTRIBUTE, $this->readonlyColumns);
 
         return $handler->handle($request);
     }

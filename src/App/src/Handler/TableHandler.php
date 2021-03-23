@@ -38,6 +38,7 @@ class TableHandler implements RequestHandlerInterface
         /** @var int */ $count = $request->getAttribute(TableMiddleware::COUNT_ATTRIBUTE);
 
         /** @var int */ $limit = $request->getAttribute(TableMiddleware::LIMIT_ATTRIBUTE);
+        /** @var array */ $readonlyColumns = $request->getAttribute(TableMiddleware::READONLY_ATTRIBUTE);
 
         /** @var int */ $offset = $request->getAttribute('offset', 0);
         $offset = intval(floor(intval($offset) / $limit) * $limit);
@@ -106,7 +107,14 @@ class TableHandler implements RequestHandlerInterface
                 'offset'      => $offset,
                 'limit'       => $limit,
                 'records'     => $records,
-                'readonly'    => [$primaryKey, ...$readonlyColumns],
+                'readonly'    => [
+                    $primaryKey,
+                    ...$readonlyColumns,
+                    ...array_values(array_map(
+                        function (Column $column) { return $column->getName(); },
+                        array_filter($table->getColumns(), function (Column $column) { return in_array($column->getType()->getName(), ['geometry', 'geography']); })
+                    )),
+                ],
             ]
         ));
     }

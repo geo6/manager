@@ -14,9 +14,10 @@ class TableMiddlewareFactory
 
         $table = $config['table'];
         $primaryKeyColumn = $config['primaryKeyColumn'] ?? null;
+        $readonlyColumns = $config['readonlyColumns'] ?? [];
         $relations = $config['relations'] ?? [];
         $limit = $config['limit'];
 
-        return new TableMiddleware($table, $primaryKeyColumn, $relations, $limit);
+        return new TableMiddleware($table, $primaryKeyColumn, $readonlyColumns, $relations, $limit);
     }
 }
