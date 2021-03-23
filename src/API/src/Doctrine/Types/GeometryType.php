@@ -33,4 +33,9 @@ class GeometryType extends Type
     {
         return sprintf('ST_AsGeoJSON(%s)', $sqlExpr);
     }
+
+    public function convertToPHPValue($value, AbstractPlatform $platform)
+    {
+        return json_decode($value);
+    }
 }
