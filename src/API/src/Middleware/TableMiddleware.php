@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace API\Middleware;
 
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\View;
 use Exception;
 use Psr\Http\Message\ResponseInterface;
@@ -18,6 +19,7 @@ class TableMiddleware implements MiddlewareInterface
     public const ISVIEW_ATTRIBUTE = 'table.isview';
     public const PRIMARYKEY_ATTRIBUTE = 'table.pk';
     public const FOREIGNKEYS_ATTRIBUTE = 'table.fk';
+    public const GEOMETRY_ATTRIBUTE = 'table.geometry';
     public const COUNT_ATTRIBUTE = 'table.count';
     public const LIMIT_ATTRIBUTE = 'table.limit';
     public const READONLY_ATTRIBUTE = 'table.readonly';
@@ -73,6 +75,14 @@ class TableMiddleware implements MiddlewareInterface
             }
         }
 
+        // Get geometry column (first geometry/geography column available)
+        $geometryColumns = array_filter($table->getColumns(), function (Column $column) { return in_array($column->getType()->getName(), ['geometry', 'geography']); });
+        if (count($geometryColumns) > 0) {
+            $geometryColumn = current($geometryColumns)->getName();
+        } else {
+            $geometryColumn = null;
+        }
+
         // Count number of records
         $stmt = $connection->executeQuery(sprintf('SELECT COUNT(*) FROM %s', $table->getQuotedName($connection->getDatabasePlatform())));
         $count = $stmt->fetchOne();
@@ -99,6 +109,7 @@ class TableMiddleware implements MiddlewareInterface
         $request = $request->withAttribute(self::FOREIGNKEYS_ATTRIBUTE, $foreignKeys);
         $request = $request->withAttribute(self::ISVIEW_ATTRIBUTE, $isView);
         $request = $request->withAttribute(self::PRIMARYKEY_ATTRIBUTE, $primaryKey);
+        $request = $request->withAttribute(self::GEOMETRY_ATTRIBUTE, $geometryColumn);
 
         $request = $request->withAttribute(self::LIMIT_ATTRIBUTE, $this->limit);
         $request = $request->withAttribute(self::READONLY_ATTRIBUTE, $this->readonlyColumns);
