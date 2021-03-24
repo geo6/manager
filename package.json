@@ -1,0 +1,36 @@
+{
+  "name": "@geo6/manager",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "build": "npm-run-all -s build:*",
+    "build:script": "parcel build --dist-dir public/assets/js src/typescript/*/index.ts",
+    "build:style": "parcel build --dist-dir public/assets/css src/sass/style.scss",
+    "watch:script": "parcel watch --dist-dir public/assets/js src/typescript/*/index.ts",
+    "lint": "eslint src/typescript/**/*.ts",
+    "lint:fix": "eslint --fix src/typescript/**/*.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/geo6/manager.git"
+  },
+  "license": "proprietary",
+  "bugs": {
+    "url": "https://github.com/geo6/manager/issues"
+  },
+  "homepage": "https://github.com/geo6/manager#readme",
+  "devDependencies": {
+    "@parcel/transformer-sass": "^2.0.0-beta.2",
+    "@typescript-eslint/eslint-plugin": "^4.19.0",
+    "@typescript-eslint/parser": "^4.19.0",
+    "eslint": "^7.22.0",
+    "eslint-config-standard": "^16.0.2",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.3.1",
+    "npm-run-all": "^4.1.5",
+    "parcel": "^2.0.0-beta.2"
+  },
+  "dependencies": {
+  }
+}

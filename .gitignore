@@ -3,4 +3,6 @@
 /clover.xml
 /coveralls-upload.json
 /phpunit.xml
+/.parcel-cache/
+/node_modules/
 /vendor/
