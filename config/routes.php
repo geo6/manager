@@ -41,6 +41,6 @@ return static function (Application $app, MiddlewareFactory $factory, ContainerI
     $app->get('/map', App\Handler\MapHandler::class, 'map');
     $app->get('/table[/{offset:\d+}]', App\Handler\TableHandler::class, 'table');
 
-    $app->get('/api/object[/{id:\d+}]', API\Handler\ObjectHandler::class, 'api.object');
+    $app->get('/api/object[/{id:\d+}]', API\Handler\Object\GetHandler::class, 'api.object.get');
     $app->get('/api/ping', API\Handler\PingHandler::class, 'api.ping');
 };

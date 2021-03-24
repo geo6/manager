@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace API\Handler;
+namespace API\Handler\Object;
 
 use API\Middleware\DatabaseMiddleware;
 use API\Middleware\TableMiddleware;
@@ -13,7 +13,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-class ObjectHandler implements RequestHandlerInterface
+class GetHandler implements RequestHandlerInterface
 {
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
