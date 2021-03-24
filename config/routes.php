@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Mezzio\Application;
+use Mezzio\Helper\BodyParams\BodyParamsMiddleware;
 use Mezzio\MiddlewareFactory;
 use Psr\Container\ContainerInterface;
 
@@ -43,5 +44,8 @@ return static function (Application $app, MiddlewareFactory $factory, ContainerI
 
     $app->get('/api/object[/{id:\d+}]', API\Handler\Object\GetHandler::class, 'api.object.get');
     $app->delete('/api/object/{id:\d+}', API\Handler\Object\DeleteHandler::class, 'api.object.delete');
+    $app->patch('/api/object/{id:\d+}', [BodyParamsMiddleware::class, API\Handler\Object\PatchPutHandler::class], 'api.object.patch');
+    $app->put('/api/object/{id:\d+}', [BodyParamsMiddleware::class, API\Handler\Object\PatchPutHandler::class], 'api.object.put');
+
     $app->get('/api/ping', API\Handler\PingHandler::class, 'api.ping');
 };

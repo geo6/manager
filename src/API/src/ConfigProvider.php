@@ -37,6 +37,7 @@ class ConfigProvider
             'factories'  => [
                 Handler\Object\DeleteHandler::class   => Handler\Object\DeleteHandlerFactory::class,
                 Handler\Object\GetHandler::class      => Handler\Object\GetHandlerFactory::class,
+                Handler\Object\PatchPutHandler::class => Handler\Object\PatchPutHandlerFactory::class,
                 Middleware\DatabaseMiddleware::class  => Middleware\DatabaseMiddlewareFactory::class,
                 Middleware\TableMiddleware::class     => Middleware\TableMiddlewareFactory::class,
             ],
