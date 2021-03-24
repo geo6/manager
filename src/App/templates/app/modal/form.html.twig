@@ -6,7 +6,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form>
+                <form autocomplete="off">
                     {% for column in (table.columns | filter(c => c.name not in readonly)) %}
                     <div class="mb-3" data-datatype="{{ column.type.name }}">
                         <label for="form-input-{{ column.name }}" class="form-label">{{ column.name }}</label>
@@ -17,8 +17,8 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-danger"><i class="far fa-trash-alt"></i> Delete</button>
-                <button type="button" class="btn btn-primary"><i class="fas fa-save"></i> Save</button>
+                <button type="button" id="modal-form-delete" class="btn btn-danger"><i class="far fa-trash-alt"></i> Delete</button>
+                <button type="button" id="modal-form-save" class="btn btn-primary"><i class="fas fa-save"></i> Save</button>
             </div>
         </div>
     </div>

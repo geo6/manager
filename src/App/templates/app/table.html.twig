@@ -2,11 +2,15 @@
 
 {% block title %}Table{% endblock %}
 
+{% block script %}
+<script src="{{ asset('/assets/js/table/index.js') }}"></script>
+{% endblock %}
+
 {% block content %}
 
 <div class="d-flex justify-content-between pb-3">
     <div>
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-form">
+        <button id="btn-modal-form-edit" type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modal-form" autocomplete="off" disabled>
             <i class="fas fa-edit"></i> Edit
         </button>
     </div>

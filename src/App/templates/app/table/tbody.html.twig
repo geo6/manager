@@ -1,6 +1,6 @@
 <tbody>
     {% for record in records %}
-    <tr>
+    <tr data-id="{{ record[table.name ~ '_' ~ primaryKey] }}">
         {% for column in table.columns %}
         {{ value(record[table.name ~ '_' ~ column.name], column.type) }}
         {% endfor %}
