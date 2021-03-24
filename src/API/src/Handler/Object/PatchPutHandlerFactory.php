@@ -8,7 +8,7 @@ use Psr\Container\ContainerInterface;
 
 class PatchPutHandlerFactory
 {
-    public function __invoke(ContainerInterface $container) : PatchPutHandler
+    public function __invoke(ContainerInterface $container): PatchPutHandler
     {
         return new PatchPutHandler();
     }

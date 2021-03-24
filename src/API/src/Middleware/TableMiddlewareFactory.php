@@ -8,7 +8,7 @@ use Psr\Container\ContainerInterface;
 
 class TableMiddlewareFactory
 {
-    public function __invoke(ContainerInterface $container) : TableMiddleware
+    public function __invoke(ContainerInterface $container): TableMiddleware
     {
         $config = $container->get('config');
 

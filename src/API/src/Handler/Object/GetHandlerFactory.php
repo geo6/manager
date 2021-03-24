@@ -8,7 +8,7 @@ use Psr\Container\ContainerInterface;
 
 class GetHandlerFactory
 {
-    public function __invoke(ContainerInterface $container) : GetHandler
+    public function __invoke(ContainerInterface $container): GetHandler
     {
         return new GetHandler();
     }

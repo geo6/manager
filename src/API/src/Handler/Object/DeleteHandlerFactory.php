@@ -8,7 +8,7 @@ use Psr\Container\ContainerInterface;
 
 class DeleteHandlerFactory
 {
-    public function __invoke(ContainerInterface $container) : DeleteHandler
+    public function __invoke(ContainerInterface $container): DeleteHandler
     {
         return new DeleteHandler();
     }

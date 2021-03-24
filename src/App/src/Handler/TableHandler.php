@@ -29,18 +29,18 @@ class TableHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        /** @var Connection */ $connection = $request->getAttribute(DatabaseMiddleware::CONNECTION_ATTRIBUTE);
+/** @var Connection */ $connection = $request->getAttribute(DatabaseMiddleware::CONNECTION_ATTRIBUTE);
 
-        /** @var Table */ $table = $request->getAttribute(TableMiddleware::TABLE_ATTRIBUTE);
-        /** @var bool */ $isView = $request->getAttribute(TableMiddleware::ISVIEW_ATTRIBUTE);
-        /** @var string */ $primaryKey = $request->getAttribute(TableMiddleware::PRIMARYKEY_ATTRIBUTE);
-        /** @var array */ $foreignKeys = $request->getAttribute(TableMiddleware::FOREIGNKEYS_ATTRIBUTE);
-        /** @var int */ $count = $request->getAttribute(TableMiddleware::COUNT_ATTRIBUTE);
+/** @var Table */ $table = $request->getAttribute(TableMiddleware::TABLE_ATTRIBUTE);
+/** @var bool */ $isView = $request->getAttribute(TableMiddleware::ISVIEW_ATTRIBUTE);
+/** @var string */ $primaryKey = $request->getAttribute(TableMiddleware::PRIMARYKEY_ATTRIBUTE);
+/** @var array */ $foreignKeys = $request->getAttribute(TableMiddleware::FOREIGNKEYS_ATTRIBUTE);
+/** @var int */ $count = $request->getAttribute(TableMiddleware::COUNT_ATTRIBUTE);
 
-        /** @var int */ $limit = $request->getAttribute(TableMiddleware::LIMIT_ATTRIBUTE);
-        /** @var array */ $readonlyColumns = $request->getAttribute(TableMiddleware::READONLY_ATTRIBUTE);
+/** @var int */ $limit = $request->getAttribute(TableMiddleware::LIMIT_ATTRIBUTE);
+/** @var array */ $readonlyColumns = $request->getAttribute(TableMiddleware::READONLY_ATTRIBUTE);
 
-        /** @var int */ $offset = $request->getAttribute('offset', 0);
+/** @var int */ $offset = $request->getAttribute('offset', 0);
         $offset = intval(floor(intval($offset) / $limit) * $limit);
 
         $params = $request->getQueryParams();
@@ -66,8 +66,7 @@ class TableHandler implements RequestHandlerInterface
             ->from($table->getName(), 'a')
             ->setMaxResults($limit)
             ->setFirstResult($offset)
-            ->orderBy($sort, $order)
-        ;
+            ->orderBy($sort, $order);
 
         foreach ($foreignKeys as $i => $fk) {
             $foreignColumns = $fk['foreignTable']->getColumns();
@@ -85,7 +84,8 @@ class TableHandler implements RequestHandlerInterface
             $query
                 ->leftJoin(
                     'a',
-                    $fk['foreignTable']->getName(), sprintf('b%d', $i),
+                    $fk['foreignTable']->getName(),
+                    sprintf('b%d', $i),
                     sprintf('a.%s = b%d.%s', $fk['localColumn'], $i, $fk['foreignColumn'])
                 )
                 ->addSelect(...$foreignSelect);

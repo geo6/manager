@@ -24,7 +24,7 @@ class DatabaseMiddleware implements MiddlewareInterface
         $this->params = $params;
     }
 
-    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler) : ResponseInterface
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $connection = DriverManager::getConnection($this->params);
 

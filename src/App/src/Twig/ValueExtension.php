@@ -37,7 +37,7 @@ class ValueExtension extends AbstractExtension
             $output .= self::boolean($value);
         } elseif ($datatype->getName() === 'geometry' || $datatype->getName() === 'geography') {
             $output .= self::geometry($value);
-        }  elseif (is_string($value) && self::checkURL($value) === true) {
+        } elseif (is_string($value) && self::checkURL($value) === true) {
             $output .= self::varcharLink($value);
         } else {
             $output .= (string) $value;
@@ -62,27 +62,30 @@ class ValueExtension extends AbstractExtension
         }
     }
 
-    public static function geometry(string $value): string {
+    public static function geometry(string $value): string
+    {
         $json = json_decode($value);
 
-        return '<i class="fas fa-pencil-ruler"></i> ' . $json->type ?? 'Unknown';
+        return '<i class="fas fa-pencil-ruler"></i> '.$json->type ?? 'Unknown';
     }
 
     private static function varcharLink(string $value): string
     {
         $host = parse_url($value, PHP_URL_HOST);
 
-        return '<a href="' . $value . '" target="_blank" class="text-decoration-none">'
-            . '<i class="fas fa-external-link-alt"></i> '
-            . $host
-            . '</a>';
+        return '<a href="'.$value.'" target="_blank" class="text-decoration-none">'
+            .'<i class="fas fa-external-link-alt"></i> '
+            .$host
+            .'</a>';
     }
 
     private static function checkURL(string $value): bool
     {
         $url = parse_url($value, PHP_URL_PATH);
 
-        if (is_null($url)) return false;
+        if (is_null($url)) {
+            return false;
+        }
 
         $encoded = array_map('urlencode', explode('/', $url));
 
