@@ -42,5 +42,6 @@ return static function (Application $app, MiddlewareFactory $factory, ContainerI
     $app->get('/table[/{offset:\d+}]', App\Handler\TableHandler::class, 'table');
 
     $app->get('/api/object[/{id:\d+}]', API\Handler\Object\GetHandler::class, 'api.object.get');
+    $app->delete('/api/object/{id:\d+}', API\Handler\Object\DeleteHandler::class, 'api.object.delete');
     $app->get('/api/ping', API\Handler\PingHandler::class, 'api.ping');
 };

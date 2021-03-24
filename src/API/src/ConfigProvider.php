@@ -35,6 +35,7 @@ class ConfigProvider
                 Handler\PingHandler::class => Handler\PingHandler::class,
             ],
             'factories'  => [
+                Handler\Object\DeleteHandler::class   => Handler\Object\DeleteHandlerFactory::class,
                 Handler\Object\GetHandler::class      => Handler\Object\GetHandlerFactory::class,
                 Middleware\DatabaseMiddleware::class  => Middleware\DatabaseMiddlewareFactory::class,
                 Middleware\TableMiddleware::class     => Middleware\TableMiddlewareFactory::class,
