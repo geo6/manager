@@ -8,7 +8,7 @@
 
 {% block content %}
 
-<div class="d-flex justify-content-between pb-3">
+<div class="d-flex justify-content-between m-3">
     <div>
         <button id="btn-modal-form-edit" type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modal-form" autocomplete="off" disabled>
             <i class="fas fa-edit"></i> Edit
@@ -18,7 +18,7 @@
     {{ include('@app/table/pagination.html.twig') }}
 </div>
 
-<div class="table-responsive">
+<div class="table-responsive mx-3">
 
     <table class="table table-bordered table-striped table-sm mb-0">
         {{ include('@app/table/thead.html.twig') }}
