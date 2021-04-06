@@ -1,19 +1,18 @@
-<div>
-  <header class="d-flex justify-content-between">
-    Baselayers
-    <button type="button" class="btn-close" aria-label="Close"></button>
-  </header>
+{% extends '@layout/sidebar.html.twig' %}
 
-  <div id="sidebar-baselayer-osm" class="overview active border border-2 rounded m-2">
+{% block title 'Baselayers' %}
+
+{% block content %}
+<div id="sidebar-baselayer-osm" class="overview active border border-2 rounded mb-2">
     <div class="overview-label">OpenStreetMap</div>
     <div class="overview-map bg-light" style="height: 75px;"></div>
-  </div>
-  <div id="sidebar-baselayer-cirb-urbis" class="overview border border-2 rounded m-2">
+</div>
+<div id="sidebar-baselayer-cirb-urbis" class="overview border border-2 rounded mb-2">
     <div class="overview-label">CIRB UrbIS</div>
     <div class="overview-map bg-light" style="height: 75px;"></div>
-  </div>
-  <div id="sidebar-baselayer-cirb-ortho" class="overview border border-2 rounded m-2">
+</div>
+<div id="sidebar-baselayer-cirb-ortho" class="overview border border-2 rounded mb-2">
     <div class="overview-label">CIRB Orthophotos</div>
     <div class="overview-map bg-light" style="height: 75px;"></div>
-  </div>
 </div>
+{% endblock %}

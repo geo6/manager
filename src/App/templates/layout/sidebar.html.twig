@@ -1,0 +1,10 @@
+<div class="d-flex flex-column h-100">
+    <header class="d-flex justify-content-between">
+        {% block title %}{% endblock %}
+        <button type="button" class="btn-close" aria-label="Close"></button>
+    </header>
+    <div class="flex-grow-1 sidebar-content">
+        {% block content %}
+        {% endblock %}
+    </div>
+</div>
