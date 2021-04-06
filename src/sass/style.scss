@@ -16,6 +16,6 @@ body {
 main {
   display: flex;
   flex-direction: column;
+  flex-grow: 1 !important;
   // min-height: 350px;
-  height: 100%;
 }
