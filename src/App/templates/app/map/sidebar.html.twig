@@ -2,22 +2,27 @@
   <div class="d-flex flex-column bg-light" style="width: 4.5rem;">
     <ul class="nav nav-flush flex-column mb-auto text-center" role="tablist">
       <li class="nav-item" role="presentation">
-        <a href="#sidebar-baselayers" id="sidebar-baselayers-tab" class="nav-link link-secondary py-3 border-bottom" title="Baselayers" role="tab" data-bs-toggle="tab">
+        <a href="#sidebar-baselayers" id="sidebar-baselayers-tab" class="nav-link py-3 border-bottom" title="Baselayers" role="tab" data-bs-toggle="tab">
           <i class="fas fa-fw fa-2x fa-map"></i>
         </a>
       </li>
       <li class="nav-item" role="presentation">
-        <a href="#sidebar-layers" id="sidebar-layers-tab" class="nav-link link-secondary py-3 border-bottom" title="Layers" role="tab" data-bs-toggle="tab">
+        <a href="#sidebar-layers" id="sidebar-layers-tab" class="nav-link py-3 border-bottom" title="Layers" role="tab" data-bs-toggle="tab">
           <i class="fas fa-fw fa-2x fa-layer-group"></i>
         </a>
       </li>
       <li class="nav-item" role="presentation">
-        <a href="#sidebar-geocoder" id="sidebar-geocoder-tab" class="nav-link link-secondary py-3 border-bottom" title="Geocoder" role="tab" data-bs-toggle="tab">
+        <a href="#sidebar-geocoder" id="sidebar-geocoder-tab" class="nav-link py-3 border-bottom" title="Geocoder" role="tab" data-bs-toggle="tab">
           <i class="fas fa-fw fa-2x fa-map-marker-alt"></i>
         </a>
       </li>
       <li class="nav-item" role="presentation">
-        <a href="#sidebar-form" id="sidebar-form-tab" class="nav-link link-secondary py-3 border-bottom" title="Info / Form" role="tab" data-bs-toggle="tab">
+        <a href="#sidebar-info" id="sidebar-info-tab" class="nav-link py-3 border-bottom disabled" title="Info" role="tab" data-bs-toggle="tab">
+          <i class="fas fa-fw fa-2x fa-info"></i>
+        </a>
+      </li>
+      <li class="nav-item" role="presentation">
+        <a href="#sidebar-form" id="sidebar-form-tab" class="nav-link py-3 border-bottom disabled" title="Edit" role="tab" data-bs-toggle="tab">
           <i class="fas fa-fw fa-2x fa-edit"></i>
         </a>
       </li>
@@ -48,6 +53,9 @@
     </div>
     <div class="tab-pane fade" id="sidebar-geocoder" role="tabpanel" aria-labelledby="sidebar-geocoder-tab">
       {{ include('@app/map/sidebar/geocoder.html.twig') }}
+    </div>
+    <div class="tab-pane fade" id="sidebar-info" role="tabpanel" aria-labelledby="sidebar-info-tab">
+      {{ include('@app/map/sidebar/info.html.twig') }}
     </div>
     <div class="tab-pane fade" id="sidebar-form" role="tabpanel" aria-labelledby="sidebar-form-tab">
       {{ include('@app/map/sidebar/form.html.twig') }}
