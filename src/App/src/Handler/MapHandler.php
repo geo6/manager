@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Handler;
 
+use API\Middleware\DatabaseMiddleware;
+use API\Middleware\TableMiddleware;
 use Laminas\Diactoros\Response\HtmlResponse;
 use Mezzio\Template\TemplateRendererInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -24,11 +26,15 @@ class MapHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        // Do some work...
-        // Render and return a response:
+        /** @var Connection */ $connection = $request->getAttribute(DatabaseMiddleware::CONNECTION_ATTRIBUTE);
+
+        /** @var Table */ $table = $request->getAttribute(TableMiddleware::TABLE_ATTRIBUTE);
+
         return new HtmlResponse($this->renderer->render(
             'app::map',
-            [] // parameters to pass to template
+            [
+                'table' => $table,
+            ]
         ));
     }
 }
