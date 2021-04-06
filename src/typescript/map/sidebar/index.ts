@@ -24,7 +24,7 @@ export class Sidebar {
 
     this.element.querySelectorAll('#sidebar .btn-close').forEach((element) => {
       element.addEventListener('click', () => {
-        const handle = document.querySelector('#sidebar ul[role="tablist"] a.active') as HTMLAnchorElement;
+        const handle = document.querySelector('#sidebar a[data-bs-toggle="tab"].active') as HTMLAnchorElement;
         handle.classList.remove('active');
 
         const tab = element.closest('.tab-pane');
