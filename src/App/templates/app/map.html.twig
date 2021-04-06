@@ -2,5 +2,15 @@
 
 {% block title %}Map{% endblock %}
 
+{% block script %}
+<script src="{{ asset('/assets/js/map/index.js') }}"></script>
+{% endblock %}
+
 {% block content %}
+
+<div class="d-flex align-items-stretch h-100">
+  {{ include('@app/map/sidebar.html.twig') }}
+  <div id="map" class="flex-grow-1"></div>
+</div>
+
 {% endblock %}

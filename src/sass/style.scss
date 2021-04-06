@@ -1,5 +1,7 @@
 @use "bootstrap";
+@use "openlayers";
 @use "table";
+@use "map/sidebar";
 
 html,
 body {
@@ -14,5 +16,6 @@ body {
 main {
   display: flex;
   flex-direction: column;
-  min-height: 350px;
+  // min-height: 350px;
+  height: 100%;
 }
