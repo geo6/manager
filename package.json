@@ -23,6 +23,7 @@
     "@parcel/transformer-sass": "^2.0.0-beta.2",
     "@types/bootstrap": "^5.0.9",
     "@types/geojson": "^7946.0.7",
+    "@types/ol": "^6.4.2",
     "@typescript-eslint/eslint-plugin": "^4.19.0",
     "@typescript-eslint/parser": "^4.19.0",
     "eslint": "^7.22.0",
@@ -34,6 +35,7 @@
     "parcel": "^2.0.0-beta.2"
   },
   "dependencies": {
-    "bootstrap": "^5.0.0-beta3"
+    "bootstrap": "^5.0.0-beta3",
+    "ol": "^6.5.0"
   }
 }
