@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
+    "prebuild": "npx rimraf public/assets",
     "build": "npm-run-all -s build:*",
     "build:script": "parcel build --dist-dir public/assets/js src/typescript/*/index.ts",
     "build:style": "parcel build --dist-dir public/assets/css src/sass/style.scss",
