@@ -27,16 +27,16 @@ class MapHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        /** @var Connection */ $connection = $request->getAttribute(DatabaseMiddleware::CONNECTION_ATTRIBUTE);
+/** @var Connection */ $connection = $request->getAttribute(DatabaseMiddleware::CONNECTION_ATTRIBUTE);
 
-        /** @var Table */ $table = $request->getAttribute(TableMiddleware::TABLE_ATTRIBUTE);
-        /** @var string */ $primaryKey = $request->getAttribute(TableMiddleware::PRIMARYKEY_ATTRIBUTE);
-        /** @var array */ $readonlyColumns = $request->getAttribute(TableMiddleware::READONLY_ATTRIBUTE);
+/** @var Table */ $table = $request->getAttribute(TableMiddleware::TABLE_ATTRIBUTE);
+/** @var string */ $primaryKey = $request->getAttribute(TableMiddleware::PRIMARYKEY_ATTRIBUTE);
+/** @var array */ $readonlyColumns = $request->getAttribute(TableMiddleware::READONLY_ATTRIBUTE);
 
         return new HtmlResponse($this->renderer->render(
             'app::map',
             [
-                'table' => $table,
+                'table'       => $table,
                 'readonly'    => [
                     $primaryKey,
                     ...$readonlyColumns,
