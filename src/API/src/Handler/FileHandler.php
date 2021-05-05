@@ -69,10 +69,10 @@ class FileHandler implements RequestHandlerInterface
             }
 
             switch ($action) {
-                case 'info': {
+                case 'info':
                         return new JsonResponse(self::info($realpath));
-                    }
-                case 'thumbnail': {
+
+                case 'thumbnail':
                         $stream = new Stream(self::thumbnail($realpath));
 
                         return (new Response())
@@ -80,13 +80,14 @@ class FileHandler implements RequestHandlerInterface
                             ->withStatus(200)
                             ->withHeader('Content-Length', (string) $stream->getSize())
                             ->withHeader('Content-Type', $mime);
-                    }
-                default: {
+
+                default:
                         return new EmptyResponse(400);
-                    }
+
             }
         } catch (Exception $e) {
             $code = $e->getCode() > 0 ? $e->getCode() : 500;
+
             return new TextResponse($e->getMessage(), $code);
         }
     }

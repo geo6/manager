@@ -20,7 +20,7 @@ class TableMiddlewareFactory
         $relations = $config['relations'] ?? [];
         $limit = $config['limit'];
 
-        $options = new stdClass;
+        $options = new stdClass();
         $options->readonlyColumns = $readonlyColumns;
         $options->fileColumns = $fileColumns;
         $options->limit = $limit;

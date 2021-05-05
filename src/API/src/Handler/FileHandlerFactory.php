@@ -8,7 +8,7 @@ use Psr\Container\ContainerInterface;
 
 class FileHandlerFactory
 {
-    public function __invoke(ContainerInterface $container) : FileHandler
+    public function __invoke(ContainerInterface $container): FileHandler
     {
         return new FileHandler();
     }

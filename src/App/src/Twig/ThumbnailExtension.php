@@ -35,7 +35,7 @@ class ThumbnailExtension extends AbstractExtension
         } else {
             $url = sprintf('/api/file/%d/%s/thumbnail', $id, $column);
 
-            $output .= '<a href="' . $url . '" class="text-decoration-none thumbnail-link">';
+            $output .= '<a href="'.$url.'" class="text-decoration-none thumbnail-link">';
             $output .= '<i class="far fa-file-image"></i> ';
             $output .= basename($realpath);
             $output .= '</a>';
