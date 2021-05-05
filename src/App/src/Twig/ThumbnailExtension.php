@@ -17,15 +17,15 @@ class ThumbnailExtension extends AbstractExtension
         ];
     }
 
-    public function thumbnail($path): string
+    public function thumbnail(int $id, string $column, ?string $value): string
     {
-        $realpath = sprintf('%s/%s', FileHandler::DIRECTORY, $path);
+        $realpath = sprintf('%s/%s', FileHandler::DIRECTORY, $value);
 
         $output = '<td class="text-nowrap">';
 
-        if (is_null($path)) {
+        if (is_null($value)) {
             $output .= ValueExtension::null();
-        } elseif (strlen($path) === 0) {
+        } elseif (strlen($value) === 0) {
             $output .= '';
         } elseif (!file_exists($realpath) || !is_readable($realpath)) {
             $output .= '<span class="text-muted">';
@@ -33,7 +33,9 @@ class ThumbnailExtension extends AbstractExtension
             $output .= basename($realpath);
             $output .= '</span>';
         } else {
-            $output .= '<a href="" class="text-decoration-none thumbnail-link">';
+            $url = sprintf('/api/file/%d/%s/thumbnail', $id, $column);
+
+            $output .= '<a href="' . $url . '" class="text-decoration-none thumbnail-link">';
             $output .= '<i class="far fa-file-image"></i> ';
             $output .= basename($realpath);
             $output .= '</a>';
