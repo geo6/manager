@@ -47,5 +47,7 @@ return static function (Application $app, MiddlewareFactory $factory, ContainerI
     $app->patch('/api/object/{id:\d+}', [BodyParamsMiddleware::class, API\Handler\Object\PatchPutHandler::class], 'api.object.patch');
     $app->put('/api/object/{id:\d+}', [BodyParamsMiddleware::class, API\Handler\Object\PatchPutHandler::class], 'api.object.put');
 
+    $app->get('/api/file/{id:\d+}/{column}/{action:info|thumbnail}', [API\Handler\FileHandler::class], 'api.file');
+
     $app->get('/api/ping', API\Handler\PingHandler::class, 'api.ping');
 };
