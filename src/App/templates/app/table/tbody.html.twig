@@ -1,14 +1,22 @@
 <tbody>
     {% for record in records %}
-    <tr data-id="{{ record[table.name ~ '_' ~ primaryKey] }}">
+    {% set id = record[table.name ~ '_' ~ primaryKey] %}
+    <tr data-id="{{ id }}">
+
         {% for column in table.columns %}
-        {{ value(record[table.name ~ '_' ~ column.name], column.type) }}
+            {% if column.name in file %}
+            {{ thumbnail(id, column.name, record[table.name ~ '_' ~ column.name]) }}
+            {% else %}
+            {{ value(record[table.name ~ '_' ~ column.name], column.type) }}
+            {% endif %}
         {% endfor %}
+
         {% for fk in foreignKeys %}
-        {% for id, column in fk.foreignTable.columns %}
+        {% for column in fk.foreignTable.columns %}
         {{ value(record[fk.foreignTable.name ~ '_' ~ column.name], column.type) }}
         {% endfor %}
         {% endfor %}
+
     </tr>
     {% endfor %}
 </tbody>
