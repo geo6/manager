@@ -14,9 +14,7 @@ use Laminas\Diactoros\Response;
 use Laminas\Diactoros\Response\EmptyResponse;
 use Laminas\Diactoros\Response\JsonResponse;
 use Laminas\Diactoros\Response\TextResponse;
-use Laminas\Diactoros\Response\XmlResponse;
 use Laminas\Diactoros\Stream;
-use PHPUnit\Util\Json;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -60,24 +58,22 @@ class FileHandler implements RequestHandlerInterface
                 throw new Exception(sprintf('No record #%d in table "%s".', $id, $table->getName()), 404);
             }
 
-            if (!file_exists($path)) {
-                $path = sprintf('%s/%s', self::DIRECTORY, $path);
-            }
-            if (!file_exists($path) || !is_readable($path)) {
+            $realpath = sprintf('%s/%s', self::DIRECTORY, $path);
+            if (!file_exists($realpath) || !is_readable($realpath)) {
                 throw new Exception(sprintf('Path "%s" does not exist or is not readable.', $path), 404);
             }
 
-            $mime = mime_content_type($path);
+            $mime = mime_content_type($realpath);
             if ($mime === false || preg_match('/^image\/.+$/', $mime) !== 1) {
                 throw new Exception(sprintf('Thumbnail is only available for images, "%s" is "%s".', $path, $mime ?: 'unknown'), 501);
             }
 
             switch ($action) {
                 case 'info': {
-                        return new JsonResponse(self::info($path));
+                        return new JsonResponse(self::info($realpath));
                     }
                 case 'thumbnail': {
-                        $stream = new Stream(self::thumbnail($path));
+                        $stream = new Stream(self::thumbnail($realpath));
 
                         return (new Response())
                             ->withBody($stream)
