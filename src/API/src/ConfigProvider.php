@@ -35,6 +35,7 @@ class ConfigProvider
                 Handler\PingHandler::class => Handler\PingHandler::class,
             ],
             'factories'  => [
+                Handler\FileHandler::class            => Handler\FileHandler::class,
                 Handler\Object\DeleteHandler::class   => Handler\Object\DeleteHandlerFactory::class,
                 Handler\Object\GetHandler::class      => Handler\Object\GetHandlerFactory::class,
                 Handler\Object\PatchPutHandler::class => Handler\Object\PatchPutHandlerFactory::class,
@@ -51,7 +52,7 @@ class ConfigProvider
     {
         return [
             'paths' => [
-                'api'    => [__DIR__.'/../templates/'],
+                'api' => [__DIR__.'/../templates/'],
             ],
         ];
     }
