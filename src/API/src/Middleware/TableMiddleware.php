@@ -23,30 +23,37 @@ class TableMiddleware implements MiddlewareInterface
     public const COUNT_ATTRIBUTE = 'table.count';
     public const LIMIT_ATTRIBUTE = 'table.limit';
     public const READONLY_ATTRIBUTE = 'table.readonly';
+    public const FILE_ATTRIBUTE = 'table.file';
 
     private string $table;
     private ?string $primaryKeyColumn;
     private array $readonlyColumns;
+    private array $fileColumns;
     private array $relations;
     private int $limit;
 
-    public function __construct(string $table, ?string $primaryKeyColumn, array $readonlyColumns, array $relations, int $limit)
+    public function __construct(string $table, ?string $primaryKeyColumn, array $relations, $options)
     {
         $this->table = $table;
         $this->primaryKeyColumn = $primaryKeyColumn;
-        $this->readonlyColumns = $readonlyColumns;
         $this->relations = $relations;
-        $this->limit = $limit;
+
+        $this->readonlyColumns = $options->readonlyColumns;
+        $this->fileColumns = $options->fileColumns;
+        $this->limit = $options->limit;
     }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-/** @var Connection */ $connection = $request->getAttribute(DatabaseMiddleware::CONNECTION_ATTRIBUTE);
+        /** @var Connection */
+        $connection = $request->getAttribute(DatabaseMiddleware::CONNECTION_ATTRIBUTE);
 
-        $table = $connection->getSchemaManager()->listTableDetails($this->table);
+        $schema = $connection->createSchemaManager();
+
+        $table = $schema->listTableDetails($this->table);
 
         // Detect if the "table" is a VIEW
-        $views = $connection->getSchemaManager()->listViews();
+        $views = $schema->listViews();
         $isView = count(
             array_filter($views, function (View $view) use ($connection, $table) {
                 $platform = $connection->getDatabasePlatform();
@@ -92,14 +99,14 @@ class TableMiddleware implements MiddlewareInterface
         foreach ($table->getForeignKeys() as $fk) {
             $foreignKeys[] = [
                 'localColumn'   => $fk->getLocalColumns()[0],
-                'foreignTable'  => $connection->getSchemaManager()->listTableDetails($fk->getForeignTableName()),
+                'foreignTable'  => $schema->listTableDetails($fk->getForeignTableName()),
                 'foreignColumn' => $fk->getForeignColumns()[0],
             ];
         }
         foreach ($this->relations as $fk) {
             $foreignKeys[] = [
                 'localColumn'   => $fk['localColumn'],
-                'foreignTable'  => $connection->getSchemaManager()->listTableDetails($fk['foreignTable']),
+                'foreignTable'  => $schema->listTableDetails($fk['foreignTable']),
                 'foreignColumn' => $fk['foreignColumn'],
             ];
         }
@@ -113,6 +120,7 @@ class TableMiddleware implements MiddlewareInterface
 
         $request = $request->withAttribute(self::LIMIT_ATTRIBUTE, $this->limit);
         $request = $request->withAttribute(self::READONLY_ATTRIBUTE, $this->readonlyColumns);
+        $request = $request->withAttribute(self::FILE_ATTRIBUTE, $this->fileColumns);
 
         return $handler->handle($request);
     }
