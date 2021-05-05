@@ -22,6 +22,7 @@
   "homepage": "https://github.com/geo6/manager#readme",
   "devDependencies": {
     "@parcel/transformer-sass": "^2.0.0-beta.2",
+    "@parcel/transformer-typescript-tsc": "^2.0.0-beta.2",
     "@types/bootstrap": "^5.0.13",
     "@types/geojson": "^7946.0.7",
     "@types/ol": "^6.4.2",
@@ -36,6 +37,7 @@
     "parcel": "^2.0.0-beta.2"
   },
   "dependencies": {
+    "@geo6/overlay-image-preview": "^0.2.3",
     "bootstrap": "^5.0.0-beta3",
     "ol": "^6.5.0"
   }
