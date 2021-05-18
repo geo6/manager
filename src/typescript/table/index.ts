@@ -36,7 +36,7 @@ import { FormModal } from '../modal/form';
     element.addEventListener('click', async (event) => {
       event.preventDefault();
 
-      const response = await fetch(`/api/file/${id}/photo/info`);
+      const response = await fetch(`/api/file/info/${id}/photo`);
       const info = await response.json();
 
       const overlay = new Overlay(element as HTMLAnchorElement, () => {

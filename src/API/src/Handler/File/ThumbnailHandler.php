@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace API\Handler;
+namespace API\Handler\File;
 
 use API\Middleware\DatabaseMiddleware;
 use API\Middleware\TableMiddleware;
@@ -19,7 +19,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-class FileHandler implements RequestHandlerInterface
+class ThumbnailHandler implements RequestHandlerInterface
 {
     const DIRECTORY = 'data/file';
     const CACHE_DIRECTORY = 'data/cache/file';
@@ -43,7 +43,7 @@ class FileHandler implements RequestHandlerInterface
         $action = $request->getAttribute('action');
 
         try {
-            if (in_array($column, $fileColumns, true) !== true) {
+            if (in_array($column, array_keys($fileColumns), true) !== true) {
                 throw new Exception(sprintf('No preview possible for column "%s" in table "%s".', $column, $table->getName()), 400);
             }
 

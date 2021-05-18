@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Twig;
 
-use API\Handler\FileHandler;
+use API\Handler\File\ThumbnailHandler;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
@@ -19,7 +19,7 @@ class ThumbnailExtension extends AbstractExtension
 
     public function thumbnail(int $id, string $column, ?string $value): string
     {
-        $realpath = sprintf('%s/%s', FileHandler::DIRECTORY, $value);
+        $realpath = sprintf('%s/%s', ThumbnailHandler::DIRECTORY, $value);
 
         $output = '<td class="text-nowrap">';
 
@@ -33,7 +33,7 @@ class ThumbnailExtension extends AbstractExtension
             $output .= basename($realpath);
             $output .= '</span>';
         } else {
-            $url = sprintf('/api/file/%d/%s/thumbnail', $id, $column);
+            $url = sprintf('/api/file/thumbnail/%d/%s', $id, $column);
 
             $output .= '<a href="'.$url.'" class="text-decoration-none thumbnail-link">';
             $output .= '<i class="far fa-file-image"></i> ';
