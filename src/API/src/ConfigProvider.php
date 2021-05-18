@@ -21,7 +21,6 @@ class ConfigProvider
     {
         return [
             'dependencies' => $this->getDependencies(),
-            'templates'    => $this->getTemplates(),
         ];
     }
 
@@ -41,18 +40,6 @@ class ConfigProvider
                 Handler\Object\PatchPutHandler::class => Handler\Object\PatchPutHandlerFactory::class,
                 Middleware\DatabaseMiddleware::class  => Middleware\DatabaseMiddlewareFactory::class,
                 Middleware\TableMiddleware::class     => Middleware\TableMiddlewareFactory::class,
-            ],
-        ];
-    }
-
-    /**
-     * Returns the templates configuration.
-     */
-    public function getTemplates(): array
-    {
-        return [
-            'paths' => [
-                'api' => [__DIR__.'/../templates/'],
             ],
         ];
     }
