@@ -38,7 +38,7 @@
   },
   "dependencies": {
     "@geo6/overlay-image-preview": "^0.2.3",
-    "bootstrap": "^5.0.0-beta3",
+    "bootstrap": "^5.0.1",
     "ol": "^6.5.0"
   }
 }
