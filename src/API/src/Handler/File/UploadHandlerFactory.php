@@ -8,7 +8,7 @@ use Psr\Container\ContainerInterface;
 
 class UploadHandlerFactory
 {
-    public function __invoke(ContainerInterface $container) : UploadHandler
+    public function __invoke(ContainerInterface $container): UploadHandler
     {
         return new UploadHandler();
     }

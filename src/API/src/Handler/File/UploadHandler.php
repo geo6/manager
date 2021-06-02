@@ -177,7 +177,7 @@ class UploadHandler implements RequestHandlerInterface
         foreach ($glob as $g) {
             if (is_file($g)) {
                 unlink($g);
-            } else if (is_dir($g)) {
+            } elseif (is_dir($g)) {
                 self::rmdir($g);
             }
         }
