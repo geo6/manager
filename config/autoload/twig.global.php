@@ -9,6 +9,7 @@ return [
             App\Twig\InputExtension::class     => Laminas\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory::class,
             App\Twig\ValueExtension::class     => Laminas\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory::class,
             App\Twig\ThumbnailExtension::class => Laminas\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory::class,
+            App\Twig\UploadExtension::class    => Laminas\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory::class,
         ],
     ],
     'twig' => [
@@ -17,6 +18,7 @@ return [
             App\Twig\InputExtension::class,
             App\Twig\ValueExtension::class,
             App\Twig\ThumbnailExtension::class,
+            App\Twig\UploadExtension::class,
         ],
     ],
 ];

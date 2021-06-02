@@ -58,7 +58,7 @@ class ThumbnailHandler implements RequestHandlerInterface
                 throw new Exception(sprintf('No record #%d in table "%s".', $id, $table->getName()), 404);
             }
 
-            $realpath = sprintf('%s/%s', self::DIRECTORY, $path);
+            $realpath = sprintf('%s/%s/%s', self::DIRECTORY, $id, $path);
             if (!file_exists($realpath) || !is_readable($realpath)) {
                 throw new Exception(sprintf('Path "%s" does not exist or is not readable.', $path), 404);
             }
@@ -78,6 +78,7 @@ class ThumbnailHandler implements RequestHandlerInterface
                         return (new Response())
                             ->withBody($stream)
                             ->withStatus(200)
+                            ->withHeader('Content-Disposition', sprintf('inline; filename="%s"', basename($realpath)))
                             ->withHeader('Content-Length', (string) $stream->getSize())
                             ->withHeader('Content-Type', $mime);
 

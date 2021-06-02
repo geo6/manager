@@ -10,7 +10,11 @@
                     {% for column in (table.columns | filter(c => c.name not in readonly)) %}
                     <div class="mb-3" data-datatype="{{ column.type.name }}">
                         <label for="form-input-{{ column.name }}" class="form-label">{{ column.name }}</label>
+                        {% if column.name in file|keys %}
+                        {{ upload(column.name, file[column.name].accept ?? null) }}
+                        {% else %}
                         {{ input(column.name, '', column.type) }}
+                        {% endif %}
                     </div>
                     {% endfor %}
                 </form>

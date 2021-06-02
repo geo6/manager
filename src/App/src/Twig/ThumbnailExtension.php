@@ -17,9 +17,9 @@ class ThumbnailExtension extends AbstractExtension
         ];
     }
 
-    public function thumbnail(int $id, string $column, ?string $value): string
+    public function thumbnail(string $id, string $column, ?string $value): string
     {
-        $realpath = sprintf('%s/%s', ThumbnailHandler::DIRECTORY, $value);
+        $realpath = sprintf('%s/%s/%s', ThumbnailHandler::DIRECTORY, $id, $value);
 
         $output = '<td class="text-nowrap">';
 

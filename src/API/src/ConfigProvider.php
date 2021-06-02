@@ -35,6 +35,7 @@ class ConfigProvider
             ],
             'factories'  => [
                 Handler\File\ThumbnailHandler::class  => Handler\File\ThumbnailHandlerFactory::class,
+                Handler\File\UploadHandler::class     => Handler\File\UploadHandlerFactory::class,
                 Handler\Object\DeleteHandler::class   => Handler\Object\DeleteHandlerFactory::class,
                 Handler\Object\GetHandler::class      => Handler\Object\GetHandlerFactory::class,
                 Handler\Object\PatchPutHandler::class => Handler\Object\PatchPutHandlerFactory::class,
