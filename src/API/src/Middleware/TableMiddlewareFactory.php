@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace API\Middleware;
 
 use Psr\Container\ContainerInterface;
-use stdClass;
 
 class TableMiddlewareFactory
 {

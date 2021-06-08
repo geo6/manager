@@ -79,7 +79,7 @@ class UIMiddleware implements MiddlewareInterface
                     ],
                     'file'     => $this->fileColumns,
                     'geometry' => $geometryColumns,
-                ]
+                ],
             ]
         );
 
