@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Middleware\UIMiddleware;
 use Mezzio\Application;
 use Mezzio\Helper\BodyParams\BodyParamsMiddleware;
 use Mezzio\MiddlewareFactory;
@@ -39,8 +40,8 @@ use Psr\Container\ContainerInterface;
  */
 return static function (Application $app, MiddlewareFactory $factory, ContainerInterface $container): void {
     $app->get('/', App\Handler\HomePageHandler::class, 'home');
-    $app->get('/map', App\Handler\MapHandler::class, 'map');
-    $app->get('/table[/{offset:\d+}]', App\Handler\TableHandler::class, 'table');
+    $app->get('/map', [UIMiddleware::class, App\Handler\MapHandler::class], 'map');
+    $app->get('/table[/{offset:\d+}]', [UIMiddleware::class, App\Handler\TableHandler::class], 'table');
 
     $app->get('/api/object[/{id:\d+}]', API\Handler\Object\GetHandler::class, 'api.object.get');
     $app->delete('/api/object/{id:\d+}', API\Handler\Object\DeleteHandler::class, 'api.object.delete');
