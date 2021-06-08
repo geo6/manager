@@ -15,9 +15,11 @@ class UIMiddlewareFactory
 
         $template = $container->get(TemplateRendererInterface::class);
         $columns = [
+            'file'     => isset($config['fileColumns']) && is_array($config['fileColumns']) ? array_keys($config['fileColumns']) : [],
             'readonly' => $config['readonlyColumns'] ?? [],
         ];
+        $file = $config['fileColumns'] ?? [];
 
-        return new UIMiddleware($template, $columns);
+        return new UIMiddleware($template, $columns, $file);
     }
 }

@@ -17,13 +17,20 @@ class UIMiddleware implements MiddlewareInterface
     /** @var TemplateRendererInterface */
     private $template;
     /** @var string[] */
+    private $fileColumns;
+    /** @var string[] */
     private $readonlyColumns;
+    /** @var array */
+    private $fileConfig;
 
-    public function __construct(TemplateRendererInterface $template, array $columns)
+    public function __construct(TemplateRendererInterface $template, array $columns, array $file)
     {
         $this->template = $template;
 
+        $this->fileColumns = $columns['file'] ?? [];
         $this->readonlyColumns = $columns['readonly'] ?? [];
+
+        $this->fileConfig = $file;
     }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
@@ -38,8 +45,6 @@ class UIMiddleware implements MiddlewareInterface
         $foreignKeys = $request->getAttribute(TableMiddleware::FOREIGNKEYS_ATTRIBUTE);
         /** @var int */
         $count = $request->getAttribute(TableMiddleware::COUNT_ATTRIBUTE);
-        /** @var string[] */
-        $fileColumns = $request->getAttribute(TableMiddleware::FILE_ATTRIBUTE);
 
         /** @var string[] */
         $geometryColumns = array_values(
@@ -72,7 +77,7 @@ class UIMiddleware implements MiddlewareInterface
                         ...$this->readonlyColumns,
                         ...$geometryColumns,
                     ],
-                    'file'     => $fileColumns,
+                    'file'     => $this->fileColumns,
                     'geometry' => $geometryColumns,
                 ]
             ]
@@ -83,6 +88,7 @@ class UIMiddleware implements MiddlewareInterface
             'ui',
             [
                 'search' => $search,
+                'file'   => $this->fileConfig,
             ]
         );
 
