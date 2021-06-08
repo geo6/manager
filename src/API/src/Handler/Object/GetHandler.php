@@ -17,13 +17,18 @@ class GetHandler implements RequestHandlerInterface
 {
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-/** @var Connection */ $connection = $request->getAttribute(DatabaseMiddleware::CONNECTION_ATTRIBUTE);
+        /** @var Connection */
+        $connection = $request->getAttribute(DatabaseMiddleware::CONNECTION_ATTRIBUTE);
 
-/** @var Table */ $table = $request->getAttribute(TableMiddleware::TABLE_ATTRIBUTE);
-/** @var string */ $primaryKey = $request->getAttribute(TableMiddleware::PRIMARYKEY_ATTRIBUTE);
-/** @var string|null */ $geometryColumn = $request->getAttribute(TableMiddleware::GEOMETRY_ATTRIBUTE);
+        /** @var Table */
+        $table = $request->getAttribute(TableMiddleware::TABLE_ATTRIBUTE);
+        /** @var string */
+        $primaryKey = $request->getAttribute(TableMiddleware::PRIMARYKEY_ATTRIBUTE);
+        /** @var string|null */
+        $geometryColumn = $request->getAttribute(TableMiddleware::GEOMETRY_ATTRIBUTE);
 
-/** @var int|null */ $id = $request->getAttribute('id');
+        /** @var int|null */
+        $id = $request->getAttribute('id');
 
         $columns = $table->getColumns();
 
