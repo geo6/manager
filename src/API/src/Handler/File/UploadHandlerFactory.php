@@ -10,6 +10,10 @@ class UploadHandlerFactory
 {
     public function __invoke(ContainerInterface $container): UploadHandler
     {
-        return new UploadHandler();
+        $config = $container->get('config');
+
+        $file = $config['fileColumns'] ?? [];
+
+        return new UploadHandler($file);
     }
 }

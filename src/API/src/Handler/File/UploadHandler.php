@@ -23,24 +23,32 @@ class UploadHandler implements RequestHandlerInterface
     const DIRECTORY = 'data/file';
     const CACHE_DIRECTORY = 'data/cache/upload';
 
+    /** @var array */
+    private $fileConfig;
+
+    public function __construct(array $file)
+    {
+        $this->fileConfig = $file;
+    }
+
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         switch ($request->getMethod()) {
             // Revert upload
             case 'DELETE':
-                return self::delete($request);
+                return $this->delete($request);
 
             // Get uploaded file
             case 'GET':
-                return self::get($request);
+                return $this->get($request);
 
             // Upload file
             case 'POST':
-                return self::post($request);
+                return $this->post($request);
         }
     }
 
-    private static function delete(ServerRequestInterface $request): ResponseInterface
+    private function delete(ServerRequestInterface $request): ResponseInterface
     {
         $id = $request->getBody()->getContents();
 
@@ -61,15 +69,13 @@ class UploadHandler implements RequestHandlerInterface
         }
     }
 
-    private static function get(ServerRequestInterface $request): ResponseInterface
+    private function get(ServerRequestInterface $request): ResponseInterface
     {
         /** @var Connection */
         $connection = $request->getAttribute(DatabaseMiddleware::CONNECTION_ATTRIBUTE);
 
         /** @var Table */
         $table = $request->getAttribute(TableMiddleware::TABLE_ATTRIBUTE);
-        /** @var string[] */
-        $fileColumns = $request->getAttribute(TableMiddleware::FILE_ATTRIBUTE);
 
         $id = $request->getAttribute('id');
         $column = $request->getAttribute('column');
@@ -79,7 +85,7 @@ class UploadHandler implements RequestHandlerInterface
                 throw new Exception('Missing "id" or "column" parameter.', 400);
             }
 
-            if (in_array($column, array_keys($fileColumns), true) !== true) {
+            if (in_array($column, array_keys($this->fileConfig), true) !== true) {
                 throw new Exception(sprintf('No file upload possible for column "%s" in table "%s".', $column, $table->getName()), 400);
             }
 
@@ -119,17 +125,14 @@ class UploadHandler implements RequestHandlerInterface
         }
     }
 
-    private static function post(ServerRequestInterface $request): ResponseInterface
+    private function post(ServerRequestInterface $request): ResponseInterface
     {
-        /** @var string[] */
-        $fileColumns = $request->getAttribute(TableMiddleware::FILE_ATTRIBUTE);
-
         /** @var UploadedFileInterface[] */
         $files = $request->getUploadedFiles();
         $body = $request->getParsedBody();
 
         try {
-            foreach (array_keys($fileColumns) as $column) {
+            foreach (array_keys($this->fileConfig) as $column) {
                 if (isset($files[$column])) {
                     if ($files[$column]->getError() !== UPLOAD_ERR_OK) {
                         throw new Exception(sprintf('Upload error for column "%s"', $column), 500);
