@@ -22,22 +22,18 @@ class TableMiddleware implements MiddlewareInterface
     public const GEOMETRY_ATTRIBUTE = 'table.geometry';
     public const COUNT_ATTRIBUTE = 'table.count';
     public const LIMIT_ATTRIBUTE = 'table.limit';
-    public const FILE_ATTRIBUTE = 'table.file';
 
     private string $table;
     private ?string $primaryKeyColumn;
-    private array $fileColumns;
     private array $relations;
     private int $limit;
 
-    public function __construct(string $table, ?string $primaryKeyColumn, array $relations, $options)
+    public function __construct(string $table, ?string $primaryKeyColumn, array $relations, int $limit)
     {
         $this->table = $table;
         $this->primaryKeyColumn = $primaryKeyColumn;
         $this->relations = $relations;
-
-        $this->fileColumns = $options->fileColumns;
-        $this->limit = $options->limit;
+        $this->limit = $limit;
     }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
@@ -116,7 +112,6 @@ class TableMiddleware implements MiddlewareInterface
         $request = $request->withAttribute(self::GEOMETRY_ATTRIBUTE, $geometryColumn);
 
         $request = $request->withAttribute(self::LIMIT_ATTRIBUTE, $this->limit);
-        $request = $request->withAttribute(self::FILE_ATTRIBUTE, $this->fileColumns);
 
         return $handler->handle($request);
     }

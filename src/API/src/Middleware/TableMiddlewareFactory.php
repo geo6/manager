@@ -15,16 +15,9 @@ class TableMiddlewareFactory
 
         $table = $config['table'];
         $primaryKeyColumn = $config['primaryKeyColumn'] ?? null;
-        $readonlyColumns = $config['readonlyColumns'] ?? [];
-        $fileColumns = $config['fileColumns'] ?? [];
         $relations = $config['relations'] ?? [];
         $limit = $config['limit'];
 
-        $options = new stdClass();
-        $options->readonlyColumns = $readonlyColumns;
-        $options->fileColumns = $fileColumns;
-        $options->limit = $limit;
-
-        return new TableMiddleware($table, $primaryKeyColumn, $relations, $options);
+        return new TableMiddleware($table, $primaryKeyColumn, $relations, $limit);
     }
 }
