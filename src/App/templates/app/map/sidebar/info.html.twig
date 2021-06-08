@@ -9,12 +9,13 @@
         Feature id: <span></span>
     </caption>
     <tbody>
-        {% for column in table.columns %}
-        <tr data-name="{{ column.name }}">
+        {% for column in table.columns | filter(c => c.name != primaryKey and c.name not in geometry) %}
+        <tr data-name="{{ column.name }}" data-datatype="{{ column.type.name }}" {{ column.name in file|keys ? 'data-file="1"' : '' }}>
             <th>{{ column.name }}</th>
             <td></td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
+<div class="text-small"></div>
 {% endblock %}

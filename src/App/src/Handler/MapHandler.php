@@ -39,21 +39,27 @@ class MapHandler implements RequestHandlerInterface
         /** @var array */
         $fileColumns = $request->getAttribute(TableMiddleware::FILE_ATTRIBUTE);
 
+        /** @var string[] */
+        $geometryColumns = array_values(array_map(
+            function (Column $column) {
+                return $column->getName();
+            },
+            array_filter($table->getColumns(), function (Column $column) {
+                return in_array($column->getType()->getName(), ['geometry', 'geography']);
+            })
+        ));
+
         return new HtmlResponse($this->renderer->render(
             'app::map',
             [
                 'table'       => $table,
+                'primaryKey'  => $primaryKey,
+                'geometry'    => $geometryColumns,
+                'file'        => $fileColumns,
                 'readonly'    => [
                     $primaryKey,
                     ...$readonlyColumns,
-                    ...array_values(array_map(
-                        function (Column $column) {
-                            return $column->getName();
-                        },
-                        array_filter($table->getColumns(), function (Column $column) {
-                            return in_array($column->getType()->getName(), ['geometry', 'geography']);
-                        })
-                    )),
+                    ...$geometryColumns,
                 ],
             ]
         ));
