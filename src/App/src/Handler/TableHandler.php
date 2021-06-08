@@ -7,7 +7,6 @@ namespace App\Handler;
 use API\Middleware\DatabaseMiddleware;
 use API\Middleware\TableMiddleware;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\Table;
 use Laminas\Diactoros\Response\HtmlResponse;
 use Mezzio\Template\TemplateRendererInterface;

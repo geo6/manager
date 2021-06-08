@@ -9,7 +9,7 @@ use Psr\Container\ContainerInterface;
 
 class UIMiddlewareFactory
 {
-    public function __invoke(ContainerInterface $container) : UIMiddleware
+    public function __invoke(ContainerInterface $container): UIMiddleware
     {
         $config = $container->get('config');
 
