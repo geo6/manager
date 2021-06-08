@@ -22,12 +22,10 @@ class TableMiddleware implements MiddlewareInterface
     public const GEOMETRY_ATTRIBUTE = 'table.geometry';
     public const COUNT_ATTRIBUTE = 'table.count';
     public const LIMIT_ATTRIBUTE = 'table.limit';
-    public const READONLY_ATTRIBUTE = 'table.readonly';
     public const FILE_ATTRIBUTE = 'table.file';
 
     private string $table;
     private ?string $primaryKeyColumn;
-    private array $readonlyColumns;
     private array $fileColumns;
     private array $relations;
     private int $limit;
@@ -38,7 +36,6 @@ class TableMiddleware implements MiddlewareInterface
         $this->primaryKeyColumn = $primaryKeyColumn;
         $this->relations = $relations;
 
-        $this->readonlyColumns = $options->readonlyColumns;
         $this->fileColumns = $options->fileColumns;
         $this->limit = $options->limit;
     }
@@ -119,7 +116,6 @@ class TableMiddleware implements MiddlewareInterface
         $request = $request->withAttribute(self::GEOMETRY_ATTRIBUTE, $geometryColumn);
 
         $request = $request->withAttribute(self::LIMIT_ATTRIBUTE, $this->limit);
-        $request = $request->withAttribute(self::READONLY_ATTRIBUTE, $this->readonlyColumns);
         $request = $request->withAttribute(self::FILE_ATTRIBUTE, $this->fileColumns);
 
         return $handler->handle($request);
