@@ -31,7 +31,7 @@ class DeleteHandler implements RequestHandlerInterface
         $query = $connection->createQueryBuilder();
         $query->delete($table->getName())->where(sprintf('%s = ?', $primaryKey))->setParameter(0, $id);
 
-        $query->execute();
+        $query->executeStatement();
 
         return new EmptyResponse();
     }

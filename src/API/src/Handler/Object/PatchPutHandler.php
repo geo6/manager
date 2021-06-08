@@ -64,7 +64,7 @@ class PatchPutHandler implements RequestHandlerInterface
             }
         }
 
-        $stmt = $query->execute();
+        $stmt = $query->executeStatement();
 
         return new JsonResponse($stmt);
     }

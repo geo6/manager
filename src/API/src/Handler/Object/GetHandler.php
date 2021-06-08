@@ -48,7 +48,7 @@ class GetHandler implements RequestHandlerInterface
             $query->where('id = ?')->setParameter(0, $id);
         }
 
-        $stmt = $query->execute();
+        $stmt = $query->executeQuery();
         $records = $stmt->fetchAllAssociative();
 
         $features = array_map(
