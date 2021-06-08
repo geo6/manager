@@ -9,8 +9,8 @@
         Feature id: <span></span>
     </caption>
     <tbody>
-        {% for column in table.columns | filter(c => c.name != primaryKey and c.name not in geometry) %}
-        <tr data-name="{{ column.name }}" data-datatype="{{ column.type.name }}" {{ column.name in file|keys ? 'data-file="1"' : '' }}>
+        {% for column in table.table.columns | filter(c => c.name != table.primaryKey and c.name not in table.columns.geometry) %}
+        <tr data-name="{{ column.name }}" data-datatype="{{ column.type.name }}" {{ column.name in table.columns.file|keys ? 'data-file="1"' : '' }}>
             <th>{{ column.name }}</th>
             <td></td>
         </tr>

@@ -34,21 +34,13 @@ class TableHandler implements RequestHandlerInterface
 
         /** @var Table */
         $table = $request->getAttribute(TableMiddleware::TABLE_ATTRIBUTE);
-        /** @var bool */
-        $isView = $request->getAttribute(TableMiddleware::ISVIEW_ATTRIBUTE);
         /** @var string */
         $primaryKey = $request->getAttribute(TableMiddleware::PRIMARYKEY_ATTRIBUTE);
         /** @var array */
         $foreignKeys = $request->getAttribute(TableMiddleware::FOREIGNKEYS_ATTRIBUTE);
-        /** @var int */
-        $count = $request->getAttribute(TableMiddleware::COUNT_ATTRIBUTE);
 
         /** @var int */
         $limit = $request->getAttribute(TableMiddleware::LIMIT_ATTRIBUTE);
-        /** @var array */
-        $readonlyColumns = $request->getAttribute(TableMiddleware::READONLY_ATTRIBUTE);
-        /** @var array */
-        $fileColumns = $request->getAttribute(TableMiddleware::FILE_ATTRIBUTE);
 
         /** @var int */
         $offset = $request->getAttribute('offset', 0);
@@ -108,29 +100,11 @@ class TableHandler implements RequestHandlerInterface
         return new HtmlResponse($this->renderer->render(
             'app::table',
             [
-                'table'       => $table,
-                'isView'      => $isView,
-                'primaryKey'  => $primaryKey,
-                'foreignKeys' => $foreignKeys,
-                'count'       => $count,
-                'sort'        => $sort,
-                'order'       => $order,
-                'offset'      => $offset,
-                'limit'       => $limit,
-                'records'     => $records,
-                'file'        => $fileColumns,
-                'readonly'    => [
-                    $primaryKey,
-                    ...$readonlyColumns,
-                    ...array_values(array_map(
-                        function (Column $column) {
-                            return $column->getName();
-                        },
-                        array_filter($table->getColumns(), function (Column $column) {
-                            return in_array($column->getType()->getName(), ['geometry', 'geography']);
-                        })
-                    )),
-                ],
+                'sort'    => $sort,
+                'order'   => $order,
+                'offset'  => $offset,
+                'limit'   => $limit,
+                'records' => $records,
             ]
         ));
     }

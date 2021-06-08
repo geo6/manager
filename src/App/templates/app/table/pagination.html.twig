@@ -12,12 +12,12 @@
         </a>
     </li>
     {% endif %}
-    {% for p in 0..(count // limit) %}
+    {% for p in 0..(table.count // limit) %}
     <li class="page-item {{ offset == (limit * p) ? 'active' }}">
         <a class="page-link" href="{{ path('table', {offset: (limit * p)}, {sort, order}) }}">{{ p + 1 }}</a>
     </li>
     {% endfor %}
-    {% if offset < (limit * (count // limit)) %} <li class="page-item">
+    {% if offset < (limit * (table.count // limit)) %} <li class="page-item">
         <a aria-disabled="true" class="page-link" href="{{ path('table', {offset: (offset + limit) }, {sort, order}) }}"
             tabindex="-1">
             <i class="fas fa-fw fa-caret-right"></i>

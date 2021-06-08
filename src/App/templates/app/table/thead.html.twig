@@ -1,29 +1,29 @@
 <thead>
     <tr>
-        <th colspan="{{ table.columns | length }}">
-            Table &laquo; {{ table.name }} &raquo;
-            {{ isView ? '<span class="badge bg-light text-dark">VIEW</span>' }}
-            <span class="badge badge rounded-pill bg-primary">{{ count }}</span>
+        <th colspan="{{ table.table.columns | length }}">
+            Table &laquo; {{ table.table.name }} &raquo;
+            {{ table.isView ? '<span class="badge bg-light text-dark">VIEW</span>' }}
+            <span class="badge badge rounded-pill bg-primary">{{ table.count }}</span>
         </th>
-        {% for fk in foreignKeys %}
+        {% for fk in table.foreignKeys %}
         <th colspan="{{ fk.foreignTable.columns | length }}">
             Table &laquo; {{ fk.foreignTable.name }} &raquo;
         </th>
         {% endfor %}
     </tr>
     <tr>
-        {% for column in table.columns %}
+        {% for column in table.table.columns %}
         <th>
-            <a href="{{ path('table', {offset: 0}, {sort: (table.name ~ '_' ~ column.name), order: (sort == (table.name ~ '_' ~ column.name) and order == 'asc' ? 'desc' : 'asc')}) }}"
+            <a href="{{ path('table', {offset: 0}, {sort: (table.table.name ~ '_' ~ column.name), order: (sort == (table.table.name ~ '_' ~ column.name) and order == 'asc' ? 'desc' : 'asc')}) }}"
                 class="text-body text-decoration-none d-flex justify-content-between align-items-center">
                 <span class="text-nowrap me-2">
-                    {{ (table.name ~ '_' ~ column.name) == primaryKey ? '<i class="fas fa-fw fa-key"></i>' }}
-                    {{ (column.name) in (foreignKeys | column('localColumn')) ? '<i class="fas fa-fw fa-link"></i>' }}
+                    {{ (table.table.name ~ '_' ~ column.name) == table.primaryKey ? '<i class="fas fa-fw fa-key"></i>' }}
+                    {{ (column.name) in (table.foreignKeys | column('localColumn')) ? '<i class="fas fa-fw fa-link"></i>' }}
                     {{ column.name }}
                 </span>
-                {% if sort == (table.name ~ '_' ~ column.name) and order == 'asc' %}
+                {% if sort == (table.table.name ~ '_' ~ column.name) and order == 'asc' %}
                 <i class="fas fa-sort-up"></i>
-                {% elseif sort == (table.name ~ '_' ~ column.name) and order == 'desc' %}
+                {% elseif sort == (table.table.name ~ '_' ~ column.name) and order == 'desc' %}
                 <i class="fas fa-sort-down"></i>
                 {% else %}
                 <i class="fas fa-sort"></i>
@@ -31,7 +31,7 @@
             </a>
         </th>
         {% endfor %}
-        {% for fk in foreignKeys %}
+        {% for fk in table.foreignKeys %}
         {% for id, column in fk.foreignTable.columns %}
         <th>
             <a href="{{ path('table', {offset: 0}, {sort: (fk.foreignTable.name ~ '_' ~ column.name), order: (sort == (fk.foreignTable.name ~ '_' ~ column.name) and order == 'asc' ? 'desc' : 'asc')}) }}"

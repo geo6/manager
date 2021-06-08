@@ -4,7 +4,7 @@
 
 {% block content %}
 <form autocomplete="off">
-    {% for column in (table.columns | filter(c => c.name not in readonly)) %}
+    {% for column in (table.table.columns | filter(c => c.name not in table.columns.readonly)) %}
     <div class="mb-3" data-datatype="{{ column.type.name }}">
         <label for="form-input-{{ column.name }}" class="form-label">{{ column.name }}</label>
         {{ input(column.name, '', column.type) }}
