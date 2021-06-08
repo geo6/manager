@@ -10,8 +10,8 @@
                     {% for column in (table.table.columns | filter(c => c.name not in table.columns.readonly)) %}
                     <div class="mb-3" data-datatype="{{ column.type.name }}">
                         <label for="form-input-{{ column.name }}" class="form-label">{{ column.name }}</label>
-                        {% if column.name in table.columns.file|keys %}
-                        {{ upload(column.name, file[column.name].accept ?? null) }}
+                        {% if column.name in table.columns.file %}
+                        {{ upload(column.name, ui.file[column.name].accept ?? null) }}
                         {% else %}
                         {{ input(column.name, '', column.type) }}
                         {% endif %}

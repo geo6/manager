@@ -4,7 +4,7 @@
     <tr data-id="{{ id }}">
 
         {% for column in table.table.columns %}
-            {% if column.name in table.columns.file|keys %}
+            {% if column.name in table.columns.file %}
             {{ thumbnail(id, column.name, record[table.table.name ~ '_' ~ column.name]) }}
             {% else %}
             {{ value(record[table.table.name ~ '_' ~ column.name], column.type) }}
