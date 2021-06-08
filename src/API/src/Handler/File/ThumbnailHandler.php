@@ -25,6 +25,14 @@ class ThumbnailHandler implements RequestHandlerInterface
     const CACHE_DIRECTORY = 'data/cache/file';
     const THUMBNAIL_DIRECTORY = 'data/cache/file/thumbnails';
 
+    /** @var array */
+    private $fileConfig;
+
+    public function __construct(array $file)
+    {
+        $this->fileConfig = $file;
+    }
+
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         /** @var Connection */
@@ -32,8 +40,6 @@ class ThumbnailHandler implements RequestHandlerInterface
 
         /** @var Table */
         $table = $request->getAttribute(TableMiddleware::TABLE_ATTRIBUTE);
-        /** @var string[] */
-        $fileColumns = $request->getAttribute(TableMiddleware::FILE_ATTRIBUTE);
 
         /** @var int */
         $id = $request->getAttribute('id');
@@ -43,7 +49,7 @@ class ThumbnailHandler implements RequestHandlerInterface
         $action = $request->getAttribute('action');
 
         try {
-            if (in_array($column, array_keys($fileColumns), true) !== true) {
+            if (in_array($column, array_keys($this->fileConfig), true) !== true) {
                 throw new Exception(sprintf('No preview possible for column "%s" in table "%s".', $column, $table->getName()), 400);
             }
 

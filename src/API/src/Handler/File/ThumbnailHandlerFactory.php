@@ -10,6 +10,10 @@ class ThumbnailHandlerFactory
 {
     public function __invoke(ContainerInterface $container): ThumbnailHandler
     {
-        return new ThumbnailHandler();
+        $config = $container->get('config');
+
+        $file = $config['fileColumns'] ?? [];
+
+        return new ThumbnailHandler($file);
     }
 }
