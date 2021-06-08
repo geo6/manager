@@ -37,6 +37,15 @@ export let sidebarForm !: SidebarForm;
       format: new GeoJSON()
     })
   });
+  layer.once('postrender', () => {
+    const extent = layer.getSource().getExtent();
+    console.log('postrender', extent);
+
+    map.getView().fit(extent, {
+      size: map.getSize(),
+      padding: [50, 50, 50, 50]
+    });
+  });
   map.addLayer(layer);
 
   map.on('click', async (event) => {
