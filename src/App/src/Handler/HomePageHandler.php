@@ -15,7 +15,8 @@ class HomePageHandler implements RequestHandlerInterface
     /** @var TemplateRendererInterface */
     private $template;
 
-    public function __construct(TemplateRendererInterface $template) {
+    public function __construct(TemplateRendererInterface $template)
+    {
         $this->template = $template;
     }
 

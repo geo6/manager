@@ -74,7 +74,7 @@ class TableHandler implements RequestHandlerInterface
                 'filter'  => [
                     'active' => isset($params['search']) && strlen($params['search']) > 0,
                     'count'  => $count,
-                ]
+                ],
             ]
         ));
     }

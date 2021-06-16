@@ -8,7 +8,7 @@ use Psr\Container\ContainerInterface;
 
 class QueryMiddlewareFactory
 {
-    public function __invoke(ContainerInterface $container) : QueryMiddleware
+    public function __invoke(ContainerInterface $container): QueryMiddleware
     {
         return new QueryMiddleware();
     }

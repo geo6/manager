@@ -15,7 +15,7 @@ class QueryMiddleware implements MiddlewareInterface
 {
     public const QUERY_ATTRIBUTE = 'sqlQuery';
 
-    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler) : ResponseInterface
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         /** @var Connection */
         $connection = $request->getAttribute(DatabaseMiddleware::CONNECTION_ATTRIBUTE);
