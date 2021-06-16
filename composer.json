@@ -8,6 +8,7 @@
         "php": "^7.3",
         "composer/package-versions-deprecated": "^1.10.99",
         "doctrine/dbal": "^3.0",
+        "doctrine/sql-formatter": "^1.1",
         "intervention/image": "^2.5",
         "laminas/laminas-component-installer": "^2.1.2",
         "laminas/laminas-config-aggregator": "^1.2",
