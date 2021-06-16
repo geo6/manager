@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace API\Handler\Object;
 
 use API\Middleware\DatabaseMiddleware;
+use API\Middleware\QueryMiddleware;
 use API\Middleware\TableMiddleware;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Query\QueryBuilder;
 use Doctrine\DBAL\Schema\Table;
 use Laminas\Diactoros\Response\JsonResponse;
 use Psr\Http\Message\ResponseInterface;
@@ -22,6 +24,12 @@ class GetHandler implements RequestHandlerInterface
 
         /** @var Table */
         $table = $request->getAttribute(TableMiddleware::TABLE_ATTRIBUTE);
+
+        /** @var QueryBuilder */
+        $query = $request->getAttribute(QueryMiddleware::QUERY_ATTRIBUTE);
+
+        /** @var Table */
+        $table = $request->getAttribute(TableMiddleware::TABLE_ATTRIBUTE);
         /** @var string */
         $primaryKey = $request->getAttribute(TableMiddleware::PRIMARYKEY_ATTRIBUTE);
         /** @var string|null */
@@ -32,40 +40,31 @@ class GetHandler implements RequestHandlerInterface
 
         $columns = $table->getColumns();
 
-        $select = [];
-        foreach ($columns as $column) {
-            $name = $column->getQuotedName($connection->getDatabasePlatform());
-            $select[] = sprintf(
-                '%s as %s',
-                $column->getType()->convertToPHPValueSQL(sprintf('a.%s', $name), $connection->getDatabasePlatform()),
-                $name
-            );
-        }
-
-        $query = $connection->createQueryBuilder();
-        $query->select($select)->from($table->getName(), 'a');
         if (!is_null($id)) {
-            $query->where('id = ?')->setParameter(0, $id);
+            $query->where('id = :id')->setParameter('id', $id);
         }
 
         $stmt = $query->executeQuery();
         $records = $stmt->fetchAllAssociative();
 
         $features = array_map(
-            function ($record) use ($connection, $columns, $primaryKey, $geometryColumn) {
+            function ($record) use ($connection, $table, $columns, $primaryKey, $geometryColumn) {
+                $id = null;
                 $properties = [];
                 foreach ($columns as $column) {
-                    $name = $column->getName();
-                    if (!is_null($geometryColumn) && $name === $geometryColumn) {
+                    $name = sprintf('%s_%s', $table->getName(), $column->getName());
+                    if (!is_null($geometryColumn) && $column->getName() === $geometryColumn) {
                         $geometry = $column->getType()->convertToPHPValue($record[$name], $connection->getDatabasePlatform());
-                    } elseif ($name !== $primaryKey) {
-                        $properties[$name] = $column->getType()->convertToPHPValue($record[$name], $connection->getDatabasePlatform());
+                    } elseif ($column->getName() === $primaryKey) {
+                        $id = $column->getType()->convertToPHPValue($record[$name], $connection->getDatabasePlatform());
+                    } else {
+                        $properties[$column->getName()] = $column->getType()->convertToPHPValue($record[$name], $connection->getDatabasePlatform());
                     }
                 }
 
                 return [
                     'type'       => 'Feature',
-                    'id'         => $record[$primaryKey],
+                    'id'         => $id,
                     'properties' => $properties,
                     'geometry'   => $geometry ?? null,
                 ];
