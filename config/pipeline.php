@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use API\Middleware\DatabaseMiddleware;
+use API\Middleware\QueryMiddleware;
 use API\Middleware\TableMiddleware;
 use Laminas\Stratigility\Middleware\ErrorHandler;
 use Mezzio\Application;
@@ -45,6 +46,7 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     // - $app->pipe('/files', $filesMiddleware);
     $app->pipe(DatabaseMiddleware::class);
     $app->pipe(TableMiddleware::class);
+    $app->pipe(QueryMiddleware::class);
 
     // Register the routing middleware in the middleware pipeline.
     // This middleware registers the Mezzio\Router\RouteResult request attribute.
