@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace App\Middleware;
 
+use API\Middleware\QueryMiddleware;
 use API\Middleware\TableMiddleware;
+use Doctrine\DBAL\Query\QueryBuilder;
 use Doctrine\DBAL\Schema\Column;
+use Doctrine\SqlFormatter\NullHighlighter;
+use Doctrine\SqlFormatter\SqlFormatter;
 use Mezzio\Template\TemplateRendererInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -45,6 +49,8 @@ class UIMiddleware implements MiddlewareInterface
         $foreignKeys = $request->getAttribute(TableMiddleware::FOREIGNKEYS_ATTRIBUTE);
         /** @var int */
         $count = $request->getAttribute(TableMiddleware::COUNT_ATTRIBUTE);
+        /** @var QueryBuilder */
+        $query = $request->getAttribute(QueryMiddleware::QUERY_ATTRIBUTE);
 
         /** @var string[] */
         $geometryColumns = array_values(
@@ -59,8 +65,6 @@ class UIMiddleware implements MiddlewareInterface
         );
 
         $params = $request->getQueryParams();
-
-        $search = isset($params['search']) ? $params['search'] : null;
 
         $this->template->addDefaultParam(
             $this->template::TEMPLATE_ALL,
@@ -82,6 +86,19 @@ class UIMiddleware implements MiddlewareInterface
                 ],
             ]
         );
+
+        $sql = [
+            'pretty' => (new SqlFormatter())->format($query->getSQL()),
+            'raw '   => (new SqlFormatter(new NullHighlighter()))->format($query->getSQL()),
+            'params' => [],
+        ];
+        if (isset($params['search']) && strlen($params['search']) > 0) {
+            $sql['params']['search'] = sprintf('%%%s%%', $params['search']);
+        }
+
+        $this->template->addDefaultParam($this->template::TEMPLATE_ALL, 'sql', $sql);
+
+        $search = isset($params['search']) && strlen($params['search']) > 0 ? $params['search'] : null;
 
         $this->template->addDefaultParam(
             $this->template::TEMPLATE_ALL,
