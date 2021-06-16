@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\Handler;
 
 use API\Middleware\DatabaseMiddleware;
+use API\Middleware\QueryMiddleware;
 use API\Middleware\TableMiddleware;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Query\QueryBuilder;
 use Doctrine\DBAL\Schema\Table;
 use Laminas\Diactoros\Response\HtmlResponse;
 use Mezzio\Template\TemplateRendererInterface;
@@ -35,8 +37,9 @@ class TableHandler implements RequestHandlerInterface
         $table = $request->getAttribute(TableMiddleware::TABLE_ATTRIBUTE);
         /** @var string */
         $primaryKey = $request->getAttribute(TableMiddleware::PRIMARYKEY_ATTRIBUTE);
-        /** @var array */
-        $foreignKeys = $request->getAttribute(TableMiddleware::FOREIGNKEYS_ATTRIBUTE);
+
+        /** @var QueryBuilder */
+        $query = $request->getAttribute(QueryMiddleware::QUERY_ATTRIBUTE);
 
         /** @var int */
         $limit = $request->getAttribute(TableMiddleware::LIMIT_ATTRIBUTE);
@@ -50,48 +53,12 @@ class TableHandler implements RequestHandlerInterface
         $sort = isset($params['sort']) ? $params['sort'] : $table->getName().'_'.$primaryKey;
         $order = isset($params['order']) && in_array(strtolower($params['order']), ['asc', 'desc']) ? strtolower($params['order']) : 'asc';
 
-        $columns = $table->getColumns();
-        $select = [];
-        foreach ($columns as $column) {
-            $name = $column->getQuotedName($connection->getDatabasePlatform());
-            $select[] = sprintf(
-                '%s as %s_%s',
-                $column->getType()->convertToPHPValueSQL(sprintf('a.%s', $name), $connection->getDatabasePlatform()),
-                $table->getName(),
-                $name
-            );
-        }
+        $stmt = $query->executeQuery();
+        $count = $stmt->rowCount();
 
-        $query = $connection->createQueryBuilder();
         $query
-            ->select(...$select)
-            ->from($table->getName(), 'a')
             ->setMaxResults($limit)
-            ->setFirstResult($offset)
-            ->orderBy($sort, $order);
-
-        foreach ($foreignKeys as $i => $fk) {
-            $foreignColumns = $fk['foreignTable']->getColumns();
-            $foreignSelect = [];
-            foreach ($foreignColumns as $foreignColumn) {
-                $name = $foreignColumn->getQuotedName($connection->getDatabasePlatform());
-                $foreignSelect[] = sprintf(
-                    '%s as %s_%s',
-                    $foreignColumn->getType()->convertToPHPValueSQL(sprintf('b%d.%s', $i, $name), $connection->getDatabasePlatform()),
-                    $fk['foreignTable']->getName(),
-                    $name
-                );
-            }
-
-            $query
-                ->leftJoin(
-                    'a',
-                    $fk['foreignTable']->getName(),
-                    sprintf('b%d', $i),
-                    sprintf('a.%s = b%d.%s', $fk['localColumn'], $i, $fk['foreignColumn'])
-                )
-                ->addSelect(...$foreignSelect);
-        }
+            ->setFirstResult($offset);
 
         $stmt = $query->executeQuery();
         $records = $stmt->fetchAllAssociative();
@@ -104,6 +71,10 @@ class TableHandler implements RequestHandlerInterface
                 'offset'  => $offset,
                 'limit'   => $limit,
                 'records' => $records,
+                'filter'  => [
+                    'active' => isset($params['search']) && strlen($params['search']) > 0,
+                    'count'  => $count,
+                ]
             ]
         ));
     }
