@@ -16,6 +16,13 @@ export let sidebarInfo !: SidebarInfo;
 export let sidebarForm !: SidebarForm;
 
 (function () {
+  const href = new URL(window.location.href);
+
+  const params = new URLSearchParams();
+  if (href.searchParams.get('search') !== null) {
+    params.set('search', href.searchParams.get('search'));
+  }
+
   const view = new View({
     center: [0, 0],
     zoom: 2
@@ -26,14 +33,15 @@ export let sidebarForm !: SidebarForm;
     layers: [
       new TileLayer({
         source: new OSM()
-      })],
+      })
+    ],
     target: 'map',
     view
   });
 
   const layer = new VectorLayer({
     source: new VectorSource({
-      url: '/api/object',
+      url: `/api/object?${params.toString()}`,
       format: new GeoJSON()
     })
   });
@@ -43,7 +51,8 @@ export let sidebarForm !: SidebarForm;
 
     map.getView().fit(extent, {
       size: map.getSize(),
-      padding: [50, 50, 50, 50]
+      padding: [50, 50, 50, 50],
+      maxZoom: 18
     });
   });
   map.addLayer(layer);
