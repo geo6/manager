@@ -22,7 +22,7 @@ class ConfigHandler implements RequestHandlerInterface
         unset($this->config['connection']);
     }
 
-    public function handle(ServerRequestInterface $request) : ResponseInterface
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $key = $request->getAttribute('key');
 

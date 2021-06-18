@@ -8,7 +8,7 @@ use Psr\Container\ContainerInterface;
 
 class ConfigHandlerFactory
 {
-    public function __invoke(ContainerInterface $container) : ConfigHandler
+    public function __invoke(ContainerInterface $container): ConfigHandler
     {
         $config = $container->get('config');
 
