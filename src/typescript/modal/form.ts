@@ -144,7 +144,7 @@ export class FormModal {
 
     this.modal.hide();
 
-    // location.reload();
+    location.reload();
   }
 
   private async delete () {
