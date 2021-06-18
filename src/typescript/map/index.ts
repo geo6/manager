@@ -5,18 +5,21 @@ import TileLayer from 'ol/layer/Tile';
 import VectorLayer from 'ol/layer/Vector';
 import OSM from 'ol/source/OSM';
 import VectorSource from 'ol/source/Vector';
+import { API } from '../api/config';
 
 import { Sidebar } from './sidebar';
 import { SidebarForm } from './sidebar/form';
 import { SidebarInfo } from './sidebar/info';
+import style from './style';
 
 export let map!: Map;
 export let sidebar !: Sidebar;
 export let sidebarInfo !: SidebarInfo;
 export let sidebarForm !: SidebarForm;
 
-(function () {
+(async () => {
   const href = new URL(window.location.href);
+  const theme = await API.Config.get('theme');
 
   const params = new URLSearchParams();
   if (href.searchParams.get('search') !== null) {
@@ -43,7 +46,8 @@ export let sidebarForm !: SidebarForm;
     source: new VectorSource({
       url: `/api/object?${params.toString()}`,
       format: new GeoJSON()
-    })
+    }),
+    style: (feature, resolution) => style(theme, feature, resolution)
   });
   layer.once('postrender', () => {
     const extent = layer.getSource().getExtent();
