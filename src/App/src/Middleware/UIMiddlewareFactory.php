@@ -19,7 +19,8 @@ class UIMiddlewareFactory
             'readonly' => $config['readonlyColumns'] ?? [],
         ];
         $file = $config['fileColumns'] ?? [];
+        $theme = $config['theme'] ?? [];
 
-        return new UIMiddleware($template, $columns, $file);
+        return new UIMiddleware($template, $columns, $file, $theme);
     }
 }

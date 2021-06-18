@@ -27,8 +27,10 @@ class UIMiddleware implements MiddlewareInterface
     private $readonlyColumns;
     /** @var array */
     private $fileConfig;
+    /** @var array */
+    private $themeConfig;
 
-    public function __construct(TemplateRendererInterface $template, array $columns, array $file)
+    public function __construct(TemplateRendererInterface $template, array $columns, array $file, array $theme)
     {
         $this->template = $template;
 
@@ -36,6 +38,7 @@ class UIMiddleware implements MiddlewareInterface
         $this->readonlyColumns = $columns['readonly'] ?? [];
 
         $this->fileConfig = $file;
+        $this->themeConfig = $theme;
     }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
@@ -70,6 +73,7 @@ class UIMiddleware implements MiddlewareInterface
 
         $params = $request->getQueryParams();
 
+        // Add `table` parameter
         $this->template->addDefaultParam(
             $this->template::TEMPLATE_ALL,
             'table',
@@ -91,6 +95,7 @@ class UIMiddleware implements MiddlewareInterface
             ]
         );
 
+        // Add `sql` parameter
         $sql = [
             'pretty' => (new SqlFormatter())->format($query->getSQL()),
             'raw '   => (new SqlFormatter(new NullHighlighter()))->format($query->getSQL()),
@@ -99,18 +104,17 @@ class UIMiddleware implements MiddlewareInterface
         if (isset($params['search']) && strlen($params['search']) > 0) {
             $sql['params']['search'] = sprintf('%%%s%%', $params['search']);
         }
-
         $this->template->addDefaultParam($this->template::TEMPLATE_ALL, 'sql', $sql);
 
-        $search = isset($params['search']) && strlen($params['search']) > 0 ? $params['search'] : null;
-
+        // Add `ui` parameter
         $this->template->addDefaultParam(
             $this->template::TEMPLATE_ALL,
             'ui',
             [
                 'file'   => $this->fileConfig,
                 'route'  => $route->getMatchedRoute(),
-                'search' => $search,
+                'search' => isset($params['search']) && strlen($params['search']) > 0 ? $params['search'] : null,
+                'theme'  => $this->themeConfig,
             ]
         );
 
