@@ -51,5 +51,7 @@ return static function (Application $app, MiddlewareFactory $factory, ContainerI
     $app->get('/api/file/{action:info|thumbnail}/{id:\d+}/{column}', API\Handler\File\ThumbnailHandler::class, 'api.file.thumbnail');
     $app->route('/api/file/upload[/{id:\d+}/{column}]', [BodyParamsMiddleware::class, API\Handler\File\UploadHandler::class], ['POST', 'DELETE', 'GET', 'HEAD', 'PATCH'], 'api.file.upload');
 
+    $app->get('/api/config[/{key}]', API\Handler\ConfigHandler::class, 'api.config');
+
     $app->get('/api/ping', API\Handler\PingHandler::class, 'api.ping');
 };
