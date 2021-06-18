@@ -10,6 +10,7 @@ use Doctrine\DBAL\Query\QueryBuilder;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\SqlFormatter\NullHighlighter;
 use Doctrine\SqlFormatter\SqlFormatter;
+use Mezzio\Router\RouteResult;
 use Mezzio\Template\TemplateRendererInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -51,6 +52,9 @@ class UIMiddleware implements MiddlewareInterface
         $count = $request->getAttribute(TableMiddleware::COUNT_ATTRIBUTE);
         /** @var QueryBuilder */
         $query = $request->getAttribute(QueryMiddleware::QUERY_ATTRIBUTE);
+
+        /** @var RouteResult */
+        $route = $request->getAttribute(RouteResult::class);
 
         /** @var string[] */
         $geometryColumns = array_values(
@@ -104,8 +108,9 @@ class UIMiddleware implements MiddlewareInterface
             $this->template::TEMPLATE_ALL,
             'ui',
             [
-                'search' => $search,
                 'file'   => $this->fileConfig,
+                'route'  => $route->getMatchedRoute(),
+                'search' => $search,
             ]
         );
 
