@@ -48,7 +48,7 @@
                         </ul>
                     </li>
                 </ul>
-                <form action="{{ path(ui.route.name, { offset: null }) }}" class="d-flex">
+                <form action="{{ path(ui.route.name, { offset: null }) }}" class="d-flex" autocomplete="off">
                     <input class="form-control me-2" type="search" name="search" value="{{ ui.search }}" placeholder="Search" aria-label="Search">
                     <button class="btn btn-outline-primary" type="submit"><i class="fas fa-search"></i></button>
                 </form>
