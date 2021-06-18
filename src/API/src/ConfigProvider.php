@@ -34,6 +34,7 @@ class ConfigProvider
                 Handler\PingHandler::class => Handler\PingHandler::class,
             ],
             'factories'  => [
+                Handler\ConfigHandler::class          => Handler\ConfigHandlerFactory::class,
                 Handler\File\ThumbnailHandler::class  => Handler\File\ThumbnailHandlerFactory::class,
                 Handler\File\UploadHandler::class     => Handler\File\UploadHandlerFactory::class,
                 Handler\Object\DeleteHandler::class   => Handler\Object\DeleteHandlerFactory::class,
