@@ -136,15 +136,11 @@ export class FormModal {
       }
     });
 
-    console.log(data);
-
     if (typeof this.id !== 'undefined' && this.id !== null) {
       await API.Object.update(this.id, data, true);
     } else {
       await API.Object.insert(data);
     }
-
-    console.log(this.files);
 
     this.modal.hide();
 

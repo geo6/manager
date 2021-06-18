@@ -47,7 +47,6 @@ export let sidebarForm !: SidebarForm;
   });
   layer.once('postrender', () => {
     const extent = layer.getSource().getExtent();
-    console.log('postrender', extent);
 
     map.getView().fit(extent, {
       size: map.getSize(),
