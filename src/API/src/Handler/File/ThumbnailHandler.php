@@ -56,8 +56,13 @@ class ThumbnailHandler implements RequestHandlerInterface
             }
 
             $query = $connection->createQueryBuilder();
-            $query->select([$column])->from($table->getName(), 'a');
-            $query->where($query->expr()->eq(sprintf('a.%s', $primaryKey), $id));
+            $query
+                ->select([$column])
+                ->from($table->getName(), 'a')
+                ->where(
+                    $query->expr()->eq(sprintf('a.%s', $primaryKey), ':id')
+                )
+                ->setParameter('id', $id);
 
             $stmt = $query->executeQuery();
             $path = $stmt->fetchOne();

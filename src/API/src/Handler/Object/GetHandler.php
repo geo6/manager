@@ -41,7 +41,11 @@ class GetHandler implements RequestHandlerInterface
         $columns = $table->getColumns();
 
         if (!is_null($id)) {
-            $query->where($query->expr()->eq(sprintf('a.%s', $primaryKey), $id));
+            $query
+                ->where(
+                    $query->expr()->eq(sprintf('a.%s', $primaryKey), ':id')
+                )
+                ->setParameter('id', $id);
         }
 
         $stmt = $query->executeQuery();
