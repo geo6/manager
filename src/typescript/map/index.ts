@@ -5,8 +5,8 @@ import TileLayer from 'ol/layer/Tile';
 import VectorLayer from 'ol/layer/Vector';
 import OSM from 'ol/source/OSM';
 import VectorSource from 'ol/source/Vector';
-import { API } from '../api/config';
 
+import * as API from '../api';
 import { Sidebar } from './sidebar';
 import { SidebarForm } from './sidebar/form';
 import { SidebarInfo } from './sidebar/info';

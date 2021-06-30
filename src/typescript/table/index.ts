@@ -1,10 +1,8 @@
-/// <reference path = "../api/config.ts" />
-/// <reference path = "../api/object.ts" />
-
 import Overlay from '@geo6/overlay-image-preview';
 import GeoJSON from 'ol/format/GeoJSON';
 import Style from 'ol/style/Style';
 
+import * as API from '../api';
 import { styleFeature } from '../map/style';
 import { FormModal } from '../modal/form';
 
