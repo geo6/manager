@@ -1,5 +1,8 @@
 <thead>
     <tr>
+        {% if (ui.theme | keys | length) > 0 %}
+        <th rowspan="2" style="min-width: 32px;"></th>
+        {% endif %}
         <th colspan="{{ table.table.columns | length }}">
             Table &laquo; {{ table.table.name }} &raquo;
             {{ table.isView ? '<span class="badge bg-info text-dark">VIEW</span>' }}

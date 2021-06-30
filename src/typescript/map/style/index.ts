@@ -1,3 +1,4 @@
+import { Feature } from 'ol';
 import { Color, fromString } from 'ol/color';
 import { ColorLike } from 'ol/colorlike';
 import { FeatureLike } from 'ol/Feature';
@@ -6,26 +7,30 @@ import { createDefaultStyle } from 'ol/style/Style';
 
 import { circle, plus, square, star, times, triangle } from './symbol';
 
-export default function style (theme: Theme.Config, feature: FeatureLike, resolution: number): Style | Style[] {
-  const defaultStyles = createDefaultStyle(feature, resolution);
+export function styleFeature (theme: Theme.Config, feature: FeatureLike, resolution: number): Style | Style[] {
+  const properties = feature.getProperties();
+  const type = feature.getGeometry().getType();
+
+  let s: Theme.Style = {};
+  Object.keys(theme).forEach((column) => {
+    Object.keys(theme[column]).forEach((value) => {
+      if (typeof properties[column] !== 'undefined' && properties[column] === value) {
+        s = Object.assign(s, theme[column][value]);
+      }
+    });
+  });
+
+  return createStyle(type, s, resolution);
+}
+
+function createStyle (type: string, style: Theme.Style, resolution: number = 0): Style | Style[] {
+  const defaultStyles = createDefaultStyle(new Feature(), resolution);
 
   let strokeColor = defaultStyles[0].getStroke().getColor();
   let strokeWidth = defaultStyles[0].getStroke().getWidth();
   let fillColor = defaultStyles[0].getFill().getColor();
   let markerRadius = (defaultStyles[0].getImage() as Circle).getRadius();
   let markerSymbol = null;
-
-  const properties = feature.getProperties();
-  const type = feature.getGeometry().getType();
-
-  let style: Theme.Style = {};
-  Object.keys(theme).forEach((column) => {
-    Object.keys(theme[column]).forEach((value) => {
-      if (typeof properties[column] !== 'undefined' && properties[column] === value) {
-        style = Object.assign(style, theme[column][value]);
-      }
-    });
-  });
 
   switch (type) {
     case 'Point':

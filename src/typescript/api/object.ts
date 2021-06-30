@@ -1,6 +1,6 @@
 import { Feature, FeatureCollection } from 'geojson';
 
-export namespace API {
+namespace API {
   export class Object {
     static async getAll (): Promise<FeatureCollection> {
       const response = await fetch('/api/object');

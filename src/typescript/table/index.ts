@@ -1,15 +1,36 @@
-import Overlay from '@geo6/overlay-image-preview';
+/// <reference path = "../api/config.ts" />
+/// <reference path = "../api/object.ts" />
 
+import Overlay from '@geo6/overlay-image-preview';
+import GeoJSON from 'ol/format/GeoJSON';
+import Style from 'ol/style/Style';
+
+import { styleFeature } from '../map/style';
 import { FormModal } from '../modal/form';
 
-(function () {
+(async function () {
   let id: number | string | null = null;
 
   const buttonForm = document.getElementById('btn-modal-form-edit') as HTMLButtonElement;
   const modalForm = new FormModal(document.getElementById('modal-form'));
 
+  const theme = await API.Config.get('theme');
+  const collection = await API.Object.getAll();
+
   document.querySelectorAll('.table-responsive > table > tbody > tr').forEach((element) => {
     const row = element as HTMLTableRowElement;
+
+    const feature = collection.features.find(feature => feature.id.toString() === row.dataset.id);
+
+    const style = styleFeature(theme, (new GeoJSON()).readFeature(feature), 0);
+    let icon!: HTMLCanvasElement | HTMLVideoElement | HTMLImageElement;
+    if (Array.isArray(style) === true) {
+      icon = style[0].getImage().clone().getImage(1);
+    } else {
+      icon = (style as Style).getImage().clone().getImage(1);
+    }
+    row.querySelectorAll('td')[0].innerHTML = '';
+    row.querySelectorAll('td')[0].append(icon);
 
     row.addEventListener('click', () => {
       const activeRow = document.querySelector('.table-responsive > table > tbody > tr.table-warning');

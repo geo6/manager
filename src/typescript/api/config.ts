@@ -1,4 +1,4 @@
-export namespace API {
+namespace API {
   export class Config {
     static async get (key?: string): Promise<any> {
       const response = await fetch(typeof key === 'undefined' ? '/api/config' : `/api/config/${key}`);

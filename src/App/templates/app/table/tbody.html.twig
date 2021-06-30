@@ -3,6 +3,10 @@
     {% set id = record[table.table.name ~ '_' ~ table.primaryKey] %}
     <tr data-id="{{ id }}">
 
+        {% if (ui.theme | keys | length) > 0 %}
+        <td class="text-center"></td>
+        {% endif %}
+
         {% for column in table.table.columns %}
             {% if column.name in table.columns.file %}
             {{ thumbnail(id, column.name, record[table.table.name ~ '_' ~ column.name]) }}

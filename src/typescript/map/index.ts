@@ -10,7 +10,7 @@ import { API } from '../api/config';
 import { Sidebar } from './sidebar';
 import { SidebarForm } from './sidebar/form';
 import { SidebarInfo } from './sidebar/info';
-import style from './style';
+import { styleFeature } from './style';
 
 export let map!: Map;
 export let sidebar !: Sidebar;
@@ -47,7 +47,7 @@ export let sidebarForm !: SidebarForm;
       url: `/api/object?${params.toString()}`,
       format: new GeoJSON()
     }),
-    style: (feature, resolution) => style(theme, feature, resolution)
+    style: (feature, resolution) => styleFeature(theme, feature, resolution)
   });
   layer.once('postrender', () => {
     const extent = layer.getSource().getExtent();
