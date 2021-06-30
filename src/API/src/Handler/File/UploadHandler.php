@@ -76,6 +76,8 @@ class UploadHandler implements RequestHandlerInterface
 
         /** @var Table */
         $table = $request->getAttribute(TableMiddleware::TABLE_ATTRIBUTE);
+        /** @var string */
+        $primaryKey = $request->getAttribute(TableMiddleware::PRIMARYKEY_ATTRIBUTE);
 
         $id = $request->getAttribute('id');
         $column = $request->getAttribute('column');
@@ -91,7 +93,7 @@ class UploadHandler implements RequestHandlerInterface
 
             $query = $connection->createQueryBuilder();
             $query->select([$column])->from($table->getName(), 'a');
-            $query->where('id = ?')->setParameter(0, $id);
+            $query->where($query->expr()->eq(sprintf('a.%s', $primaryKey), $id));
 
             $stmt = $query->executeQuery();
             $path = $stmt->fetchOne();
