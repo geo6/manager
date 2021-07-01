@@ -8,8 +8,9 @@
     "build:script": "parcel build --dist-dir public/assets/js src/typescript/*/index.ts",
     "build:style": "parcel build --dist-dir public/assets/css src/sass/style.scss",
     "watch:script": "parcel watch --dist-dir public/assets/js src/typescript/*/index.ts",
-    "lint": "eslint src/typescript/**/*.ts",
-    "lint:fix": "eslint --fix src/typescript/**/*.ts"
+    "lint": "npm-run-all -s lint:*",
+    "lint:eslint": "eslint src/typescript",
+    "lint:tsc": "tsc --project tsconfig.json --noEmit"
   },
   "repository": {
     "type": "git",
