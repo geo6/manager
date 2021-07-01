@@ -17,9 +17,9 @@ import generateThumbnailLinks from './thumbnails';
         activeRow.classList.remove('table-warning');
       }
 
-      if (id !== row.dataset.id) {
+      if (id !== row.dataset['id']) {
         row.classList.add('table-warning');
-        id = row.dataset.id;
+        id = row.dataset['id'];
         buttonForm.disabled = false;
 
         modalForm.setId(id);

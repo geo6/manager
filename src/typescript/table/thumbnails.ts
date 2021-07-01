@@ -1,19 +1,21 @@
 import Overlay from '@geo6/overlay-image-preview';
 
-export default function () {
+export default function (): void {
   document.querySelectorAll('a.thumbnail-link').forEach((element) => {
-    const id = element.closest('tr').dataset.id;
+    const id = element.closest('tr').dataset['id'];
 
-    element.addEventListener('click', async (event) => {
-      event.preventDefault();
+    if (typeof id !== 'undefined') {
+      element.addEventListener('click', async (event) => {
+        event.preventDefault();
 
-      const response = await fetch(`/api/file/info/${id}/photo`);
-      const info = await response.json();
+        const response = await fetch(`/api/file/info/${id}/photo`);
+        const info = await response.json();
 
-      const overlay = new Overlay(element as HTMLAnchorElement, () => {
-        return info.filename;
+        const overlay = new Overlay(element as HTMLAnchorElement, () => {
+          return info.filename;
+        });
+        overlay.open();
       });
-      overlay.open();
-    });
+    }
   });
 }

@@ -1,59 +1,59 @@
 import { Feature, FeatureCollection } from 'geojson';
 
-export default class Object {
-  static async getAll (): Promise<FeatureCollection> {
+export const Object = {
+  async getAll (): Promise<FeatureCollection> {
     const response = await fetch('/api/object');
 
-    if (response.ok !== true) {
-      throw response.statusText;
+    if (!response.ok) {
+      throw new Error(response.statusText);
     }
 
     const json = await response.json() as FeatureCollection;
 
     return json;
-  }
+  },
 
-  static async get (id: string | number): Promise<Feature> {
+  async get (id: string | number): Promise<Feature> {
     const response = await fetch(`/api/object/${id}`);
 
-    if (response.ok !== true) {
-      throw response.statusText;
+    if (!response.ok) {
+      throw new Error(response.statusText);
     }
 
     const json = await response.json() as Feature;
 
     return json;
-  }
+  },
 
-  static async delete (id: string | number): Promise<void> {
+  async delete (id: string | number): Promise<void> {
     const response = await fetch(`/api/object/${id}`, {
       method: 'DELETE'
     });
 
-    if (response.ok !== true) {
-      throw response.statusText;
+    if (!response.ok) {
+      throw new Error(response.statusText);
     }
-  }
+  },
 
-  static async update (id: string | number, data = {}, patch = false): Promise<Feature> {
+  async update (id: string | number, data = {}, patch = false): Promise<Feature> {
     const response = await fetch(`/api/object/${id}`, {
       body: JSON.stringify(data),
       headers: {
         'Content-Type': 'application/json'
       },
-      method: patch === true ? 'PATCH' : 'PUT'
+      method: patch ? 'PATCH' : 'PUT'
     });
 
-    if (response.ok !== true) {
-      throw response.statusText;
+    if (!response.ok) {
+      throw new Error(response.statusText);
     }
 
     const json = await response.json() as Feature;
 
     return json;
-  }
+  },
 
-  static async insert (data = {}): Promise<Feature> {
+  async insert (data = {}): Promise<Feature> {
     const response = await fetch('/api/object', {
       body: JSON.stringify(data),
       headers: {
@@ -62,12 +62,12 @@ export default class Object {
       method: 'POST'
     });
 
-    if (response.ok !== true) {
-      throw response.statusText;
+    if (!response.ok) {
+      throw new Error(response.statusText);
     }
 
     const json = await response.json() as Feature;
 
     return json;
   }
-}
+};

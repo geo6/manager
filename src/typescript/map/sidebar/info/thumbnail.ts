@@ -12,9 +12,12 @@ export default async function thumbnail (id: string | number, column: string, va
   }
 
   const filename = value.split('/').reverse()[0];
+  if (typeof filename === 'undefined') {
+    return value;
+  }
 
   const response = await fetch(`/api/file/thumbnail/${id}/${column}`);
-  if (response.ok !== true) {
+  if (!response.ok) {
     const element = document.createElement('span');
     element.className = 'text-muted';
     element.innerHTML = `<i class="far fa-file-image"></i> ${filename}`;

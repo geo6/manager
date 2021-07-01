@@ -7,11 +7,11 @@ import thumbnail from './info/thumbnail';
 import convertToHTML from './info/value';
 
 export class SidebarInfo {
-  private tab!: Tab;
-  private table!: HTMLTableElement;
+  private readonly tab!: Tab;
+  private readonly table!: HTMLTableElement;
   private geometryElement!: HTMLElement;
 
-  constructor (private handle: HTMLAnchorElement) {
+  constructor (private readonly handle: HTMLAnchorElement) {
     this.tab = new Tab(this.handle);
     this.table = document.querySelector(this.handle.getAttribute('href')).querySelector('.sidebar-content > table');
     this.geometryElement = document.querySelector(this.handle.getAttribute('href')).querySelector('.sidebar-content > div');

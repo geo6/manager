@@ -1,12 +1,12 @@
-export default function convertToHTML (type: string, value: any): string | HTMLElement {
+export default function convertToHTML (type: string, value: string|number|boolean): string | HTMLElement {
   if (value === null) {
     return valueNull();
-  } else if (type === 'boolean') {
+  } else if (type === 'boolean' && typeof value === 'boolean') {
     return valueBoolean(value);
-  } else if (typeof value === 'string' && checkURL(value) === true) {
+  } else if (typeof value === 'string' && checkURL(value)) {
     return valueLink(value);
   } else {
-    return value;
+    return value.toString();
   }
 }
 
@@ -19,7 +19,7 @@ export function valueNull (): HTMLElement {
 }
 
 function valueBoolean (value: boolean): HTMLElement {
-  if (value === true) {
+  if (value) {
     const element = document.createElement('i');
     element.className = 'far fa-fw fa-check-circle text-success';
 

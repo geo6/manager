@@ -1,13 +1,13 @@
 import { map } from '../../map';
-import { Baselayer } from './baselayer/overview';
+import BaselayerOverview from './baselayerOverview';
 
 export class Sidebar {
-  constructor (private element: HTMLElement) {
+  constructor (private readonly element: HTMLElement) {
     const view = map.getView();
     const overviews = [
-      new Baselayer.Overview(document.getElementById('sidebar-baselayer-osm'), view, 1),
-      new Baselayer.Overview(document.getElementById('sidebar-baselayer-cirb-urbis'), view, 2),
-      new Baselayer.Overview(document.getElementById('sidebar-baselayer-cirb-ortho'), view, 3)
+      new BaselayerOverview(document.getElementById('sidebar-baselayer-osm'), view, 1),
+      new BaselayerOverview(document.getElementById('sidebar-baselayer-cirb-urbis'), view, 2),
+      new BaselayerOverview(document.getElementById('sidebar-baselayer-cirb-ortho'), view, 3)
     ];
 
     this.element.querySelectorAll('a[data-bs-toggle="tab"]').forEach((element) => {

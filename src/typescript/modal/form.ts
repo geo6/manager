@@ -40,12 +40,12 @@ FilePond.setOptions({
 
 export class FormModal {
   private id!: number | string;
-  private modal: Modal;
-  private inputs: (HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement)[];
+  private readonly modal: Modal;
+  private readonly inputs: Array<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>;
   private files: FilePond.FilePondFile[] = [];
 
-  private deleteButton: HTMLButtonElement;
-  private saveButton: HTMLButtonElement;
+  private readonly deleteButton: HTMLButtonElement;
+  private readonly saveButton: HTMLButtonElement;
 
   constructor (element: HTMLElement) {
     this.modal = new Modal(element);
@@ -59,7 +59,7 @@ export class FormModal {
       this.files = [];
 
       this.inputs.forEach((element) => {
-        const input = element as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
+        const input = element;
 
         if (input.type === 'file') {
           const pond = FilePond.find(input);
@@ -75,7 +75,7 @@ export class FormModal {
         const json = await API.Object.get(this.id);
 
         this.inputs.forEach((element) => {
-          const input = element as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
+          const input = element;
 
           if (input.type === 'file') {
             const pond = FilePond.find(input);
@@ -98,7 +98,7 @@ export class FormModal {
             pond.disabled = false;
 
             if (json.properties[input.name] !== null) {
-              pond.addFile(`${this.id}/${input.name}`, { type: 'local' });
+              await pond.addFile(`${this.id}/${input.name}`, { type: 'local' });
             }
           } else {
             input.value = json.properties[input.name];
@@ -108,16 +108,16 @@ export class FormModal {
       }
     });
 
-    this.deleteButton.addEventListener('click', () => this.delete());
-    this.saveButton.addEventListener('click', () => this.submit());
+    this.deleteButton.addEventListener('click', async () => await this.delete());
+    this.saveButton.addEventListener('click', async () => await this.submit());
   }
 
   setId (id: string | number): void {
     this.id = id;
   }
 
-  private async submit () {
-    const data: { [key: string]: string | number; } = {};
+  private async submit (): Promise<void> {
+    const data: { [key: string]: string | number } = {};
 
     this.inputs.forEach(async (input) => {
       if (input.type === 'file') {
@@ -125,7 +125,7 @@ export class FormModal {
 
         data[input.name] = pond.getFiles().map((file) => file.filename).join(',');
       } else {
-        switch (input.dataset.datatype) {
+        switch (input.dataset['datatype']) {
           case 'integer':
             data[input.name] = input.value.length > 0 ? parseInt(input.value) : '';
             break;
@@ -147,8 +147,8 @@ export class FormModal {
     location.reload();
   }
 
-  private async delete () {
-    if (confirm('Are you sure you want to delete this object ?') === true) {
+  private async delete (): Promise<void> {
+    if (confirm('Are you sure you want to delete this object ?')) {
       await API.Object.delete(this.id);
 
       this.modal.hide();

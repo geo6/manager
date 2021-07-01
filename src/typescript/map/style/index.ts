@@ -23,7 +23,7 @@ export function styleFeature (theme: Theme.Config, feature: FeatureLike, resolut
   return createStyle(type, s, resolution);
 }
 
-function createStyle (type: string, style: Theme.Style, resolution: number = 0): Style | Style[] {
+function createStyle (type: string, style: Theme.Style, resolution = 0): Style | Style[] {
   const defaultStyles = createDefaultStyle(new Feature(), resolution);
 
   let strokeColor = defaultStyles[0].getStroke().getColor();

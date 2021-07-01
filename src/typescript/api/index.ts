@@ -1,2 +1,2 @@
-export { default as Config } from './config';
-export { default as Object } from './object';
+export { Config } from './config';
+export { Object } from './object';
