@@ -1,0 +1,55 @@
+<div id="modal-columns" class="modal" tabindex="-1">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title"><i class="fas fa-columns"></i> Columns</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div>
+              <h6>Table &laquo; {{ table.table.name }} &raquo;</h6>
+              <div class="list-group">
+                {% for column in table.table.columns %}
+                <label class="list-group-item d-flex justify-content-between align-items-start">
+                  <div>
+                    <input class="form-check-input me-1" type="checkbox" value="">
+                    {{ column.name }}
+                  </div>
+                  <div>
+                    {{ column.name == table.primaryKey ? '<i class="fas fa-fw fa-key text-secondary"></i>' }}
+                    {{ column.name in (table.foreignKeys | column('localColumn')) ? '<i class="fas fa-fw fa-link text-secondary"></i>' }}
+                    {{ column.name == table.geometry ? '<i class="fas fa-fw fa-map-marker-alt text-secondary"></i>' }}
+                    <span class="badge bg-light text-dark">{{ column.type.name }}</span>
+                  </div>
+                </label>
+                {% endfor %}
+              </div>
+            </div>
+            {% for fk in table.foreignKeys %}
+            <hr>
+            <div>
+              <h6>Table &laquo; {{ fk.foreignTable.name }} &raquo;</h6>
+              <div class="list-group">
+                {% for column in fk.foreignTable.columns %}
+                <label class="list-group-item d-flex justify-content-between align-items-start">
+                  <div>
+                    <input class="form-check-input me-1" type="checkbox" value="">
+                    {{ column.name }}
+                  </div>
+                  <div>
+                    {{ (fk.foreignTable.name ~ '_' ~ column.name) == fk.foreignTable.primaryKey.name ? '<i class="fas fa-key text-secondary"></i>' }}
+                    <span class="badge bg-light text-dark">{{ column.type.name }}</span>
+                  </div>
+                </label>
+                {% endfor %}
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+      </div>
+  </div>
+</div>

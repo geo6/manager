@@ -41,7 +41,7 @@
                             Settings
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="dropdown-settings">
-                            <li><a class="dropdown-item" href="#"><i class="fas fa-fw fa-columns"></i> Columns</a></li>
+                            <li><a class="dropdown-item" data-bs-toggle="modal" href="#modal-columns"><i class="fas fa-fw fa-columns"></i> Columns</a></li>
                             <li><a class="dropdown-item" data-bs-toggle="modal" href="#modal-thematic"><i class="fas fa-fw fa-palette"></i> Thematic</a></li>
                             <li><a class="dropdown-item" href="#"><i class="fas fa-fw fa-filter"></i> Filter</a></li>
                             <li><a class="dropdown-item" data-bs-toggle="modal" href="#modal-sql"><i class="fas fa-fw fa-terminal"></i> SQL</a></li>
@@ -60,6 +60,7 @@
         {% block content %}{% endblock %}
     </main>
 
+    {{ include('@app/modal/columns.html.twig') }}
     {{ include('@app/modal/sql.html.twig') }}
     {{ include('@app/modal/thematic.html.twig') }}
 
