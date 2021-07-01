@@ -74,7 +74,7 @@ export class FormModal {
       if (typeof this.id !== 'undefined' && this.id !== null) {
         const json = await API.Object.get(this.id);
 
-        this.inputs.forEach((element) => {
+        this.inputs.forEach(async (element) => {
           const input = element;
 
           if (input.type === 'file') {
