@@ -51,7 +51,7 @@ class UIMiddleware implements MiddlewareInterface
         $primaryKey = $request->getAttribute(TableMiddleware::PRIMARYKEY_ATTRIBUTE);
         /** @var array */
         $foreignKeys = $request->getAttribute(TableMiddleware::FOREIGNKEYS_ATTRIBUTE);
-        /** @var string|null */
+        /** @var Column|null */
         $geometryColumn = $request->getAttribute(TableMiddleware::GEOMETRY_ATTRIBUTE);
         /** @var int */
         $count = $request->getAttribute(TableMiddleware::COUNT_ATTRIBUTE);

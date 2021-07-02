@@ -77,7 +77,7 @@ class TableMiddleware implements MiddlewareInterface
         // Get geometry column (first geometry/geography column available)
         $geometryColumns = array_filter($table->getColumns(), function (Column $column) { return in_array($column->getType()->getName(), ['geometry', 'geography']); });
         if (count($geometryColumns) > 0) {
-            $geometryColumn = current($geometryColumns)->getName();
+            $geometryColumn = current($geometryColumns);
         } else {
             $geometryColumn = null;
         }

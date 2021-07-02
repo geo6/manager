@@ -25,8 +25,6 @@ class PatchPutHandler implements RequestHandlerInterface
         $table = $request->getAttribute(TableMiddleware::TABLE_ATTRIBUTE);
         /** @var Column */
         $primaryKey = $request->getAttribute(TableMiddleware::PRIMARYKEY_ATTRIBUTE);
-        /** @var string|null */
-        $geometryColumn = $request->getAttribute(TableMiddleware::GEOMETRY_ATTRIBUTE);
 
         /** @var int */
         $id = $request->getAttribute('id');

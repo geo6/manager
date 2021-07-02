@@ -33,7 +33,7 @@ class GetHandler implements RequestHandlerInterface
         $table = $request->getAttribute(TableMiddleware::TABLE_ATTRIBUTE);
         /** @var Column */
         $primaryKey = $request->getAttribute(TableMiddleware::PRIMARYKEY_ATTRIBUTE);
-        /** @var string|null */
+        /** @var Column|null */
         $geometryColumn = $request->getAttribute(TableMiddleware::GEOMETRY_ATTRIBUTE);
 
         /** @var int|null */
@@ -58,7 +58,7 @@ class GetHandler implements RequestHandlerInterface
                 $properties = [];
                 foreach ($columns as $column) {
                     $name = sprintf('%s_%s', $table->getName(), $column->getName());
-                    if (!is_null($geometryColumn) && $column->getName() === $geometryColumn) {
+                    if (!is_null($geometryColumn) && $column->getName() === $geometryColumn->getName()) {
                         $geometry = $column->getType()->convertToPHPValue($record[$name], $connection->getDatabasePlatform());
                     } elseif ($column->getName() === $primaryKey->getName()) {
                         $id = $column->getType()->convertToPHPValue($record[$name], $connection->getDatabasePlatform());
