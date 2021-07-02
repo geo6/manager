@@ -23,7 +23,7 @@
   "homepage": "https://github.com/geo6/manager#readme",
   "devDependencies": {
     "@parcel/transformer-sass": "2.0.0-beta.2",
-    "@parcel/transformer-typescript-tsc": "2.0.0-beta.2",
+    "@parcel/transformer-typescript-tsc": "2.0.0-nightly.751",
     "@types/bootstrap": "^5.0.16",
     "@types/geojson": "^7946.0.7",
     "@types/ol": "^6.5.1",
@@ -41,7 +41,7 @@
   "dependencies": {
     "@geo6/overlay-image-preview": "^0.2.3",
     "@popperjs/core": "^2.9.2",
-    "bootstrap": "^5.0.1",
+    "bootstrap": "^5.0.2",
     "filepond": "^4.28.2",
     "filepond-plugin-file-metadata": "^1.0.8",
     "filepond-plugin-file-validate-type": "^1.2.6",
