@@ -5,7 +5,7 @@ import * as API from '../api';
 import { styleFeature } from '../map/style';
 
 export default async function (): Promise<void> {
-  const theme = await API.Config.get('theme');
+  const { table, theme } = await API.Config.get();
   const collection = await API.Object.getAll();
 
   document.querySelectorAll('.table-responsive > table > tbody > tr').forEach((element) => {
@@ -13,7 +13,7 @@ export default async function (): Promise<void> {
 
     const feature = collection.features.find(feature => feature.id.toString() === row.dataset['id']);
 
-    const style = styleFeature(theme, (new GeoJSON()).readFeature(feature), 0);
+    const style = styleFeature(theme, table, (new GeoJSON()).readFeature(feature), 0);
     let icon!: HTMLCanvasElement | HTMLVideoElement | HTMLImageElement;
     if (Array.isArray(style) && style.length > 0) {
       icon = style[0].getImage().clone().getImage(1);
