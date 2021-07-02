@@ -58,6 +58,7 @@ class TableHandler implements RequestHandlerInterface
         $count = $stmt->rowCount();
 
         $query
+            ->orderBy($sort, $order)
             ->setMaxResults($limit)
             ->setFirstResult($offset);
 
