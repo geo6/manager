@@ -33,6 +33,8 @@ class GetHandler implements RequestHandlerInterface
         $table = $request->getAttribute(TableMiddleware::TABLE_ATTRIBUTE);
         /** @var Column */
         $primaryKey = $request->getAttribute(TableMiddleware::PRIMARYKEY_ATTRIBUTE);
+        /** @var array */
+        $foreignKeys = $request->getAttribute(TableMiddleware::FOREIGNKEYS_ATTRIBUTE);
         /** @var Column|null */
         $geometryColumn = $request->getAttribute(TableMiddleware::GEOMETRY_ATTRIBUTE);
 
@@ -53,24 +55,40 @@ class GetHandler implements RequestHandlerInterface
         $records = $stmt->fetchAllAssociative();
 
         $features = array_map(
-            function ($record) use ($connection, $table, $columns, $primaryKey, $geometryColumn) {
-                $id = null;
-                $properties = [];
+            function ($record) use ($connection, $table, $columns, $primaryKey, $foreignKeys, $geometryColumn) {
                 foreach ($columns as $column) {
                     $name = sprintf('%s_%s', $table->getName(), $column->getName());
-                    if (!is_null($geometryColumn) && $column->getName() === $geometryColumn->getName()) {
-                        $geometry = $column->getType()->convertToPHPValue($record[$name], $connection->getDatabasePlatform());
-                    } elseif ($column->getName() === $primaryKey->getName()) {
-                        $id = $column->getType()->convertToPHPValue($record[$name], $connection->getDatabasePlatform());
-                    } else {
-                        $properties[$column->getName()] = $column->getType()->convertToPHPValue($record[$name], $connection->getDatabasePlatform());
+                    switch ($column->getType()->getName()) {
+                        case 'geometry':
+                            $record[$name] = $column->getType()->convertToPHPValue($record[$name], $connection->getDatabasePlatform());
+                            break;
                     }
+                }
+                foreach ($foreignKeys as $fk) {
+                    foreach ($fk['foreignTable']->getColumns() as $column) {
+                        $name = sprintf('%s_%s', $fk['foreignTable']->getName(), $column->getName());
+                        switch ($column->getType()->getName()) {
+                            case 'geometry':
+                                $record[$name] = $column->getType()->convertToPHPValue($record[$name], $connection->getDatabasePlatform());
+                                break;
+                        }
+                    }
+                }
+
+                $_id = sprintf('%s_%s', $table->getName(), $primaryKey->getName());
+                $id = $record[$_id];
+                unset($record[$_id]);
+
+                $_geometry = sprintf('%s_%s', $table->getName(), $geometryColumn->getName());
+                if (isset($record[$_geometry])) {
+                    $geometry = $record[$_geometry];
+                    unset($record[$_geometry]);
                 }
 
                 return [
                     'type'       => 'Feature',
                     'id'         => $id,
-                    'properties' => $properties,
+                    'properties' => $record,
                     'geometry'   => $geometry ?? null,
                 ];
             },
