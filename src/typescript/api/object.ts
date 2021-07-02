@@ -1,4 +1,4 @@
-import { Feature, FeatureCollection } from 'geojson';
+import { Feature, FeatureCollection, Polygon } from 'geojson';
 
 export const Object = {
   async getAll (): Promise<FeatureCollection> {
@@ -67,6 +67,18 @@ export const Object = {
     }
 
     const json = await response.json() as Feature;
+
+    return json;
+  },
+
+  async extent (): Promise<Polygon|null> {
+    const response = await fetch('/api/object/extent');
+
+    if (!response.ok) {
+      throw new Error(response.statusText);
+    }
+
+    const json = await response.json() as Polygon|null;
 
     return json;
   }
