@@ -8,7 +8,7 @@ use Psr\Container\ContainerInterface;
 
 class ExtentHandlerFactory
 {
-    public function __invoke(ContainerInterface $container) : ExtentHandler
+    public function __invoke(ContainerInterface $container): ExtentHandler
     {
         return new ExtentHandler();
     }

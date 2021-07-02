@@ -18,7 +18,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 class ExtentHandler implements RequestHandlerInterface
 {
-    public function handle(ServerRequestInterface $request) : ResponseInterface
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
         /** @var Connection */
         $connection = $request->getAttribute(DatabaseMiddleware::CONNECTION_ATTRIBUTE);
