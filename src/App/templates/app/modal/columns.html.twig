@@ -12,7 +12,8 @@
                 {% for column in table.table.columns %}
                 <label class="list-group-item d-flex justify-content-between align-items-start">
                   <div>
-                    <input class="form-check-input me-1" type="checkbox" value="">
+                    <input class="form-check-input me-1" type="checkbox" value="{{ table.table.name ~ '.' ~ column.name }}"
+                      {{ ((table.table.name ~ '.' ~ column.name) in ui.defaults.columns) or (column.name in ui.defaults.columns) ? 'checked' }}>
                     {{ column.name }}
                   </div>
                   <div>
@@ -33,7 +34,8 @@
                 {% for column in fk.foreignTable.columns %}
                 <label class="list-group-item d-flex justify-content-between align-items-start">
                   <div>
-                    <input class="form-check-input me-1" type="checkbox" value="">
+                    <input class="form-check-input me-1" type="checkbox" value="{{ fk.foreignTable.name ~ '.' ~ column.name }}"
+                      {{ (fk.foreignTable.name ~ '.' ~ column.name) in ui.defaults.columns ? 'checked' }}>
                     {{ column.name }}
                   </div>
                   <div>
