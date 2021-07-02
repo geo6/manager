@@ -3,7 +3,7 @@
         {% if (ui.theme | keys | length) > 0 %}
         <th rowspan="2" style="min-width: 32px;"></th>
         {% endif %}
-        <th colspan="{{ table.table.columns | length }}">
+        <th class="text-nowrap" colspan="{{ table.table.columns | filter(c => ((table.table.name ~ '.' ~ c.name) in ui.defaults.columns) or (c.name in ui.defaults.columns)) | length }}">
             Table &laquo; {{ table.table.name }} &raquo;
             {{ table.isView ? '<span class="badge bg-info text-dark">VIEW</span>' }}
 
@@ -15,13 +15,13 @@
             {% endif %}
         </th>
         {% for fk in table.foreignKeys %}
-        <th colspan="{{ fk.foreignTable.columns | length }}">
+        <th class="text-nowrap" colspan="{{ fk.foreignTable.columns | filter(c => (fk.foreignTable.name ~ '.' ~ c.name) in ui.defaults.columns) | length }}">
             Table &laquo; {{ fk.foreignTable.name }} &raquo;
         </th>
         {% endfor %}
     </tr>
     <tr>
-        {% for column in table.table.columns %}
+        {% for column in table.table.columns | filter(c => ((table.table.name ~ '.' ~ c.name) in ui.defaults.columns) or (c.name in ui.defaults.columns)) %}
         <th>
             <a href="{{ path('table', {offset: 0}, {sort: (table.table.name ~ '_' ~ column.name), order: (sort == (table.table.name ~ '_' ~ column.name) and order == 'asc' ? 'desc' : 'asc'), search: ui.search}) }}"
                 class="text-body text-decoration-none d-flex justify-content-between align-items-center">
@@ -41,7 +41,7 @@
         </th>
         {% endfor %}
         {% for fk in table.foreignKeys %}
-        {% for id, column in fk.foreignTable.columns %}
+        {% for id, column in fk.foreignTable.columns | filter(c => (fk.foreignTable.name ~ '.' ~ c.name) in ui.defaults.columns) %}
         <th>
             <a href="{{ path('table', {offset: 0}, {sort: (fk.foreignTable.name ~ '_' ~ column.name), order: (sort == (fk.foreignTable.name ~ '_' ~ column.name) and order == 'asc' ? 'desc' : 'asc')}) }}"
                 class="text-body text-decoration-none d-flex justify-content-between align-items-center">

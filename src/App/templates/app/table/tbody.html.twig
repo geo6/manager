@@ -7,7 +7,7 @@
         <td class="text-center"></td>
         {% endif %}
 
-        {% for column in table.table.columns %}
+        {% for column in table.table.columns | filter(c => ((table.table.name ~ '.' ~ c.name) in ui.defaults.columns) or (c.name in ui.defaults.columns)) %}
             {% if column.name in table.columns.file %}
             {{ thumbnail(id, column.name, record[table.table.name ~ '_' ~ column.name]) }}
             {% else %}
@@ -16,7 +16,7 @@
         {% endfor %}
 
         {% for fk in table.foreignKeys %}
-        {% for column in fk.foreignTable.columns %}
+        {% for column in fk.foreignTable.columns | filter(c => (fk.foreignTable.name ~ '.' ~ c.name) in ui.defaults.columns) %}
         {{ value(record[fk.foreignTable.name ~ '_' ~ column.name], column.type) }}
         {% endfor %}
         {% endfor %}
