@@ -20,6 +20,7 @@ export let sidebarForm !: SidebarForm;
 (async () => {
   const href = new URL(window.location.href);
   const { table, theme } = await API.Config.get();
+  const extent = await API.Object.extent();
 
   const params = new URLSearchParams();
   if (href.searchParams.get('search') !== null) {
@@ -41,6 +42,13 @@ export let sidebarForm !: SidebarForm;
     target: 'map',
     view
   });
+  if (extent !== null) {
+    view.fit(
+      (new GeoJSON({ featureProjection: 'EPSG:3857' })).readGeometry(extent).getExtent(), {
+        padding: [50, 50, 50, 50],
+        maxZoom: 18
+      });
+  }
 
   const layer = new VectorLayer({
     source: new VectorSource({
@@ -48,15 +56,6 @@ export let sidebarForm !: SidebarForm;
       format: new GeoJSON()
     }),
     style: (feature, resolution) => styleFeature(theme, table, feature, resolution)
-  });
-  layer.once('postrender', () => {
-    const extent = layer.getSource().getExtent();
-
-    map.getView().fit(extent, {
-      size: map.getSize(),
-      padding: [50, 50, 50, 50],
-      maxZoom: 18
-    });
   });
   map.addLayer(layer);
 
