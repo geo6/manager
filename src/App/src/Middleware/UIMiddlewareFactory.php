@@ -20,7 +20,8 @@ class UIMiddlewareFactory
         ];
         $file = $config['fileColumns'] ?? [];
         $theme = $config['theme'] ?? [];
+        $defaults = $config['defaults'] ?? [];
 
-        return new UIMiddleware($template, $columns, $file, $theme);
+        return new UIMiddleware($template, $defaults, $columns, $file, $theme);
     }
 }

@@ -22,6 +22,8 @@ class UIMiddleware implements MiddlewareInterface
     /** @var TemplateRendererInterface */
     private $template;
     /** @var string[] */
+    private $defaults;
+    /** @var string[] */
     private $fileColumns;
     /** @var string[] */
     private $readonlyColumns;
@@ -30,9 +32,10 @@ class UIMiddleware implements MiddlewareInterface
     /** @var array */
     private $themeConfig;
 
-    public function __construct(TemplateRendererInterface $template, array $columns, array $file, array $theme)
+    public function __construct(TemplateRendererInterface $template, array $defaults, array $columns, array $file, array $theme)
     {
         $this->template = $template;
+        $this->defaults = $defaults;
 
         $this->fileColumns = $columns['file'] ?? [];
         $this->readonlyColumns = $columns['readonly'] ?? [];
@@ -114,10 +117,11 @@ class UIMiddleware implements MiddlewareInterface
             $this->template::TEMPLATE_ALL,
             'ui',
             [
-                'file'   => $this->fileConfig,
-                'route'  => $route->getMatchedRoute(),
-                'search' => isset($params['search']) && strlen($params['search']) > 0 ? $params['search'] : null,
-                'theme'  => $this->themeConfig,
+                'defaults' => $this->defaults,
+                'file'     => $this->fileConfig,
+                'route'    => $route->getMatchedRoute(),
+                'search'   => isset($params['search']) && strlen($params['search']) > 0 ? $params['search'] : null,
+                'theme'    => $this->themeConfig,
             ]
         );
 
