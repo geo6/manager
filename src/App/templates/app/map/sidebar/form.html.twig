@@ -3,7 +3,7 @@
 {% block title 'Edit' %}
 
 {% block content %}
-<form autocomplete="off">
+<form autocomplete="off" data-table="{{ table.table.name }}">
     {% for column in (table.table.columns | filter(c => c.name not in table.columns.readonly)) %}
     <div class="mb-3" data-datatype="{{ column.type.name }}">
         <label for="form-input-{{ column.name }}" class="form-label">{{ column.name }}</label>

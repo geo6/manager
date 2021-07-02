@@ -43,9 +43,11 @@ export class SidebarForm {
   load (feature: Feature): this {
     const properties = feature.getProperties();
 
+    const { table } = this.form.dataset;
+
     this.inputs.forEach((element) => {
       const input = element;
-      input.value = properties[input.name];
+      input.value = properties[`${table}_${input.name}`];
       input.disabled = false;
     });
 
