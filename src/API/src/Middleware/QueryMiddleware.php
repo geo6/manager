@@ -25,6 +25,8 @@ class QueryMiddleware implements MiddlewareInterface
         /** @var array */
         $foreignKeys = $request->getAttribute(TableMiddleware::FOREIGNKEYS_ATTRIBUTE);
 
+        $params = $request->getQueryParams();
+
         $select = [];
         $where = [];
 
