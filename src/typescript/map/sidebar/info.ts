@@ -8,13 +8,15 @@ import convertToHTML from './info/value';
 
 export class SidebarInfo {
   private readonly tab!: Tab;
-  private readonly table!: HTMLTableElement;
-  private geometryElement!: HTMLElement;
+  private readonly idElement!: HTMLElement;
+  private readonly contentElement!: HTMLElement;
+  private readonly geometryElement!: HTMLElement;
 
   constructor (private readonly handle: HTMLAnchorElement) {
     this.tab = new Tab(this.handle);
-    this.table = document.querySelector(this.handle.getAttribute('href')).querySelector('.sidebar-content > table');
-    this.geometryElement = document.querySelector(this.handle.getAttribute('href')).querySelector('.sidebar-content > div');
+    this.idElement = document.getElementById('sidebar-info-id')?.querySelector('span');
+    this.contentElement = document.getElementById('sidebar-info-content');
+    this.geometryElement = document.getElementById('sidebar-info-geometry');
   }
 
   open (): this {
@@ -34,7 +36,7 @@ export class SidebarInfo {
 
     Sidebar.close(this.handle);
 
-    this.table.querySelectorAll('tbody > td').forEach((td) => { td.innerHTML = ''; });
+    this.contentElement.querySelectorAll('div > div').forEach((element) => { element.innerHTML = ''; });
 
     return this;
   }
@@ -44,34 +46,34 @@ export class SidebarInfo {
     const properties = feature.getProperties();
     const geometry = feature.getGeometry();
 
-    (this.table.querySelector('caption > span') as HTMLSpanElement).innerText = id.toString();
+    this.idElement.innerText = id.toString();
 
-    this.table.querySelectorAll('tbody > tr > td').forEach((td) => {
-      const { name, datatype, file } = td.parentElement.dataset;
+    this.contentElement.querySelectorAll('div > div').forEach((element) => {
+      const { table, name, datatype, file } = element.parentElement.dataset;
 
-      if (typeof properties[name] !== 'undefined') {
+      if (typeof properties[`${table}_${name}`] !== 'undefined') {
         if (typeof file !== 'undefined') {
-          td.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-          thumbnail(id, name, properties[name])
+          element.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+          thumbnail(id, name, properties[`${table}_${name}`])
             .then(value => {
               if (typeof value === 'string') {
-                (td as HTMLTableCellElement).innerText = value;
+                (element as HTMLSpanElement).innerText = value;
               } else {
-                td.innerHTML = '';
-                td.append(value);
+                element.innerHTML = '';
+                element.append(value);
               }
             })
             .catch(() => {
-              (td as HTMLTableCellElement).innerText = properties[name];
+              (td as HTMLTableCellElement).innerText = properties[`${table}_${name}`];
             });
         } else {
-          const value = convertToHTML(datatype, properties[name]);
+          const value = convertToHTML(datatype, properties[`${table}_${name}`]);
 
           if (typeof value === 'string') {
-            (td as HTMLTableCellElement).innerText = value;
+            (element as HTMLSpanElement).innerText = value;
           } else {
-            td.innerHTML = '';
-            td.append(value);
+            element.innerHTML = '';
+            element.append(value);
           }
         }
       }

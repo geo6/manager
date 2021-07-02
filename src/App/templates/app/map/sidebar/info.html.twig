@@ -3,19 +3,27 @@
 {% block title 'Info' %}
 
 {% block content %}
-<table class="table table-bordered table-sm caption-top">
-    <caption>
-        <i class="fas fa-bookmark"></i>
-        Feature id: <span></span>
-    </caption>
-    <tbody>
-        {% for column in table.table.columns | filter(c => c.name != table.primaryKey.name and c.name not in table.columns.geometry and (((table.table.name ~ '.' ~ c.name) in ui.defaults.columns) or (c.name in ui.defaults.columns))) %}
-        <tr data-name="{{ column.name }}" data-datatype="{{ column.type.name }}" {{ column.name in table.columns.file ? 'data-file="1"' : '' }}>
-            <th>{{ column.name }}</th>
-            <td></td>
-        </tr>
+<div id="sidebar-info-id" class="text-secondary">
+    <i class="fas fa-bookmark"></i>
+    Feature id: <span></span>
+</div>
+<hr>
+<div id="sidebar-info-content">
+    {% for column in table.table.columns | filter(c => c.name != table.primaryKey.name and c.name not in table.columns.geometry and (((table.table.name ~ '.' ~ c.name) in ui.defaults.columns) or (c.name in ui.defaults.columns))) %}
+    <div class="mb-3" data-table="{{ table.table.name }}" data-name="{{ column.name }}" data-datatype="{{ column.type.name }}" {{ column.name in table.columns.file ? 'data-file="1"' : '' }}>
+        <label class="fw-bold">{{ column.name }}</label>
+        <div></div>
+    </div>
+    {% endfor %}
+    {% for i, fk in table.foreignKeys %}
+        {% for id, column in fk.foreignTable.columns | filter(c => (fk.foreignTable.name ~ '.' ~ c.name) in ui.defaults.columns) %}
+        <div class="mb-3" data-table="{{ fk.foreignTable.name }}" data-name="{{ column.name }}" data-datatype="{{ column.type.name }}">
+            <label class="fw-bold">{{ fk.foreignTable.name }}.{{ column.name }}</label>
+            <div></div>
+        </div>
         {% endfor %}
-    </tbody>
-</table>
-<div class="text-small"></div>
+    {% endfor %}
+</div>
+<hr>
+<div id="sidebar-info-geometry" class="text-small"></div>
 {% endblock %}
