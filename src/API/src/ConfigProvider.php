@@ -38,6 +38,7 @@ class ConfigProvider
                 Handler\File\ThumbnailHandler::class  => Handler\File\ThumbnailHandlerFactory::class,
                 Handler\File\UploadHandler::class     => Handler\File\UploadHandlerFactory::class,
                 Handler\Object\DeleteHandler::class   => Handler\Object\DeleteHandlerFactory::class,
+                Handler\Object\ExtentHandler::class   => Handler\Object\ExtentHandlerFactory::class,
                 Handler\Object\GetHandler::class      => Handler\Object\GetHandlerFactory::class,
                 Handler\Object\PatchPutHandler::class => Handler\Object\PatchPutHandlerFactory::class,
                 Middleware\DatabaseMiddleware::class  => Middleware\DatabaseMiddlewareFactory::class,
