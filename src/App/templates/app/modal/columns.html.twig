@@ -16,7 +16,7 @@
                     {{ column.name }}
                   </div>
                   <div>
-                    {{ column.name == table.primaryKey ? '<i class="fas fa-fw fa-key text-secondary"></i>' }}
+                    {{ column.name == table.primaryKey.name ? '<i class="fas fa-fw fa-key text-secondary"></i>' }}
                     {{ column.name in (table.foreignKeys | column('localColumn')) ? '<i class="fas fa-fw fa-link text-secondary"></i>' }}
                     {{ column.name == table.geometry ? '<i class="fas fa-fw fa-map-marker-alt text-secondary"></i>' }}
                     <span class="badge bg-light text-dark">{{ column.type.name }}</span>

@@ -7,6 +7,7 @@ namespace API\Handler\Object;
 use API\Middleware\DatabaseMiddleware;
 use API\Middleware\TableMiddleware;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\Table;
 use Laminas\Diactoros\Response\EmptyResponse;
 use Psr\Http\Message\ResponseInterface;
@@ -22,14 +23,14 @@ class DeleteHandler implements RequestHandlerInterface
 
         /** @var Table */
         $table = $request->getAttribute(TableMiddleware::TABLE_ATTRIBUTE);
-        /** @var string */
+        /** @var Column */
         $primaryKey = $request->getAttribute(TableMiddleware::PRIMARYKEY_ATTRIBUTE);
 
         /** @var int */
         $id = $request->getAttribute('id');
 
         $query = $connection->createQueryBuilder();
-        $query->delete($table->getName())->where(sprintf('%s = ?', $primaryKey))->setParameter(0, $id);
+        $query->delete($table->getName())->where(sprintf('%s = ?', $primaryKey->getName()))->setParameter(0, $id);
 
         $query->executeStatement();
 

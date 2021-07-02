@@ -23,7 +23,7 @@ class PatchPutHandler implements RequestHandlerInterface
 
         /** @var Table */
         $table = $request->getAttribute(TableMiddleware::TABLE_ATTRIBUTE);
-        /** @var string */
+        /** @var Column */
         $primaryKey = $request->getAttribute(TableMiddleware::PRIMARYKEY_ATTRIBUTE);
         /** @var string|null */
         $geometryColumn = $request->getAttribute(TableMiddleware::GEOMETRY_ATTRIBUTE);
@@ -33,7 +33,7 @@ class PatchPutHandler implements RequestHandlerInterface
 
         /** @var Column[] */
         $columns = array_filter($table->getColumns(), function (Column $column) use ($primaryKey) {
-            return $column->getName() !== $primaryKey;
+            return $column->getName() !== $primaryKey->getName();
         });
 
         $method = $request->getMethod();
@@ -44,7 +44,7 @@ class PatchPutHandler implements RequestHandlerInterface
         $query
             ->update($table->getName())
             ->where(
-                $query->expr()->eq($primaryKey, ':id')
+                $query->expr()->eq($primaryKey->getName(), ':id')
             )
             ->setParameter('id', $id);
 

@@ -9,6 +9,7 @@ use API\Middleware\QueryMiddleware;
 use API\Middleware\TableMiddleware;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
+use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\Table;
 use Laminas\Diactoros\Response\JsonResponse;
 use Psr\Http\Message\ResponseInterface;
@@ -30,7 +31,7 @@ class GetHandler implements RequestHandlerInterface
 
         /** @var Table */
         $table = $request->getAttribute(TableMiddleware::TABLE_ATTRIBUTE);
-        /** @var string */
+        /** @var Column */
         $primaryKey = $request->getAttribute(TableMiddleware::PRIMARYKEY_ATTRIBUTE);
         /** @var string|null */
         $geometryColumn = $request->getAttribute(TableMiddleware::GEOMETRY_ATTRIBUTE);
@@ -43,7 +44,7 @@ class GetHandler implements RequestHandlerInterface
         if (!is_null($id)) {
             $query
                 ->where(
-                    $query->expr()->eq(sprintf('a.%s', $primaryKey), ':id')
+                    $query->expr()->eq(sprintf('a.%s', $primaryKey->getName()), ':id')
                 )
                 ->setParameter('id', $id);
         }
@@ -59,7 +60,7 @@ class GetHandler implements RequestHandlerInterface
                     $name = sprintf('%s_%s', $table->getName(), $column->getName());
                     if (!is_null($geometryColumn) && $column->getName() === $geometryColumn) {
                         $geometry = $column->getType()->convertToPHPValue($record[$name], $connection->getDatabasePlatform());
-                    } elseif ($column->getName() === $primaryKey) {
+                    } elseif ($column->getName() === $primaryKey->getName()) {
                         $id = $column->getType()->convertToPHPValue($record[$name], $connection->getDatabasePlatform());
                     } else {
                         $properties[$column->getName()] = $column->getType()->convertToPHPValue($record[$name], $connection->getDatabasePlatform());

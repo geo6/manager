@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace API\Middleware;
 
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\Table;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -22,14 +23,14 @@ class QueryMiddleware implements MiddlewareInterface
 
         /** @var Table */
         $table = $request->getAttribute(TableMiddleware::TABLE_ATTRIBUTE);
-        /** @var string */
+        /** @var Column */
         $primaryKey = $request->getAttribute(TableMiddleware::PRIMARYKEY_ATTRIBUTE);
         /** @var array */
         $foreignKeys = $request->getAttribute(TableMiddleware::FOREIGNKEYS_ATTRIBUTE);
 
         $params = $request->getQueryParams();
 
-        $sort = isset($params['sort']) ? $params['sort'] : $table->getName().'_'.$primaryKey;
+        $sort = isset($params['sort']) ? $params['sort'] : $table->getName().'_'.$primaryKey->getName();
         $order = isset($params['order']) && in_array(strtolower($params['order']), ['asc', 'desc']) ? strtolower($params['order']) : 'asc';
 
         $select = [];

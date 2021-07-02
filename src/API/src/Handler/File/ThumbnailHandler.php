@@ -7,6 +7,7 @@ namespace API\Handler\File;
 use API\Middleware\DatabaseMiddleware;
 use API\Middleware\TableMiddleware;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\Table;
 use Exception;
 use Intervention\Image\ImageManagerStatic;
@@ -40,7 +41,7 @@ class ThumbnailHandler implements RequestHandlerInterface
 
         /** @var Table */
         $table = $request->getAttribute(TableMiddleware::TABLE_ATTRIBUTE);
-        /** @var string */
+        /** @var Column */
         $primaryKey = $request->getAttribute(TableMiddleware::PRIMARYKEY_ATTRIBUTE);
 
         /** @var int */
@@ -60,7 +61,7 @@ class ThumbnailHandler implements RequestHandlerInterface
                 ->select([$column])
                 ->from($table->getName(), 'a')
                 ->where(
-                    $query->expr()->eq(sprintf('a.%s', $primaryKey), ':id')
+                    $query->expr()->eq(sprintf('a.%s', $primaryKey->getName()), ':id')
                 )
                 ->setParameter('id', $id);
 

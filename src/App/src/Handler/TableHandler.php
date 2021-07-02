@@ -9,6 +9,7 @@ use API\Middleware\QueryMiddleware;
 use API\Middleware\TableMiddleware;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
+use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\Table;
 use Laminas\Diactoros\Response\HtmlResponse;
 use Mezzio\Template\TemplateRendererInterface;
@@ -35,7 +36,7 @@ class TableHandler implements RequestHandlerInterface
 
         /** @var Table */
         $table = $request->getAttribute(TableMiddleware::TABLE_ATTRIBUTE);
-        /** @var string */
+        /** @var Column */
         $primaryKey = $request->getAttribute(TableMiddleware::PRIMARYKEY_ATTRIBUTE);
 
         /** @var QueryBuilder */
@@ -50,7 +51,7 @@ class TableHandler implements RequestHandlerInterface
 
         $params = $request->getQueryParams();
 
-        $sort = isset($params['sort']) ? $params['sort'] : $table->getName().'_'.$primaryKey;
+        $sort = isset($params['sort']) ? $params['sort'] : $table->getName().'_'.$primaryKey->getName();
         $order = isset($params['order']) && in_array(strtolower($params['order']), ['asc', 'desc']) ? strtolower($params['order']) : 'asc';
 
         $stmt = $query->executeQuery();

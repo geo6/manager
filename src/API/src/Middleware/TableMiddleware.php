@@ -67,12 +67,11 @@ class TableMiddleware implements MiddlewareInterface
             if (count($primaryKeyColumns) > 1) {
                 throw new Exception('This application doesn\'t support multiple columns primary key.');
             }
-            $primaryKey = current($primaryKeyColumns)->getName();
+            $primaryKey = current($primaryKeyColumns);
+        } elseif (!is_null($this->primaryKeyColumn)) {
+            $primaryKey = $table->getColumn($this->primaryKeyColumn);
         } else {
-            $primaryKey = $this->primaryKeyColumn;
-            if (is_null($primaryKey)) {
-                throw new Exception('You need to configure the primary key.');
-            }
+            throw new Exception('You need to configure the primary key.');
         }
 
         // Get geometry column (first geometry/geography column available)

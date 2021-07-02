@@ -47,7 +47,7 @@ class UIMiddleware implements MiddlewareInterface
         $table = $request->getAttribute(TableMiddleware::TABLE_ATTRIBUTE);
         /** @var bool */
         $isView = $request->getAttribute(TableMiddleware::ISVIEW_ATTRIBUTE);
-        /** @var string */
+        /** @var Column */
         $primaryKey = $request->getAttribute(TableMiddleware::PRIMARYKEY_ATTRIBUTE);
         /** @var array */
         $foreignKeys = $request->getAttribute(TableMiddleware::FOREIGNKEYS_ATTRIBUTE);
@@ -88,7 +88,7 @@ class UIMiddleware implements MiddlewareInterface
                 'count'       => $count,
                 'columns'     => [
                     'readonly' => [
-                        $primaryKey,
+                        $primaryKey->getName(),
                         ...$this->readonlyColumns,
                         ...$geometryColumns,
                     ],
