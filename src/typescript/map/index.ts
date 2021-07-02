@@ -19,7 +19,7 @@ export let sidebarForm !: SidebarForm;
 
 (async () => {
   const href = new URL(window.location.href);
-  const theme = await API.Config.get('theme');
+  const { table, theme } = await API.Config.get();
 
   const params = new URLSearchParams();
   if (href.searchParams.get('search') !== null) {
@@ -47,7 +47,7 @@ export let sidebarForm !: SidebarForm;
       url: `/api/object?${params.toString()}`,
       format: new GeoJSON()
     }),
-    style: (feature, resolution) => styleFeature(theme, feature, resolution)
+    style: (feature, resolution) => styleFeature(theme, table, feature, resolution)
   });
   layer.once('postrender', () => {
     const extent = layer.getSource().getExtent();

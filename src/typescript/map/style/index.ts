@@ -7,14 +7,14 @@ import { createDefaultStyle } from 'ol/style/Style';
 
 import { circle, plus, square, star, times, triangle } from './symbol';
 
-export function styleFeature (theme: Theme.Config, feature: FeatureLike, resolution: number): Style | Style[] {
+export function styleFeature (theme: Theme.Config, table: string, feature: FeatureLike, resolution: number): Style | Style[] {
   const properties = feature.getProperties();
   const type = feature.getGeometry().getType();
 
   let s: Theme.Style = {};
   Object.keys(theme).forEach((column) => {
     Object.keys(theme[column]).forEach((value) => {
-      if (typeof properties[column] !== 'undefined' && properties[column] === value) {
+      if (typeof properties[`${table}_${column}`] !== 'undefined' && properties[`${table}_${column}`] === value) {
         s = Object.assign(s, theme[column][value]);
       }
     });
