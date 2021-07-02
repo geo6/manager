@@ -45,8 +45,9 @@ export let sidebarForm !: SidebarForm;
   if (extent !== null) {
     view.fit(
       (new GeoJSON({ featureProjection: 'EPSG:3857' })).readGeometry(extent).getExtent(), {
+        maxZoom: 18,
         padding: [50, 50, 50, 50],
-        maxZoom: 18
+        size: map.getSize()
       });
   }
 
