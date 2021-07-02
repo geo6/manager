@@ -47,6 +47,7 @@ return static function (Application $app, MiddlewareFactory $factory, ContainerI
     $app->delete('/api/object/{id:\d+}', API\Handler\Object\DeleteHandler::class, 'api.object.delete');
     $app->patch('/api/object/{id:\d+}', [BodyParamsMiddleware::class, API\Handler\Object\PatchPutHandler::class], 'api.object.patch');
     $app->put('/api/object/{id:\d+}', [BodyParamsMiddleware::class, API\Handler\Object\PatchPutHandler::class], 'api.object.put');
+    $app->get('/api/object/extent', API\Handler\Object\ExtentHandler::class, 'api.object.extent');
 
     $app->get('/api/file/{action:info|thumbnail}/{id:\d+}/{column}', API\Handler\File\ThumbnailHandler::class, 'api.file.thumbnail');
     $app->route('/api/file/upload[/{id:\d+}/{column}]', [BodyParamsMiddleware::class, API\Handler\File\UploadHandler::class], ['POST', 'DELETE', 'GET', 'HEAD', 'PATCH'], 'api.file.upload');
