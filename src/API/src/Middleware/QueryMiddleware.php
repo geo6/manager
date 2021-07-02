@@ -23,15 +23,8 @@ class QueryMiddleware implements MiddlewareInterface
 
         /** @var Table */
         $table = $request->getAttribute(TableMiddleware::TABLE_ATTRIBUTE);
-        /** @var Column */
-        $primaryKey = $request->getAttribute(TableMiddleware::PRIMARYKEY_ATTRIBUTE);
         /** @var array */
         $foreignKeys = $request->getAttribute(TableMiddleware::FOREIGNKEYS_ATTRIBUTE);
-
-        $params = $request->getQueryParams();
-
-        $sort = isset($params['sort']) ? $params['sort'] : $table->getName().'_'.$primaryKey->getName();
-        $order = isset($params['order']) && in_array(strtolower($params['order']), ['asc', 'desc']) ? strtolower($params['order']) : 'asc';
 
         $select = [];
         $where = [];
@@ -53,8 +46,7 @@ class QueryMiddleware implements MiddlewareInterface
 
         $query = $connection->createQueryBuilder()
             ->select(...$select)
-            ->from($table->getName(), 'a')
-            ->orderBy($sort, $order);
+            ->from($table->getName(), 'a');
 
         if (isset($params['search']) && strlen($params['search']) > 0) {
             $query
