@@ -6,7 +6,7 @@ import TileWMS from 'ol/source/TileWMS';
 
 import { map } from '../index';
 
-export default class BaselayerOverview {
+export class BaselayerOverview {
   private readonly map: Map;
   private readonly source: TileSource;
 

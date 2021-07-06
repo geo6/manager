@@ -1,5 +1,5 @@
 import { map } from '..';
-import BaselayerOverview from './baselayerOverview';
+import { BaselayerOverview } from './BaselayerOverview';
 
 export class Sidebar {
   constructor (private readonly element: HTMLElement) {
