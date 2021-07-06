@@ -12,6 +12,9 @@ import { SidebarForm } from './sidebar/form';
 import { SidebarInfo } from './sidebar/info';
 import { styleFeature } from './style';
 
+export let table!: string;
+export let theme!: Theme.Config;
+
 export let map!: Map;
 export let sidebar !: Sidebar;
 export let sidebarInfo !: SidebarInfo;
@@ -19,8 +22,12 @@ export let sidebarForm !: SidebarForm;
 
 (async () => {
   const href = new URL(window.location.href);
-  const { table, theme } = await API.Config.get();
+
+  const config = await API.Config.get();
   const extent = await API.Object.extent();
+
+  table = config.table;
+  theme = config.theme;
 
   const params = new URLSearchParams();
   if (href.searchParams.get('search') !== null) {

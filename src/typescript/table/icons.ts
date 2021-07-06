@@ -4,8 +4,9 @@ import { Style } from 'ol/style';
 import * as API from '../api';
 import { styleFeature } from '../map/style';
 
+import { table, theme } from '.';
+
 export default async function (): Promise<void> {
-  const { table, theme } = await API.Config.get();
   const collection = await API.Object.getAll();
 
   document.querySelectorAll('.table-responsive > table > tbody > tr').forEach((element) => {

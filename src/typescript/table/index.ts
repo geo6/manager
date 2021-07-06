@@ -1,9 +1,17 @@
+import * as API from '../api';
 import { FormModal } from './modal/form';
 import generateIcons from './icons';
 import generateThumbnailLinks from './thumbnails';
 
-(async function () {
+export let table!: string;
+export let theme!: Theme.Config;
+
+(async () => {
   let id: number | string | null = null;
+
+  const config = await API.Config.get();
+  table = config.table;
+  theme = config.theme;
 
   const buttonForm = document.getElementById('btn-modal-form-edit') as HTMLButtonElement;
   const modalForm = new FormModal(document.getElementById('modal-form'));
