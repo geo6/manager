@@ -7,9 +7,9 @@ import OSM from 'ol/source/OSM';
 import VectorSource from 'ol/source/Vector';
 
 import * as API from '../api';
-import { Sidebar } from './sidebar';
-import { SidebarForm } from './sidebar/form';
-import { SidebarInfo } from './sidebar/info';
+import { Sidebar } from './sidebar/Sidebar';
+import { SidebarForm } from './sidebar/SidebarForm';
+import { SidebarInfo } from './sidebar/SidebarInfo';
 import { styleFeature } from './style';
 
 export let table!: string;

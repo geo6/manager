@@ -1,5 +1,5 @@
 import * as API from '../api';
-import { FormModal } from './modal/form';
+import { FormModal } from './modal/FormModal';
 import generateIcons from './icons';
 import generateThumbnailLinks from './thumbnails';
 

@@ -6,7 +6,7 @@ import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orien
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
 import { Feature } from 'ol';
 
-import { Sidebar } from '.';
+import { Sidebar } from './Sidebar';
 
 import { table } from '..';
 

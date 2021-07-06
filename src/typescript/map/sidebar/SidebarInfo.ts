@@ -1,7 +1,7 @@
 import { Tab } from 'bootstrap';
 import { Feature } from 'ol';
 
-import { Sidebar } from '.';
+import { Sidebar } from './Sidebar';
 import geometryToHTML from './info/geometry';
 import thumbnail from './info/thumbnail';
 import convertToHTML from './info/value';

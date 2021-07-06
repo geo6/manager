@@ -1,4 +1,4 @@
-import { map } from '../../map';
+import { map } from '..';
 import BaselayerOverview from './baselayerOverview';
 
 export class Sidebar {
