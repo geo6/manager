@@ -7,6 +7,8 @@ import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
 
 import * as API from '../../api';
 
+import { table } from '..';
+
 FilePond.registerPlugin(
   FilePondPluginFileMetadata,
   FilePondPluginFileValidateType,
@@ -97,11 +99,11 @@ export class FormModal {
             });
             pond.disabled = false;
 
-            if (json.properties[input.name] !== null) {
+            if (json.properties[`${table}_${input.name}`] !== null) {
               await pond.addFile(`${this.id}/${input.name}`, { type: 'local' });
             }
           } else {
-            input.value = json.properties[input.name];
+            input.value = json.properties[`${table}_${input.name}`];
             input.disabled = false;
           }
         });
