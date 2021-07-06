@@ -3,6 +3,8 @@ import { Feature } from 'ol';
 
 import { Sidebar } from '.';
 
+import { table } from '..';
+
 export class SidebarForm {
   private readonly tab!: Tab;
   private readonly form!: HTMLFormElement;
@@ -42,8 +44,6 @@ export class SidebarForm {
 
   load (feature: Feature): this {
     const properties = feature.getProperties();
-
-    const { table } = this.form.dataset;
 
     this.inputs.forEach((element) => {
       const input = element;
