@@ -26,6 +26,8 @@ export let sidebarForm !: SidebarForm;
   const config = await API.Config.get();
   const extent = await API.Object.extent();
 
+  const id = href.searchParams.get('id');
+
   table = config.table;
   theme = config.theme;
 
@@ -64,6 +66,17 @@ export let sidebarForm !: SidebarForm;
       format: new GeoJSON()
     }),
     style: (feature, resolution) => styleFeature(theme, table, feature, resolution)
+  });
+  layer.on('postrender', () => {
+    if (id !== null) {
+      const extent = layer.getSource().getFeatureById(id)?.getGeometry()?.getExtent();
+      if (typeof extent !== 'undefined') {
+        map.getView().fit(extent, {
+          maxZoom: 18,
+          padding: [50, 50, 50, 50]
+        });
+      }
+    }
   });
   map.addLayer(layer);
 
