@@ -5,7 +5,7 @@ import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
 import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orientation';
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
 
-import * as API from '../api';
+import * as API from '../../api';
 
 FilePond.registerPlugin(
   FilePondPluginFileMetadata,

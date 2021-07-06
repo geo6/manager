@@ -1,4 +1,4 @@
-import { FormModal } from '../modal/form';
+import { FormModal } from './modal/form';
 import generateIcons from './icons';
 import generateThumbnailLinks from './thumbnails';
 
