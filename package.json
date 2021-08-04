@@ -40,7 +40,7 @@
   },
   "dependencies": {
     "@geo6/overlay-image-preview": "^0.2.3",
-    "@popperjs/core": "^2.9.2",
+    "@popperjs/core": "^2.9.3",
     "bootstrap": "^5.0.2",
     "filepond": "^4.28.2",
     "filepond-plugin-file-metadata": "^1.0.8",
