@@ -26,9 +26,9 @@
     "@parcel/transformer-typescript-tsc": "2.0.0-beta.2",
     "@types/bootstrap": "^5.0.16",
     "@types/geojson": "^7946.0.7",
-    "@types/ol": "^6.5.2",
+    "@types/ol": "^6.5.3",
     "@typescript-eslint/eslint-plugin": "^4.28.1",
-    "@typescript-eslint/parser": "^4.28.1",
+    "@typescript-eslint/parser": "^4.28.5",
     "eslint": "^7.29.0",
     "eslint-config-standard-with-typescript": "^20.0.0",
     "eslint-plugin-import": "^2.23.4",
@@ -46,7 +46,7 @@
     "filepond-plugin-file-metadata": "^1.0.8",
     "filepond-plugin-file-validate-type": "^1.2.6",
     "filepond-plugin-image-exif-orientation": "^1.0.11",
-    "filepond-plugin-image-preview": "^4.6.6",
+    "filepond-plugin-image-preview": "^4.6.7",
     "ol": "^6.5.0"
   }
 }
