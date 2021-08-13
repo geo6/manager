@@ -116,7 +116,6 @@ export class SidebarForm {
         pond.disabled = false;
 
         if (properties[`${table}_${input.name}`] !== null) {
-          console.log(`${id.toString()}/${input.name}`);
           await pond.addFile(`${id.toString()}/${input.name}`, { type: 'local' });
         }
       } else {
