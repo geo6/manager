@@ -3,7 +3,7 @@
 @use "table";
 @use "map/sidebar";
 
-@import "../../node_modules/@geo6/overlay-image-preview/src/sass/overlay.scss";
+@import "../../node_modules/@geo6/overlay-image-preview/dist/overlay.css";
 @import "../../node_modules/filepond/dist/filepond.css";
 @import "../../node_modules/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
 
