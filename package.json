@@ -42,7 +42,7 @@
     "@geo6/overlay-image-preview": "^0.2.4",
     "@popperjs/core": "^2.9.3",
     "bootstrap": "^5.1.0",
-    "filepond": "^4.28.2",
+    "filepond": "^4.29.0",
     "filepond-plugin-file-metadata": "^1.0.8",
     "filepond-plugin-file-validate-type": "^1.2.6",
     "filepond-plugin-image-exif-orientation": "^1.0.11",
