@@ -28,7 +28,7 @@
     "@types/geojson": "^7946.0.8",
     "@types/ol": "^6.5.3",
     "@typescript-eslint/eslint-plugin": "^4.30.0",
-    "@typescript-eslint/parser": "^4.29.1",
+    "@typescript-eslint/parser": "^4.30.0",
     "concurrently": "^6.2.1",
     "eslint": "^7.32.0",
     "eslint-config-standard-with-typescript": "^20.0.0",
