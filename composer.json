@@ -24,7 +24,7 @@
     "require-dev": {
         "filp/whoops": "^2.7.1",
         "laminas/laminas-development-mode": "^3.2",
-        "mezzio/mezzio-tooling": "^1.3",
+        "mezzio/mezzio-tooling": "^2.0",
         "phpspec/prophecy": "^1.10.3",
         "phpspec/prophecy-phpunit": "^2.0",
         "phpunit/phpunit": "^9.3.7",
