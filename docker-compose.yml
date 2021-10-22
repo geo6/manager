@@ -1,0 +1,25 @@
+services:
+  db:
+    image: postgis/postgis:latest
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: username
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: mydatabase
+    volumes:
+      - db_data:/var/lib/postgresql/data/
+  app:
+    depends_on:
+      - db
+    build: .
+    ports:
+      - 8000:80
+    environment:
+      POSTGRES_HOST: manager-db-1
+      POSTGRES_USER: username
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: mydatabase
+
+volumes:
+  db_data: {}
